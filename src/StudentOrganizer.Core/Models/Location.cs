@@ -8,7 +8,7 @@ namespace StudentOrganizer.Core.Models
 		public string Link { get; protected set; }
 		public string Room { get; protected set; }
 
-        public Location(Address address, string link, string room)
+        public Location(Address address, string room, string link="")
         {
             SetLink(link);
             SetRoom(room);
@@ -17,10 +17,6 @@ namespace StudentOrganizer.Core.Models
 
 		public void SetLink(string link)
         {
-            if (string.IsNullOrWhiteSpace(link))
-            {
-                throw new Exception("Link can not be empty.");
-            }
             Link = link;
         }
 
