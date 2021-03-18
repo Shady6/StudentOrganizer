@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
+using StudentOrganizer.Infrastructure.AutoMapper;
 using StudentOrganizer.Infrastructure.Settings;
 using System;
 using System.Collections.Generic;
@@ -50,6 +51,9 @@ namespace StudentOrganizer.Api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "StudentOrganizer.Api", Version = "v1" });
             });
+
+            //automapper
+            services.AddSingleton(AutoMapperConfiguration.Initialize());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
