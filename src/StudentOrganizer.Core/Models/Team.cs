@@ -2,7 +2,15 @@
 {
 	public class Team : Entity
 	{
-		public string Group { get; set; }
-		public Schedule Schedule { get; set; }
+		public Schedule Schedule { get; protected set; }
+		public Team()
+        {
+
+        }
+
+        public Team(Schedule schedule)
+        {
+			Schedule = schedule;
+        }
 	}
 }
