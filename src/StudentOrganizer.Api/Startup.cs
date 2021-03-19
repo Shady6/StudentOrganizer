@@ -1,3 +1,4 @@
+using Autofac;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,6 +11,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using StudentOrganizer.Infrastructure.AutoMapper;
+using StudentOrganizer.Infrastructure.IServices;
+using StudentOrganizer.Infrastructure.Services;
 using StudentOrganizer.Infrastructure.Settings;
 using System;
 using System.Collections.Generic;
@@ -21,12 +24,17 @@ namespace StudentOrganizer.Api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public IConfiguration Configuration { get; private set; }
+        public ILifetimeScope AutofacContainer { get; private set; }
+        public Startup(IWebHostEnvironment env)
         {
-            Configuration = configuration;
+            var builder = new ConfigurationBuilder()
+                                .SetBasePath(env.ContentRootPath)
+                                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                                .AddEnvironmentVariables();
+            Configuration = builder.Build();
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -54,6 +62,14 @@ namespace StudentOrganizer.Api
 
             //automapper
             services.AddSingleton(AutoMapperConfiguration.Initialize());
+        }
+
+        //Autofac
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            //to do modules 
+            builder.RegisterType<Encrypter>().As<IEncrypter>().SingleInstance();
+            builder.RegisterType<JwtHandler>().As<IJwtHandler>().SingleInstance();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
