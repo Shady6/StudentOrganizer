@@ -17,7 +17,7 @@ namespace StudentOrganizer.Infrastructure.Services
         {
             if (string.IsNullOrWhiteSpace(password))
             {
-                throw new ArgumentException("Can not generate salt from an empty value.");
+                throw new ArgumentException("Cannot generate salt from an empty value.");
             }
 
             var saltBytes = new byte[SaltSize];
@@ -31,11 +31,11 @@ namespace StudentOrganizer.Infrastructure.Services
         {
             if (string.IsNullOrWhiteSpace(password))
             {
-                throw new ArgumentException("Can not generate hash from an empty value.");
+                throw new ArgumentException("Cannot generate hash from an empty value.");
             }
-            if (string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(salt))
             {
-                throw new ArgumentException("Can not use an empty salt from hashing value.");
+                throw new ArgumentException("Cannot use an empty salt from hashing value.");
             }
 
             var pbkdf2 = new Rfc2898DeriveBytes(password, GetBytes(salt), DeriveBytesIterationsCount);
