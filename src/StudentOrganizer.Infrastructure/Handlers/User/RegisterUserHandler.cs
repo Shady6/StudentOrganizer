@@ -1,5 +1,7 @@
 ﻿using MediatR;
+using StudentOrganizer.Infrastructure.IServices;
 using StudentOrganizer.Infrastructure.User.Commands;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -7,9 +9,18 @@ namespace StudentOrganizer.Infrastructure.User.Handlers
 {
 	public class RegisterUserHandler : IRequestHandler<RegisterUserCommand>
 	{
-		public Task<Unit> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+		private readonly IUserService _userService;
+
+		public RegisterUserHandler(IUserService userService)
 		{
-			throw new System.NotImplementedException();
+			_userService = userService;
+		}
+
+		public Task<Unit> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
+		{
+			_userService.RegisterAsync(Guid.NewGuid(), command.Email, command.Username, command.Password,
+				command.FirstName, command.LastName, command.Role);
+			return Unit.Task;
 		}
 	}
 }

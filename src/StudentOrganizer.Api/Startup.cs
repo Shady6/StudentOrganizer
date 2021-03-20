@@ -16,6 +16,8 @@ using System.Text;
 using MediatR;
 using System;
 using System.Linq;
+using StudentOrganizer.Infrastructure.Repositories;
+using StudentOrganizer.Core.Repositories;
 
 namespace StudentOrganizer.Api
 {
@@ -72,6 +74,8 @@ namespace StudentOrganizer.Api
 			//to do modules
 			builder.RegisterType<Encrypter>().As<IEncrypter>().SingleInstance();
 			builder.RegisterType<JwtHandler>().As<IJwtHandler>().SingleInstance();
+			builder.RegisterType<UserService>().As<IUserService>();
+			builder.RegisterType<UserRepository>().As<IUserRepository>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
