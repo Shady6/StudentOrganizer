@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace StudentOrganizer.Infrastructure.Dto
+﻿namespace StudentOrganizer.Infrastructure.Dto
 {
-    public class JwtDto
-    {
-        public string Token { get; set; }
-        public long Expires { get; set; }
-    }
+	public class JwtDto
+	{
+		public string Value { get; set; }
+		public long Expires { get; set; }
+	}
 }

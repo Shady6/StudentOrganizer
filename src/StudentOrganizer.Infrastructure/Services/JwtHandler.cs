@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using StudentOrganizer.Core.Models;
 using StudentOrganizer.Infrastructure.Dto;
 using StudentOrganizer.Infrastructure.Extentions;
 using StudentOrganizer.Infrastructure.IServices;
@@ -21,7 +22,7 @@ namespace StudentOrganizer.Infrastructure.Services
 			configuration.GetSection("jwt").Bind(_jwtSettings);
 		}
 
-		public JwtDto CreateToken(Guid userId, RoleDto role)
+		public JwtDto CreateToken(Guid userId, Role role)
 		{
 			var date = DateTime.UtcNow;
 			var claims = new Claim[]
@@ -46,7 +47,7 @@ namespace StudentOrganizer.Infrastructure.Services
 
 			return new JwtDto
 			{
-				Token = token,
+				Value = token,
 				Expires = expires.ToTimestamp()
 			};
 		}
