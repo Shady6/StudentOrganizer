@@ -12,7 +12,7 @@ namespace StudentOrganizer.Core.Models
 		public string FirstName { get; protected set; }
 		public string LastName { get; protected set; }
 		public Role Role { get; protected set; }
-		public IEnumerable<Group> Groups => _groups;
+		public IEnumerable<Group> Groups => _groups;		
 
         public User(string email, string password, string salt, string firstName, string lastName)
         {
