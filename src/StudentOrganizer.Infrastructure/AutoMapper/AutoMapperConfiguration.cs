@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using StudentOrganizer.Core.Models;
+using StudentOrganizer.Infrastructure.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +14,7 @@ namespace StudentOrganizer.Infrastructure.AutoMapper
         public static IMapper Initialize()
             => new MapperConfiguration(cfg =>
             {
-
+                cfg.CreateMap<Assignment, AssignmentDto>();
             })
             .CreateMapper();
     }

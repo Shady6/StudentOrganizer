@@ -1,11 +1,11 @@
 ﻿using MediatR;
 using StudentOrganizer.Infrastructure.IServices;
-using StudentOrganizer.Infrastructure.User.Commands;
+using StudentOrganizer.Infrastructure.Users.Commands;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace StudentOrganizer.Infrastructure.User.Handlers
+namespace StudentOrganizer.Infrastructure.Users.Handlers
 {
 	public class RegisterUserHandler : IRequestHandler<RegisterUserCommand>
 	{

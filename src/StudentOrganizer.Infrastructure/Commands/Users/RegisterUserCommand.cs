@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using StudentOrganizer.Infrastructure.Dto;
 
-namespace StudentOrganizer.Infrastructure.User.Commands
+namespace StudentOrganizer.Infrastructure.Users.Commands
 {
 	public class RegisterUserCommand : IRequest
 	{

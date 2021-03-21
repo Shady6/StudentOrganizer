@@ -1,15 +1,15 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using StudentOrganizer.Infrastructure.User.Commands;
+using StudentOrganizer.Infrastructure.Users.Commands;
 using System.Threading.Tasks;
 
 namespace StudentOrganizer.Api.Controllers
 {
-	public class UserController : ControllerBase
+	public class UsersController : ControllerBase
 	{
 		protected readonly IMediator _mediator;
 
-		public UserController(IMediator mediatr)
+		public UsersController(IMediator mediatr)
 		{
 			_mediator = mediatr;
 		}

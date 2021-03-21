@@ -10,12 +10,12 @@ namespace StudentOrganizer.Infrastructure.Repositories
 {
 	public class UserRepository : IUserRepository
 	{				
-		public async Task AddAsync(Core.Models.User user)
+		public async Task AddAsync(User user)
 		{
 			throw new NotImplementedException();
 		}
 
-		public async Task<IEnumerable<Core.Models.User>> BrowseAsync(string email = "")
+		public async Task<IEnumerable<User>> BrowseAsync(string email = "")
 		{
 			throw new NotImplementedException();					
 		}
@@ -25,12 +25,12 @@ namespace StudentOrganizer.Infrastructure.Repositories
 			throw new NotImplementedException();
 		}
 
-		public async Task<Core.Models.User> GetAsync(Guid id)
+		public async Task<User> GetAsync(Guid id)
 		{
 			throw new NotImplementedException();
 		}
 
-		public async Task<Core.Models.User> GetAsync(string email)
+		public async Task<User> GetAsync(string email)
 		{
 			throw new NotImplementedException();
 		}
