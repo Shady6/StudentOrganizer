@@ -7,11 +7,12 @@ namespace StudentOrganizer.Core.Models
 	{
 		private ISet<Group> _groups = new HashSet<Group>(); 
 		public string Email { get; protected set; }
-		public string Password { get; protected set; }
+		public string PasswordHash { get; protected set; }
 		public string Salt { get; protected set; }
 		public string FirstName { get; protected set; }
 		public string LastName { get; protected set; }
-		public IEnumerable<Group> Groups => _groups;
+		public Role Role { get; protected set; }
+		public IEnumerable<Group> Groups => _groups;		
 
         public User(string email, string password, string salt, string firstName, string lastName)
         {
@@ -25,22 +26,22 @@ namespace StudentOrganizer.Core.Models
 		{
             if (string.IsNullOrWhiteSpace(email))
 			{
-				throw new Exception("Email can not be empty.");
+				throw new Exception("Email cannot be empty.");
 			}
 			Email = email;
 		}
 
-		public void SetPassword(string password, string salt)
+		public void SetPassword(string passwordHash, string salt)
 		{
-			if (string.IsNullOrWhiteSpace(password))
+			if (string.IsNullOrWhiteSpace(passwordHash))
 			{
-				throw new Exception("Email can not be empty.");
+				throw new Exception("Password hash cannot be empty.");
 			}
             if (string.IsNullOrWhiteSpace(salt))
             {
-				throw new Exception("Salt can not be empty.");
+				throw new Exception("Salt cannot be empty.");
             }
-			Password = password;
+			PasswordHash = passwordHash;
 			Salt = salt;
 		}
 
@@ -48,7 +49,7 @@ namespace StudentOrganizer.Core.Models
 		{
 			if (string.IsNullOrWhiteSpace(firstName))
 			{
-				throw new Exception("First name can not be empty.");
+				throw new Exception("First name cannot be empty.");
 			}
 			FirstName = firstName;
 		}
@@ -57,7 +58,7 @@ namespace StudentOrganizer.Core.Models
 		{
 			if (string.IsNullOrWhiteSpace(lastName))
 			{
-				throw new Exception("Last name can not be empty.");
+				throw new Exception("Last name cannot be empty.");
 			}
 			LastName = lastName;
 		}
