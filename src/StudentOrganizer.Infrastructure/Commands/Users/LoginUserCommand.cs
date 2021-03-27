@@ -1,4 +1,4 @@
-﻿namespace StudentOrganizer.Infrastructure.User.Commands
+﻿namespace StudentOrganizer.Infrastructure.Users.Commands
 {
 	public class LoginUserCommand : CreateCommandBase
 	{				

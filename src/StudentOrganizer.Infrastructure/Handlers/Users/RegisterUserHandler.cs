@@ -16,11 +16,11 @@ namespace StudentOrganizer.Infrastructure.Users.Handlers
 			_userService = userService;
 		}
 
-		public Task<Unit> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
+		public async Task<Unit> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
 		{
-			_userService.RegisterAsync(Guid.NewGuid(), command.Email, command.Username, command.Password,
+			await _userService.RegisterAsync(Guid.NewGuid(), command.Email, command.Username, command.Password,
 				command.FirstName, command.LastName, command.Role);
-			return Unit.Task;
+			return Unit.Value;
 		}
 	}
 }

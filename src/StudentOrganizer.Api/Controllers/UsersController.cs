@@ -2,18 +2,20 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using StudentOrganizer.Infrastructure.Dto;
-using StudentOrganizer.Infrastructure.User.Commands;
+using StudentOrganizer.Infrastructure.Users.Commands;
 using System;
 using System.Threading.Tasks;
 
 namespace StudentOrganizer.Api.Controllers
 {
-	public class UserController : ControllerBase
+	[Route("[controller]")]
+	[ApiController]
+	public class UsersController : ControllerBase
 	{
 		protected readonly IMediator _mediator;
 		private readonly IMemoryCache _memoryCache;
 
-		public UserController(IMediator mediatr, IMemoryCache memoryCache)
+		public UsersController(IMediator mediatr, IMemoryCache memoryCache)
 		{
 			_mediator = mediatr;
 			_memoryCache = memoryCache;

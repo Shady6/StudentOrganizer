@@ -33,7 +33,7 @@ namespace StudentOrganizer.Infrastructure.Services
 				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
 				new Claim(JwtRegisteredClaimNames.Iat, date.ToTimestamp().ToString())
 			};
-			var expires = date.AddMinutes(15);
+			var expires = date.AddMinutes(45);
 			var signingCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key)),
 				SecurityAlgorithms.HmacSha256);
 			var jwt = new JwtSecurityToken(

@@ -7,9 +7,7 @@ namespace StudentOrganizer.Core.Repositories
 {
 	public interface IUserRepository : IRepository
 	{
-		Task AddAsync(User user);
-
-		Task<IEnumerable<User>> BrowseAsync(string mail = "");
+		Task AddAsync(User user);		
 
 		Task<User> GetAsync(Guid id);
 
@@ -17,8 +15,6 @@ namespace StudentOrganizer.Core.Repositories
 
 		Task DeleteAsync(Guid id);
 
-		Task UpdateAsync();
-
-		Task SaveChangesAsync();
+		Task UpdateAsync(User user);		
 	}
 }

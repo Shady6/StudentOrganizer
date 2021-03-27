@@ -21,6 +21,7 @@ namespace StudentOrganizer.Infrastructure.Repositories
         {
             var mongoSettings = new MongoSettings();
             configuration.GetSection("mongo").Bind(mongoSettings);
+            mongoSettings.ConnectionString.Replace("<password>", configuration["MongoDbPassword"]);
             var mongoClient = new MongoClient(mongoSettings.ConnectionString);
             _database = mongoClient.GetDatabase(mongoSettings.Database);
         }

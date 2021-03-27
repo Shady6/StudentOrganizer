@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using StudentOrganizer.Infrastructure.IServices;
-using StudentOrganizer.Infrastructure.User.Commands;
-using System;
+using StudentOrganizer.Infrastructure.Users.Commands;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,10 +15,10 @@ namespace StudentOrganizer.Infrastructure.Handlers.User
 			_userService = userService;
 		}
 
-		public Task<Unit> Handle(LoginUserCommand command, CancellationToken cancellationToken)
+		public async Task<Unit> Handle(LoginUserCommand command, CancellationToken cancellationToken)
 		{
-			_userService.LoginAsync(command.Id, command.Email, command.Password);
-			return Unit.Task;
+			await _userService.LoginAsync(command.Id, command.Email, command.Password);
+			return Unit.Value;
 		}
 	}
 }

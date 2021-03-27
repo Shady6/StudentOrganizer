@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using StudentOrganizer.Core.Models;
 using StudentOrganizer.Core.Repositories;
 using StudentOrganizer.Infrastructure.Dto;
 using StudentOrganizer.Infrastructure.IServices;
@@ -33,9 +34,8 @@ namespace StudentOrganizer.Infrastructure.Services
 			string salt = _encrypter.GetSalt(password);
 			string passwordHash = _encrypter.GetHash(password, salt);
 
-			var user = new Core.Models.User(email, passwordHash, salt, firstName, lastName);
-			await _userRepository.AddAsync(user);
-			await _userRepository.SaveChangesAsync();
+			var user = new User(email, passwordHash, salt, firstName, lastName);
+			await _userRepository.AddAsync(user);			
 		}
 
 		public async Task LoginAsync(Guid id, string email, string password)

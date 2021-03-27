@@ -60,6 +60,7 @@ namespace StudentOrganizer.Api
 			services.AddMediatR(AppDomain.CurrentDomain.GetAssemblies()
 				.Where(x => x.FullName.Contains("Infrastructure") || x.FullName.Contains("Api"))
 				.ToArray());
+			services.AddMemoryCache();
 
 			services.AddControllers();
 			services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.Formatting = Formatting.Indented);
@@ -76,7 +77,7 @@ namespace StudentOrganizer.Api
 			builder.RegisterType<Encrypter>().As<IEncrypter>().SingleInstance();
 			builder.RegisterType<JwtHandler>().As<IJwtHandler>().SingleInstance();
 			builder.RegisterType<UserService>().As<IUserService>().InstancePerLifetimeScope();
-			builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope();
+			builder.RegisterType<MongoUserRepository>().As<IUserRepository>().InstancePerLifetimeScope();
 			builder.RegisterType<AssignmentService>().As<IAssignmentService>().InstancePerLifetimeScope();
 			builder.RegisterType<MongoAssignmentRepository>().As<IAssignmentRepository>().SingleInstance();
 		}
@@ -93,6 +94,7 @@ namespace StudentOrganizer.Api
 
 			app.UseRouting();
 
+			app.UseAuthentication();
 			app.UseAuthorization();
 			MongoConfiguration.Initialize();
 			app.UseEndpoints(endpoints =>

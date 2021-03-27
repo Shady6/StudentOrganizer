@@ -2,35 +2,34 @@
 using StudentOrganizer.Infrastructure.Commands.Assignments;
 using StudentOrganizer.Infrastructure.IServices;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace StudentOrganizer.Api.Controllers
 {
-    [Route("[controller]")]
-    public class AssignmentsController : Controller
-    {
-        private readonly IAssignmentService _assignmentService;
+	[Route("[controller]")]
+	[ApiController]
+	public class AssignmentsController : Controller
+	{
+		private readonly IAssignmentService _assignmentService;
 
-        public AssignmentsController(IAssignmentService assignmentService)
-        {
-            _assignmentService = assignmentService;
-        }
+		public AssignmentsController(IAssignmentService assignmentService)
+		{
+			_assignmentService = assignmentService;
+		}
 
-        [HttpGet]
-        public async Task<IActionResult> Get(string name)
-        {
-            var assignments = await _assignmentService.BrowseAsync(name);
-            return Json(assignments);
-        }
+		[HttpGet]
+		public async Task<IActionResult> Get(string name)
+		{
+			var assignments = await _assignmentService.BrowseAsync(name);
+			return Json(assignments);
+		}
 
-        [HttpPost]
-        public async Task<IActionResult> Post([FromBody]CreateAssignment command)
-        {
-            Guid id = Guid.NewGuid();
-            await _assignmentService.CreateAsync(id, command.Name, command.Description, command.Semester, command.Deadline);
-            return Created($"/assignments/{id}", null);
-        }
-    }
+		[HttpPost]
+		public async Task<IActionResult> Post([FromBody] CreateAssignment command)
+		{
+			Guid id = Guid.NewGuid();
+			await _assignmentService.CreateAsync(id, command.Name, command.Description, command.Semester, command.Deadline);
+			return Created($"/assignments/{id}", null);
+		}
+	}
 }

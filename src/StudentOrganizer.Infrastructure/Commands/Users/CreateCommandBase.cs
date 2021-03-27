@@ -2,7 +2,7 @@
 using System;
 using System.Text.Json.Serialization;
 
-namespace StudentOrganizer.Infrastructure.User.Commands
+namespace StudentOrganizer.Infrastructure.Users.Commands
 {
 	public abstract class CreateCommandBase : IRequest
 	{		
