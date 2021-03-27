@@ -4,10 +4,12 @@ namespace StudentOrganizer.Core.Models
 {
 	public class Assignment : Entity
 	{
-		public string Name { get; protected set; }
+        public string Name { get; protected set; }
 		public string Description { get; protected set; }
 		public DateTime? Deadline { get; protected set; }
 		public int Semester { get; protected set; }
+
+        protected Assignment() { }
 
         public Assignment(string name, string description, int semester, DateTime deadline)
         {

@@ -18,6 +18,7 @@ using System;
 using System.Linq;
 using StudentOrganizer.Infrastructure.Repositories;
 using StudentOrganizer.Core.Repositories;
+using StudentOrganizer.Infrastructure.Mongo;
 
 namespace StudentOrganizer.Api
 {
@@ -76,6 +77,8 @@ namespace StudentOrganizer.Api
 			builder.RegisterType<JwtHandler>().As<IJwtHandler>().SingleInstance();
 			builder.RegisterType<UserService>().As<IUserService>().InstancePerLifetimeScope();
 			builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope();
+			builder.RegisterType<AssignmentService>().As<IAssignmentService>().InstancePerLifetimeScope();
+			builder.RegisterType<MongoAssignmentRepository>().As<IAssignmentRepository>().SingleInstance();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -91,7 +94,7 @@ namespace StudentOrganizer.Api
 			app.UseRouting();
 
 			app.UseAuthorization();
-
+			MongoConfiguration.Initialize();
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllers();

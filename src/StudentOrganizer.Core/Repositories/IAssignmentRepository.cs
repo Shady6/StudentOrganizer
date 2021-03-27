@@ -13,6 +13,6 @@ namespace StudentOrganizer.Core.Repositories
         Task<IEnumerable<Assignment>> BrowseAsync(string name = "");
         Task<Assignment> GetAsync(Guid id);
         Task DeleteAsync(Guid id);
-        Task UpdateAsync();
+        Task UpdateAsync(Assignment assignment);
     }
 }
