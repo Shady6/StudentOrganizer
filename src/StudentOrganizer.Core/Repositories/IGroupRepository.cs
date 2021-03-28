@@ -9,11 +9,10 @@ namespace StudentOrganizer.Core.Repositories
 {
     public interface IGroupRepository
     {
-        Task AddAsync(Group group);
-        Task<IEnumerable<Group>> BrowseAsync(string name = "");
+        Task AddAsync(Group group);        
         Task<Group> GetAsync(Guid id);
         Task<Group> GetAsync(string name);
         Task DeleteAsync(Guid id);
-        Task UpdateAsync();
+        Task UpdateAsync(Group group);
     }
 }

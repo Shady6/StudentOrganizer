@@ -2,7 +2,7 @@
 
 namespace StudentOrganizer.Core.Models
 {
-	public abstract class Entity
+	public class Entity
 	{
 		public Guid Id { get; protected set; }
 		public DateTime CreatedAt { get; protected set; }
@@ -11,8 +11,14 @@ namespace StudentOrganizer.Core.Models
 		{
 			Id = Guid.NewGuid();
 			CreatedAt = DateTime.UtcNow;
+		}				
+
+		public T ConvertToIdOnly<T>() where T: Entity, new()
+		{
+			return new T
+			{
+				Id = Id
+			};
 		}
 	}
-
-
 }

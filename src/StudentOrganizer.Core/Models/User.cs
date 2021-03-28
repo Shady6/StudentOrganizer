@@ -5,26 +5,40 @@ namespace StudentOrganizer.Core.Models
 {
 	public class User : Entity
 	{
-		private ISet<Group> _groups = new HashSet<Group>(); 
+		private ISet<Group> _groups = new HashSet<Group>();
 		public string Email { get; protected set; }
 		public string PasswordHash { get; protected set; }
 		public string Salt { get; protected set; }
 		public string FirstName { get; protected set; }
 		public string LastName { get; protected set; }
 		public Role Role { get; protected set; }
-		public IEnumerable<Group> Groups => _groups;		
 
-        public User(string email, string password, string salt, string firstName, string lastName)
-        {
+		public IEnumerable<Group> Groups
+		{
+			get => _groups;
+			protected set { _groups = new HashSet<Group>(value); }
+		}
+
+		public User(string email, string password, string salt, string firstName, string lastName)
+		{
 			SetMail(email);
 			SetPassword(password, salt);
 			SetFirstName(firstName);
 			SetLastName(lastName);
-        }
+		}
+
+		public User()
+		{
+		}
+
+		//public User ConvertToIdUser()
+		//{
+		//	return new User { Id = Id };
+		//}
 
 		public void SetMail(string email)
 		{
-            if (string.IsNullOrWhiteSpace(email))
+			if (string.IsNullOrWhiteSpace(email))
 			{
 				throw new Exception("Email cannot be empty.");
 			}
@@ -37,10 +51,10 @@ namespace StudentOrganizer.Core.Models
 			{
 				throw new Exception("Password hash cannot be empty.");
 			}
-            if (string.IsNullOrWhiteSpace(salt))
-            {
+			if (string.IsNullOrWhiteSpace(salt))
+			{
 				throw new Exception("Salt cannot be empty.");
-            }
+			}
 			PasswordHash = passwordHash;
 			Salt = salt;
 		}
@@ -63,6 +77,9 @@ namespace StudentOrganizer.Core.Models
 			LastName = lastName;
 		}
 
-		
+		public void AddGroup(Group group)
+		{
+			_groups.Add(group);
+		}
 	}
 }

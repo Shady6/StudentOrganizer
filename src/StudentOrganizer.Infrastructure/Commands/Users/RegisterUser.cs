@@ -3,7 +3,7 @@ using StudentOrganizer.Infrastructure.Dto;
 
 namespace StudentOrganizer.Infrastructure.Users.Commands
 {
-	public class RegisterUserCommand : IRequest
+	public class RegisterUser : IRequest
 	{
 		public RoleDto Role { get; set; }
 		public string Username { get; set; }

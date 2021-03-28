@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace StudentOrganizer.Infrastructure.Users.Handlers
 {
-	public class RegisterUserHandler : IRequestHandler<RegisterUserCommand>
+	public class RegisterUserHandler : IRequestHandler<RegisterUser>
 	{
 		private readonly IUserService _userService;
 
@@ -16,7 +16,7 @@ namespace StudentOrganizer.Infrastructure.Users.Handlers
 			_userService = userService;
 		}
 
-		public async Task<Unit> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
+		public async Task<Unit> Handle(RegisterUser command, CancellationToken cancellationToken)
 		{
 			await _userService.RegisterAsync(Guid.NewGuid(), command.Email, command.Username, command.Password,
 				command.FirstName, command.LastName, command.Role);

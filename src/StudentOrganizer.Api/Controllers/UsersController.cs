@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 
 namespace StudentOrganizer.Api.Controllers
 {
-	[Route("[controller]")]
-	[ApiController]
+	[Route("[controller]")]	
 	public class UsersController : ControllerBase
 	{
 		protected readonly IMediator _mediator;
@@ -22,16 +21,15 @@ namespace StudentOrganizer.Api.Controllers
 		}
 
 		[HttpPost("register")]
-		public async Task<ActionResult> Register([FromBody] RegisterUserCommand command)
+		public async Task<ActionResult> Register([FromBody] RegisterUser command)
 		{
 			await _mediator.Send(command);
-			return Created("/users", null);
+			return Ok();
 		}
 
 		[HttpPost("login")]
-		public async Task<ActionResult<JwtDto>> Login([FromBody] LoginUserCommand command)
-		{
-			command.Id = Guid.NewGuid();
+		public async Task<ActionResult<JwtDto>> Login([FromBody] LoginUser command)
+		{			
 			await _mediator.Send(command);
 			var jwt = _memoryCache.Get<JwtDto>(command.Id);
 			return Ok(jwt);

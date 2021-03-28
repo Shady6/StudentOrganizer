@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace StudentOrganizer.Infrastructure.Handlers.User
 {
-	public class LoginUserHandler : IRequestHandler<LoginUserCommand>
+	public class LoginUserHandler : IRequestHandler<LoginUser>
 	{
 		private readonly IUserService _userService;
 
@@ -15,7 +15,7 @@ namespace StudentOrganizer.Infrastructure.Handlers.User
 			_userService = userService;
 		}
 
-		public async Task<Unit> Handle(LoginUserCommand command, CancellationToken cancellationToken)
+		public async Task<Unit> Handle(LoginUser command, CancellationToken cancellationToken)
 		{
 			await _userService.LoginAsync(command.Id, command.Email, command.Password);
 			return Unit.Value;

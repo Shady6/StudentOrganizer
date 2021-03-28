@@ -26,7 +26,7 @@ namespace StudentOrganizer.Infrastructure.Repositories
 		}
 
 		public async Task AddAsync(User user)
-		{
+		{			
 			await Users.InsertOneAsync(user);
 		}		
 

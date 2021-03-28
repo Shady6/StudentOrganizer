@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace StudentOrganizer.Api.Controllers
 {
-	[Route("[controller]")]
-	[ApiController]
-	public class AssignmentsController : Controller
+	[Route("[controller]")]	
+	public class AssignmentsController : ApiControllerBase
 	{
 		private readonly IAssignmentService _assignmentService;
 
@@ -21,7 +20,7 @@ namespace StudentOrganizer.Api.Controllers
 		public async Task<IActionResult> Get(string name)
 		{
 			var assignments = await _assignmentService.BrowseAsync(name);
-			return Json(assignments);
+			return Ok(assignments);
 		}
 
 		[HttpPost]

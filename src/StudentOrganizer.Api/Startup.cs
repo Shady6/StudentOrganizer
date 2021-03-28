@@ -76,10 +76,12 @@ namespace StudentOrganizer.Api
 			//to do modules
 			builder.RegisterType<Encrypter>().As<IEncrypter>().SingleInstance();
 			builder.RegisterType<JwtHandler>().As<IJwtHandler>().SingleInstance();
-			builder.RegisterType<UserService>().As<IUserService>().InstancePerLifetimeScope();
+			builder.RegisterType<UserService>().As<IUserService>().InstancePerLifetimeScope();			
 			builder.RegisterType<MongoUserRepository>().As<IUserRepository>().InstancePerLifetimeScope();
 			builder.RegisterType<AssignmentService>().As<IAssignmentService>().InstancePerLifetimeScope();
 			builder.RegisterType<MongoAssignmentRepository>().As<IAssignmentRepository>().SingleInstance();
+			builder.RegisterType<GroupService>().As<IGroupService>().InstancePerLifetimeScope();
+			builder.RegisterType<MongoGroupRepository>().As<IGroupRepository>().SingleInstance();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
