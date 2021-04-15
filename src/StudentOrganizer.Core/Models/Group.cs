@@ -42,11 +42,6 @@ namespace StudentOrganizer.Core.Models
 		{
 		}
 
-		//public Group ConvertToIdGroup()
-		//{
-		//	return new Group { Id = Id };
-		//}
-
 		public void SetName(string name)
 		{
 			if (string.IsNullOrWhiteSpace(name))

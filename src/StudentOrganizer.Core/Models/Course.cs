@@ -1,6 +1,6 @@
-﻿using NodaTime;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using NodaTime;
 
 namespace StudentOrganizer.Core.Models
 {
@@ -16,9 +16,9 @@ namespace StudentOrganizer.Core.Models
 		public int Semester { get; protected set; }
 		public IEnumerable<Assignment> Assignments => _assignments;
 
-        public Course(string name, string lecturer, Location location, IsoDayOfWeek day, 
+		public Course(string name, string lecturer, Location location, IsoDayOfWeek day,
 			LocalTime startTime, LocalTime endTime, int semester)
-        {
+		{
 			SetName(name);
 			SetLecturer(lecturer);
 			Location = location;
@@ -26,16 +26,20 @@ namespace StudentOrganizer.Core.Models
 			StartTime = startTime;
 			EndTime = endTime;
 			SetSemester(semester);
-        }
+		}
+
+		public Course()
+		{
+		}
 
 		public void SetName(string name)
-        {
-            if (string.IsNullOrWhiteSpace(name))
-            {
+		{
+			if (string.IsNullOrWhiteSpace(name))
+			{
 				throw new Exception("Name can not be empty.");
-            }
+			}
 			Name = name;
-        }
+		}
 
 		public void SetLecturer(string lecturer)
 		{

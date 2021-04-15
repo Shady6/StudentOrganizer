@@ -6,6 +6,7 @@ namespace StudentOrganizer.Core.Models
 	public class User : Entity
 	{
 		private ISet<Group> _groups = new HashSet<Group>();
+		private ISet<Group> _administratedGroups = new HashSet<Group>();
 		public string Email { get; protected set; }
 		public string PasswordHash { get; protected set; }
 		public string Salt { get; protected set; }
@@ -19,6 +20,12 @@ namespace StudentOrganizer.Core.Models
 			protected set { _groups = new HashSet<Group>(value); }
 		}
 
+		public IEnumerable<Group> AdministratedGroups
+		{
+			get => _administratedGroups;
+			protected set { _administratedGroups = new HashSet<Group>(value); }
+		}
+
 		public User(string email, string password, string salt, string firstName, string lastName)
 		{
 			SetMail(email);
@@ -30,11 +37,6 @@ namespace StudentOrganizer.Core.Models
 		public User()
 		{
 		}
-
-		//public User ConvertToIdUser()
-		//{
-		//	return new User { Id = Id };
-		//}
 
 		public void SetMail(string email)
 		{
