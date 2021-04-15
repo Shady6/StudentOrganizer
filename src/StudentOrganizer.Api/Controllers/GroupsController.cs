@@ -19,11 +19,11 @@ namespace StudentOrganizer.Api.Controllers
 			_groupService = groupService;
 		}
 
-		[HttpGet]
-		[AllowAnonymous]
-		public void GetAllGroups()
-		{
-		}
+		//[HttpGet]
+		//[AllowAnonymous]
+		//public void GetAllGroups()
+		//{
+		//}
 
 		[HttpPost]
 		public async Task<ActionResult> CreateGroup([FromBody] CreateGroup command)
@@ -33,19 +33,19 @@ namespace StudentOrganizer.Api.Controllers
 			return CreatedAtAction("GetGroup", new { Id = command.Id });
 		}
 
-		[HttpGet]
-		public void GetGroup()
-		{
-		}
+		//[HttpGet]
+		//public void GetGroup()
+		//{
+		//}
 
-		[HttpPut]
-		public void UpdateGroupName()
-		{
-		}
+		//[HttpPut]
+		//public void UpdateGroupName()
+		//{
+		//}
 
-		[HttpDelete]
-		public void DeleteGroup()
-		{
-		}
+		//[HttpDelete]
+		//public void DeleteGroup()
+		//{
+		//}
 	}
 }
