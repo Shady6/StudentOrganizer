@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using StudentOrganizer.Core.Models;
 using StudentOrganizer.Core.Repositories;
@@ -12,9 +13,20 @@ namespace StudentOrganizer.Infrastructure.Repositories.EfCore
 		{
 		}
 
-		public async Task<Group> GetAsync(string name)
+		public async override Task AddAsync(Group entity)
 		{
+			await _dbContext.AddAsync(entity);							
+			await _dbContext.SaveChangesAsync();
+		}
+
+		public async Task<Group> GetAsync(string name)
+		{						
 			return await _dbContext.Group.FirstOrDefaultAsync(g => g.Name == name);
+		}
+
+		public IQueryable<Group> GetAll()
+		{
+			return _dbContext.Group;
 		}
 	}
 }

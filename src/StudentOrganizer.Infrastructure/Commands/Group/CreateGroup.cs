@@ -8,6 +8,6 @@ namespace StudentOrganizer.Infrastructure.Commands.Group
 		public string Name { get; set; }
 
 		[JsonIgnore]
-		public Guid AuthorId { get; set; }
+		public Guid UserId { get; set; }
 	}
 }

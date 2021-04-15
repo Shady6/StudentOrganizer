@@ -19,7 +19,7 @@ namespace StudentOrganizer.Infrastructure.Repositories.EfCore
 
 		public virtual async Task AddAsync(T entity)
 		{
-			await _dbContext.Set<T>().AddAsync(entity);
+			await _dbContext.Set<T>().AddAsync(entity);			
 			await _dbContext.SaveChangesAsync();
 		}
 
@@ -38,7 +38,7 @@ namespace StudentOrganizer.Infrastructure.Repositories.EfCore
 		public virtual async Task<T> GetAsync(Guid id)
 		{
 			return await _dbContext
-				.Set<T>()
+				.Set<T>()				
 				.FindAsync(id);
 		}
 

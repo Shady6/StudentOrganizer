@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using StudentOrganizer.Infrastructure.Contexts;
@@ -9,9 +10,10 @@ using StudentOrganizer.Infrastructure.Contexts;
 namespace StudentOrganizer.Infrastructure.Migrations
 {
     [DbContext(typeof(EfCoreDbContext))]
-    partial class EfCoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210415153157_AddUsersToTeams")]
+    partial class AddUsersToTeams
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -66,25 +68,15 @@ namespace StudentOrganizer.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("GroupId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
                     b.Property<int>("Semester")
                         .HasColumnType("integer");
 
-                    b.Property<Guid?>("TeamId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CourseId");
-
-                    b.HasIndex("GroupId");
-
-                    b.HasIndex("TeamId");
 
                     b.ToTable("Assignment");
                 });
@@ -273,19 +265,9 @@ namespace StudentOrganizer.Infrastructure.Migrations
 
             modelBuilder.Entity("StudentOrganizer.Core.Models.Assignment", b =>
                 {
-                    b.HasOne("StudentOrganizer.Core.Models.Course", "Course")
-                        .WithMany()
+                    b.HasOne("StudentOrganizer.Core.Models.Course", null)
+                        .WithMany("Assignments")
                         .HasForeignKey("CourseId");
-
-                    b.HasOne("StudentOrganizer.Core.Models.Group", null)
-                        .WithMany("Assignmets")
-                        .HasForeignKey("GroupId");
-
-                    b.HasOne("StudentOrganizer.Core.Models.Team", null)
-                        .WithMany("Assignmets")
-                        .HasForeignKey("TeamId");
-
-                    b.Navigation("Course");
                 });
 
             modelBuilder.Entity("StudentOrganizer.Core.Models.Course", b =>
@@ -380,10 +362,13 @@ namespace StudentOrganizer.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("StudentOrganizer.Core.Models.Course", b =>
+                {
+                    b.Navigation("Assignments");
+                });
+
             modelBuilder.Entity("StudentOrganizer.Core.Models.Group", b =>
                 {
-                    b.Navigation("Assignmets");
-
                     b.Navigation("Course");
 
                     b.Navigation("Schedules");
@@ -394,11 +379,6 @@ namespace StudentOrganizer.Infrastructure.Migrations
             modelBuilder.Entity("StudentOrganizer.Core.Models.Schedule", b =>
                 {
                     b.Navigation("Courses");
-                });
-
-            modelBuilder.Entity("StudentOrganizer.Core.Models.Team", b =>
-                {
-                    b.Navigation("Assignmets");
                 });
 #pragma warning restore 612, 618
         }

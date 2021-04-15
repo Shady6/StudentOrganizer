@@ -1,7 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudentOrganizer.Infrastructure.Commands.Group;
+using StudentOrganizer.Infrastructure.Dto;
 using StudentOrganizer.Infrastructure.Extentions;
 using StudentOrganizer.Infrastructure.IServices;
 
@@ -21,35 +24,36 @@ namespace StudentOrganizer.Api.Controllers
 		[HttpPost]
 		public async Task<ActionResult> CreateGroup([FromBody] CreateGroup command)
 		{
-			command.AuthorId = User.GetUserId();
+			command.UserId = User.GetUserId();
 			await _groupService.CreateAsync(command);
 			return Ok(new { Id = command.Id });
 			//return CreatedAtAction("GetGroup", new { Id = command.Id });
 		}
 
-		[HttpGet("attented/{groupId}")]
-		public async Task GetMyGroup([FromRoute]GetMyGroup command)
+		[HttpGet("attended/{groupId}")]
+		public async Task<List<GroupDto>> GetMyGroup([FromRoute]GetMyGroup command)
 		{
 			command.UserId = User.GetUserId();
-			return Ok(await _groupService.GetMyGroup(command));
+			throw new NotImplementedException();
+			//return Ok(await _groupService.GetMyGroup(command));
 		}
 
-		[HttpGet("attented")]
-		public async Task GetMyGroups()
+		[HttpGet("attended")]
+		public ActionResult<List<SmallGroupDto>> GetMyGroups()
 		{
 			var command = new GetMyGroups
 			{
 				UserId = User.GetUserId()
-			};
-			return Ok(await _groupService.GetMyGroups(command));
+			};			
+			return Ok(_groupService.GetMyGroups(command));
 
 		}
 
 		[HttpGet()]
 		[AllowAnonymous]
-		public async Task GetAllGroups()
+		public ActionResult<List<PublicGroupDto>> GetAllGroups()
 		{
-			return Ok(await _groupService.GetAllGroups());
+			return Ok(_groupService.GetAllGroups());
 		}
 	}
 }

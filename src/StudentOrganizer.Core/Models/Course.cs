@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using NodaTime;
 
 namespace StudentOrganizer.Core.Models
 {
 	public class Course : Entity
 	{
-		private ISet<Assignment> _assignments = new HashSet<Assignment>();
 		public string Name { get; protected set; }
 		public string Lecturer { get; protected set; }
 		public Location Location { get; protected set; }
@@ -14,7 +12,6 @@ namespace StudentOrganizer.Core.Models
 		public LocalTime StartTime { get; protected set; }
 		public LocalTime EndTime { get; protected set; }
 		public int Semester { get; protected set; }
-		public IEnumerable<Assignment> Assignments => _assignments;
 
 		public Course(string name, string lecturer, Location location, IsoDayOfWeek day,
 			LocalTime startTime, LocalTime endTime, int semester)

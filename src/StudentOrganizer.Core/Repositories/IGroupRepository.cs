@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using StudentOrganizer.Core.Models;
 
@@ -14,6 +15,7 @@ namespace StudentOrganizer.Core.Repositories
 
 		Task DeleteAsync(Guid id);
 
-		Task UpdateAsync(Group group);		
+		Task UpdateAsync(Group group);
+		IQueryable<Group> GetAll();
 	}
 }

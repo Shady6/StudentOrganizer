@@ -49,6 +49,10 @@ namespace StudentOrganizer.Infrastructure.Contexts
 				.WithOne()
 				.HasForeignKey<Team>("ScheduleId");
 
+			modelBuilder.Entity<Team>()
+				.HasMany(t => t.Students)
+				.WithMany("Teams");			
+
 			modelBuilder.Entity<Course>()
 				.OwnsOne(c => c.Location)
 				.OwnsOne(l => l.Address);
@@ -58,7 +62,7 @@ namespace StudentOrganizer.Infrastructure.Contexts
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			optionsBuilder.LogTo(Console.WriteLine);
+			optionsBuilder.LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information);
 			optionsBuilder.EnableDetailedErrors();
 			optionsBuilder.EnableSensitiveDataLogging();
 			base.OnConfiguring(optionsBuilder);

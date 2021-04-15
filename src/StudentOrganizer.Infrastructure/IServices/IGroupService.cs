@@ -1,5 +1,7 @@
 ﻿using StudentOrganizer.Infrastructure.Commands.Group;
+using StudentOrganizer.Infrastructure.Dto;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace StudentOrganizer.Infrastructure.IServices
@@ -7,5 +9,7 @@ namespace StudentOrganizer.Infrastructure.IServices
 	public interface IGroupService
 	{
 		Task CreateAsync(CreateGroup command);
+		List<PublicGroupDto> GetAllGroups();
+		List<SmallGroupDto> GetMyGroups(GetMyGroups command);
 	}
 }

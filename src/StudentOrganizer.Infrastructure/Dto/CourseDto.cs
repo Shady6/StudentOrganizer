@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using NodaTime;
+﻿using NodaTime;
 
 namespace StudentOrganizer.Infrastructure.Dto
 {
 	public class CourseDto
 	{
-		public List<AssignmentDto> Assignments { get; set; }
 		public string Name { get; set; }
 		public string Lecturer { get; set; }
 		public LocationDto Location { get; set; }

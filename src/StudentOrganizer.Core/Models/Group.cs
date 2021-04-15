@@ -20,9 +20,10 @@ namespace StudentOrganizer.Core.Models
 			get => _students;
 			protected set { _students = new HashSet<User>(value); }
 		}
-		public List<Schedule> Schedules { get; protected set; }
-		public List<Team> Teams { get; protected set; }
-		public List<Course> Course { get; protected set; }
+		public IList<Schedule> Schedules { get; protected set; }
+		public IList<Team> Teams { get; protected set; }
+		public IList<Course> Course { get; protected set; }
+		public IList<Assignment> Assignmets { get; protected set; }
 
 		public Group(Guid id, string name)
 		{
@@ -58,6 +59,11 @@ namespace StudentOrganizer.Core.Models
 		public void AddAdministrator(User user)
 		{
 			_administrators.Add(user);
+		}
+
+		public void AddStudent(User user)
+		{
+			_students.Add(user);
 		}
 	}
 }

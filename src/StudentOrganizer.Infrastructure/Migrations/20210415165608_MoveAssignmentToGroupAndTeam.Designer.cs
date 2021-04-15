@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using StudentOrganizer.Infrastructure.Contexts;
@@ -9,9 +10,10 @@ using StudentOrganizer.Infrastructure.Contexts;
 namespace StudentOrganizer.Infrastructure.Migrations
 {
     [DbContext(typeof(EfCoreDbContext))]
-    partial class EfCoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210415165608_MoveAssignmentToGroupAndTeam")]
+    partial class MoveAssignmentToGroupAndTeam
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,9 +56,6 @@ namespace StudentOrganizer.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("CourseId")
-                        .HasColumnType("uuid");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
 
@@ -79,8 +78,6 @@ namespace StudentOrganizer.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CourseId");
 
                     b.HasIndex("GroupId");
 
@@ -273,10 +270,6 @@ namespace StudentOrganizer.Infrastructure.Migrations
 
             modelBuilder.Entity("StudentOrganizer.Core.Models.Assignment", b =>
                 {
-                    b.HasOne("StudentOrganizer.Core.Models.Course", "Course")
-                        .WithMany()
-                        .HasForeignKey("CourseId");
-
                     b.HasOne("StudentOrganizer.Core.Models.Group", null)
                         .WithMany("Assignmets")
                         .HasForeignKey("GroupId");
@@ -284,8 +277,6 @@ namespace StudentOrganizer.Infrastructure.Migrations
                     b.HasOne("StudentOrganizer.Core.Models.Team", null)
                         .WithMany("Assignmets")
                         .HasForeignKey("TeamId");
-
-                    b.Navigation("Course");
                 });
 
             modelBuilder.Entity("StudentOrganizer.Core.Models.Course", b =>

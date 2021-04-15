@@ -49,5 +49,10 @@ namespace StudentOrganizer.Infrastructure.Mongo.Repositories
 		{
 			await Groups.ReplaceOneAsync(u => u.Id == group.Id, group);
 		}
+
+		public IQueryable<Group> GetAll()
+		{
+			throw new NotImplementedException();
+		}
 	}
 }
