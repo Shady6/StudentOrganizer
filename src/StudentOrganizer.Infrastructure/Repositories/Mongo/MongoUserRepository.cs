@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 using StudentOrganizer.Infrastructure.Settings;
 using MongoDB.Driver.Linq;
 
-namespace StudentOrganizer.Infrastructure.Repositories
+namespace StudentOrganizer.Infrastructure.Mongo.Repositories
 {
 	public class MongoUserRepository : IUserRepository
 	{
@@ -48,6 +48,6 @@ namespace StudentOrganizer.Infrastructure.Repositories
 		public async Task UpdateAsync(User user)
 		{
 			await Users.ReplaceOneAsync(u => u.Id == user.Id, user);
-		}
+		}		
 	}
 }

@@ -1,13 +1,12 @@
-﻿using StudentOrganizer.Core.Models;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Threading.Tasks;
+using StudentOrganizer.Core.Models;
 
 namespace StudentOrganizer.Core.Repositories
 {
 	public interface IUserRepository : IRepository
 	{
-		Task AddAsync(User user);		
+		Task AddAsync(User user);
 
 		Task<User> GetAsync(Guid id);
 

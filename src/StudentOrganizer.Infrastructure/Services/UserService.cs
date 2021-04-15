@@ -25,10 +25,8 @@ namespace StudentOrganizer.Infrastructure.Services
 
 		public async Task RegisterAsync(Guid id, string email, string username, string password,
 			string firstName, string lastName, RoleDto role)
-		{
-			if (await _userRepository.GetAsync(id) != null)
-				throw new Exception($"User with id {id} already exists.");
-			else if (await _userRepository.GetAsync(email) != null)
+		{			
+			if (await _userRepository.GetAsync(email) != null)
 				throw new Exception($"User with email {email} already exists.");
 
 			string salt = _encrypter.GetSalt(password);

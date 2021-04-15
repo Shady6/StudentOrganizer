@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StudentOrganizer.Infrastructure.Repositories
+namespace StudentOrganizer.Infrastructure.Mongo.Repositories
 {
     public class MongoAssignmentRepository : IAssignmentRepository
     {

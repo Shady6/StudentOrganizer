@@ -38,6 +38,7 @@ namespace StudentOrganizer.Api
 		public void ConfigureContainer(ContainerBuilder builder)
 		{
 			builder.AddServices();
+			builder.AddRepositories(isMongo: false);
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

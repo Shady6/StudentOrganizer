@@ -8,7 +8,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace StudentOrganizer.Infrastructure.Repositories
+namespace StudentOrganizer.Infrastructure.Mongo.Repositories
 {
 	public class MongoGroupRepository : IGroupRepository
 	{
