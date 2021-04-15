@@ -34,6 +34,11 @@ namespace StudentOrganizer.Core.Models
 			SetLastName(lastName);
 		}
 
+		public User(Guid userId)
+		{
+			Id = userId;
+		}
+
 		public User()
 		{
 		}
