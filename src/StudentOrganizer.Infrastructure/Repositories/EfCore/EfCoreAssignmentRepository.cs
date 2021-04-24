@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using StudentOrganizer.Core.Models;
 using StudentOrganizer.Core.Repositories;
@@ -15,6 +16,16 @@ namespace StudentOrganizer.Infrastructure.Repositories.EfCore
 		public Task<IEnumerable<Assignment>> BrowseAsync(string name = "")
 		{
 			throw new System.NotImplementedException();
+		}
+
+		public Task DeleteAsync(Guid id)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task UpdateAsync(Assignment assignment)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

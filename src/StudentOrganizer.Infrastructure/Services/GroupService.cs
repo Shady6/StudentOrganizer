@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using StudentOrganizer.Core.Models;
 using StudentOrganizer.Core.Repositories;
-using StudentOrganizer.Infrastructure.Commands.Group;
+using StudentOrganizer.Infrastructure.Commands.Groups;
 using StudentOrganizer.Infrastructure.Dto;
 using StudentOrganizer.Infrastructure.IServices;
 
@@ -37,18 +37,48 @@ namespace StudentOrganizer.Infrastructure.Services
 			group.AddStudent(author);
 
 			await _groupRepository.AddAsync(group);
+			await _groupRepository.SaveChangesAsync();
 		}
 
-		public List<GroupDto> GetMyGroup(GetMyGroup command)
+		public async Task<GroupDto> GetMyGroup(GetMyGroup command)
 		{
-			throw new NotImplementedException();
+			var group = await _groupRepository.GetWholeGroupAsync(command.GroupId);
+			if (group == null)
+				throw new Exception($"Group doesn't exist");
+			else if (!group.Students.Any(s => s.Id == command.UserId) ||
+				!group.Administrators.Any(a => a.Id == command.UserId))
+				throw new Exception("You don't belong to this group");
+
+			return new GroupDto
+			{
+				Administrators = _mapper.Map<List<DisplayUserDto>>(group.Administrators),
+				Courses = _mapper.Map<List<CourseDto>>(group.Courses),
+				Name = group.Name,
+				Assignments = _mapper.Map<List<AssignmentDto>>(group.Assignmets),
+				Schedules = _mapper.Map<List<ScheduleDto>>(group.Schedules),
+				Teams = _mapper.Map<List<TeamDto>>(group.Teams),
+				Students = group.Students.Select(s => new StudentDto
+				{
+					FirstName = s.FirstName,
+					LastName = s.LastName,
+					Teams = group.Teams.Where(t => t.Students.Any(st => st.Id == s.Id))
+					.Select(t => t.Name).ToList()
+				}).ToList()
+			};			
 		}
 
-		public List<PublicGroupDto> GetAllGroups()
+		public List<PublicGroupDto> GetAllGroups(GetPublicGroups command)
 		{
 			var groups = _groupRepository.GetAll();
-			var groupsDto = _mapper.ProjectTo<PublicGroupDto>(groups).ToList();
-			return groupsDto;
+			var groupsDto = groups.Select(g => new PublicGroupDto
+			{
+				Id = g.Id,
+				Name = g.Name,
+				UserBelongsToGroup = g.Students.Any(s => s.Id == command.UserId) ||
+				g.Administrators.Any(a => a.Id == command.UserId)
+			});	
+
+			return groupsDto.ToList();
 		}
 
 		public List<SmallGroupDto> GetMyGroups(GetMyGroups command)
@@ -58,6 +88,7 @@ namespace StudentOrganizer.Infrastructure.Services
 
 			var groupsDto = groups.Select(g => new SmallGroupDto
 			{
+				Id = g.Id,
 				Name = g.Name,
 				StudentsCount = g.Students.Count(),
 				AssignmentsInProgress = g.Teams

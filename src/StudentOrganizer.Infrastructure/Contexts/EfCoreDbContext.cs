@@ -15,18 +15,18 @@ namespace StudentOrganizer.Infrastructure.Contexts
 		{
 			//modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
+			modelBuilder.Entity<ScheduledCourse>().Property(e => e.Id).ValueGeneratedNever();
 			modelBuilder.Entity<Course>().Property(e => e.Id).ValueGeneratedNever();
-			modelBuilder.Entity<Group>().Property(e => e.Id).ValueGeneratedNever();
-			modelBuilder.Entity<Course>().Property(e => e.Id).ValueGeneratedNever();
+			modelBuilder.Entity<Group>().Property(e => e.Id).ValueGeneratedNever();			
 			modelBuilder.Entity<Schedule>().Property(e => e.Id).ValueGeneratedNever();
 			modelBuilder.Entity<Assignment>().Property(e => e.Id).ValueGeneratedNever();
 			modelBuilder.Entity<Team>().Property(e => e.Id).ValueGeneratedNever();
 
-			modelBuilder.Entity<Course>().Property(c => c.StartTime).HasConversion(
+			modelBuilder.Entity<ScheduledCourse>().Property(c => c.StartTime).HasConversion(
 				t => new DateTime(0, 0, 0, t.Hour, t.Minute, 0),
 				d => new NodaTime.LocalTime(d.Hour, d.Minute));
 
-			modelBuilder.Entity<Course>().Property(c => c.EndTime).HasConversion(
+			modelBuilder.Entity<ScheduledCourse>().Property(c => c.EndTime).HasConversion(
 				t => new DateTime(0, 0, 0, t.Hour, t.Minute, 0),
 				d => new NodaTime.LocalTime(d.Hour, d.Minute));			
 

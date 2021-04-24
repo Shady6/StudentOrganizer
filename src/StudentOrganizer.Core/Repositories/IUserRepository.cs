@@ -12,8 +12,11 @@ namespace StudentOrganizer.Core.Repositories
 
 		Task<User> GetAsync(string mail);
 
-		Task DeleteAsync(Guid id);
+		void Delete(Guid id);
 
-		Task UpdateAsync(User user);		
+		void Update(User user);
+
+		Task SaveChangesAsync();
+		Task<User> GetWithAdministratedGroupsAsync(Guid userId);
 	}
 }

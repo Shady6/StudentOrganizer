@@ -1,4 +1,4 @@
-﻿using StudentOrganizer.Infrastructure.Commands.Group;
+﻿using StudentOrganizer.Infrastructure.Commands.Groups;
 using StudentOrganizer.Infrastructure.Dto;
 using System;
 using System.Collections.Generic;
@@ -8,8 +8,9 @@ namespace StudentOrganizer.Infrastructure.IServices
 {
 	public interface IGroupService
 	{
-		Task CreateAsync(CreateGroup command);
-		List<PublicGroupDto> GetAllGroups();
+		Task CreateAsync(CreateGroup command);		
+		List<PublicGroupDto> GetAllGroups(GetPublicGroups command);
+		Task<GroupDto> GetMyGroup(GetMyGroup command);
 		List<SmallGroupDto> GetMyGroups(GetMyGroups command);
 	}
 }

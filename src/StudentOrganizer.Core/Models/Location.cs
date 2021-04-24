@@ -41,5 +41,14 @@ namespace StudentOrganizer.Core.Models
 			}
 			Address = address;
 		}
+
+		public override bool Equals(object obj)
+		{
+			var other = obj as Location;
+
+			return Link == other.Link &&
+				Room == other.Room &&
+				Address.Equals(other.Address);
+		}
 	}
 }

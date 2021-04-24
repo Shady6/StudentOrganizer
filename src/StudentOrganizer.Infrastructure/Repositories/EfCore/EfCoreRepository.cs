@@ -19,20 +19,17 @@ namespace StudentOrganizer.Infrastructure.Repositories.EfCore
 
 		public virtual async Task AddAsync(T entity)
 		{
-			await _dbContext.Set<T>().AddAsync(entity);			
-			await _dbContext.SaveChangesAsync();
+			await _dbContext.Set<T>().AddAsync(entity);						
 		}
 
 		public async virtual Task AddRangeAsync(T[] entities)
 		{
-			await _dbContext.Set<T>().AddRangeAsync(entities);
-			await _dbContext.SaveChangesAsync();			
+			await _dbContext.Set<T>().AddRangeAsync(entities);			
 		}
 
-		public async virtual Task DeleteAsync(Guid id)
+		public virtual void Delete(Guid id)
 		{
-			_dbContext.Remove(_dbContext.Set<T>().Where(e => e.Id == id).FirstOrDefault());
-			await _dbContext.SaveChangesAsync();
+			_dbContext.Remove(_dbContext.Set<T>().Where(e => e.Id == id).FirstOrDefault());			
 		}
 
 		public virtual async Task<T> GetAsync(Guid id)
@@ -64,9 +61,13 @@ namespace StudentOrganizer.Infrastructure.Repositories.EfCore
 				.ToListAsync();
 		}
 
-		public async virtual Task UpdateAsync(T entity)
+		public virtual void Update(T entity)
 		{
-			_dbContext.Entry(entity).CurrentValues.SetValues(entity);
+			_dbContext.Entry(entity).CurrentValues.SetValues(entity);			
+		}
+
+		public async Task SaveChangesAsync()
+		{
 			await _dbContext.SaveChangesAsync();
 		}
 	}

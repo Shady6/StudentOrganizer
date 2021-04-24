@@ -13,9 +13,16 @@ namespace StudentOrganizer.Core.Repositories
 
 		Task<Group> GetAsync(string name);
 
-		Task DeleteAsync(Guid id);
+		void Delete(Guid id);
 
-		Task UpdateAsync(Group group);
+		void Update(Group group);
+
 		IQueryable<Group> GetAll();
+
+		Task<Group> GetWholeGroupAsync(Guid id);
+
+		Task SaveChangesAsync();
+		Task<Group> GetWithCoursesAsync(Guid id);
+		Task<Group> GetWithTeamsAsync(Guid id);
 	}
 }

@@ -21,6 +21,11 @@ namespace StudentOrganizer.Core.Models
 			Schedule = schedule;
 		}
 
+		public Team(string name)
+		{
+			SetName(name);			
+		}
+
 		public Team()
 		{
 		}

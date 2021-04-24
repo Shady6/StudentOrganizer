@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.Json.Serialization;
 
-namespace StudentOrganizer.Infrastructure.Commands.Group
+namespace StudentOrganizer.Infrastructure.Commands.Groups
 {
 	public class CreateGroup : CreateCommandBase
 	{

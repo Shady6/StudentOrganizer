@@ -4,7 +4,7 @@ namespace StudentOrganizer.Infrastructure.Dto
 {
 	public class ScheduleDto
 	{
-		public List<CourseDto> Courses { get; set; }
+		public List<ScheduledCourseDto> Courses { get; set; }
 		public int Semester { get; set; }
 	}
 }

@@ -33,7 +33,8 @@ namespace StudentOrganizer.Infrastructure.Services
 			string passwordHash = _encrypter.GetHash(password, salt);
 
 			var user = new User(email, passwordHash, salt, firstName, lastName);
-			await _userRepository.AddAsync(user);			
+			await _userRepository.AddAsync(user);
+			await _userRepository.SaveChangesAsync();
 		}
 
 		public async Task LoginAsync(Guid id, string email, string password)

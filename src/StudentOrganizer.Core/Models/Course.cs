@@ -1,5 +1,4 @@
 ﻿using System;
-using NodaTime;
 
 namespace StudentOrganizer.Core.Models
 {
@@ -7,21 +6,14 @@ namespace StudentOrganizer.Core.Models
 	{
 		public string Name { get; protected set; }
 		public string Lecturer { get; protected set; }
-		public Location Location { get; protected set; }
-		public IsoDayOfWeek DayOfTheWeek { get; protected set; }
-		public LocalTime StartTime { get; protected set; }
-		public LocalTime EndTime { get; protected set; }
+		public Location Location { get; protected set; }		
 		public int Semester { get; protected set; }
 
-		public Course(string name, string lecturer, Location location, IsoDayOfWeek day,
-			LocalTime startTime, LocalTime endTime, int semester)
+		public Course(string name, string lecturer, Location location, int semester)
 		{
 			SetName(name);
 			SetLecturer(lecturer);
 			Location = location;
-			DayOfTheWeek = day;
-			StartTime = startTime;
-			EndTime = endTime;
 			SetSemester(semester);
 		}
 
@@ -54,6 +46,16 @@ namespace StudentOrganizer.Core.Models
 				throw new Exception("Semester can not be lower than zero.");
 			}
 			Semester = semester;
+		}
+
+		public override bool Equals(object obj)
+		{
+			var other = obj as Course;
+
+			return Name == other.Name&&
+				Lecturer == other.Lecturer &&
+				Semester == other.Semester &&
+				Location.Equals(other.Location);
 		}
 	}
 }

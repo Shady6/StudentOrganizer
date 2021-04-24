@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using StudentOrganizer.Core.Models;
 using StudentOrganizer.Core.Repositories;
@@ -16,6 +18,13 @@ namespace StudentOrganizer.Infrastructure.Repositories.EfCore
 		public async Task<User> GetAsync(string mail)
 		{
 			return await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == mail);
+		}
+
+		public async Task<User> GetWithAdministratedGroupsAsync(Guid userId)
+		{
+			return await _dbContext.Users.Where(u => u.Id == userId)
+				.Include(u => u.AdministratedGroups)
+				.FirstOrDefaultAsync();
 		}
 	}
 }

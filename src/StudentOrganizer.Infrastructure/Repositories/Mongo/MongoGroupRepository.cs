@@ -54,5 +54,35 @@ namespace StudentOrganizer.Infrastructure.Mongo.Repositories
 		{
 			throw new NotImplementedException();
 		}
+
+		public Task<Group> GetWholeGroupAsync(Guid id)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void Delete(Guid id)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void Update(Group group)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task SaveChangesAsync()
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<Group> GetWithCoursesAsync(Guid id)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<Group> GetWithTeamsAsync(Guid id)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

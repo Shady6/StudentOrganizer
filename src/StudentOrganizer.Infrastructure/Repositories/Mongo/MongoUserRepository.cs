@@ -48,6 +48,26 @@ namespace StudentOrganizer.Infrastructure.Mongo.Repositories
 		public async Task UpdateAsync(User user)
 		{
 			await Users.ReplaceOneAsync(u => u.Id == user.Id, user);
-		}		
+		}
+
+		public void Delete(Guid id)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void Update(User user)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task SaveChangesAsync()
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<User> GetWithAdministratedGroupsAsync(Guid userId)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

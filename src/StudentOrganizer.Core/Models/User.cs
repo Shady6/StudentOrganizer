@@ -12,7 +12,7 @@ namespace StudentOrganizer.Core.Models
 		public string Salt { get; protected set; }
 		public string FirstName { get; protected set; }
 		public string LastName { get; protected set; }
-		public Role Role { get; protected set; }
+		public Role Role { get; protected set; }		
 
 		public IEnumerable<Group> Groups
 		{
@@ -25,6 +25,8 @@ namespace StudentOrganizer.Core.Models
 			get => _administratedGroups;
 			protected set { _administratedGroups = new HashSet<Group>(value); }
 		}
+
+		private IEnumerable<Team> Teams { get; set; }
 
 		public User(string email, string password, string salt, string firstName, string lastName)
 		{
