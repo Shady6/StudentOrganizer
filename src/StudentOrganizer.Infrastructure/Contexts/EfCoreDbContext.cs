@@ -23,11 +23,11 @@ namespace StudentOrganizer.Infrastructure.Contexts
 			modelBuilder.Entity<Team>().Property(e => e.Id).ValueGeneratedNever();
 
 			modelBuilder.Entity<ScheduledCourse>().Property(c => c.StartTime).HasConversion(
-				t => new DateTime(0, 0, 0, t.Hour, t.Minute, 0),
+				t => new DateTime(2000, 1, 1, t.Hour, t.Minute, 0),
 				d => new NodaTime.LocalTime(d.Hour, d.Minute));
 
 			modelBuilder.Entity<ScheduledCourse>().Property(c => c.EndTime).HasConversion(
-				t => new DateTime(0, 0, 0, t.Hour, t.Minute, 0),
+				t => new DateTime(2000, 1, 1, t.Hour, t.Minute, 0),
 				d => new NodaTime.LocalTime(d.Hour, d.Minute));			
 
 			modelBuilder.Entity<Group>()
@@ -45,9 +45,10 @@ namespace StudentOrganizer.Infrastructure.Contexts
 				.OnDelete(DeleteBehavior.Cascade);
 
 			modelBuilder.Entity<Team>()
-				.HasOne(t => t.Schedule)
+				.HasMany(t => t.Schedules)
 				.WithOne()
-				.HasForeignKey<Team>("ScheduleId");
+				.HasForeignKey("TeamId")
+				.OnDelete(DeleteBehavior.Cascade);
 
 			modelBuilder.Entity<Team>()
 				.HasMany(t => t.Students)

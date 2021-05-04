@@ -43,10 +43,11 @@ namespace StudentOrganizer.Api.Controllers
 			return Ok();
 		}
 
-		[HttpPut()]
-		public async Task<ActionResult> UpdateCourse(Guid groupId, [FromBody] UpdateCourse command)
+		[HttpPut("{courseId}")]
+		public async Task<ActionResult> UpdateCourse(Guid groupId, Guid courseId, [FromBody] UpdateCourse command)
 		{
 			command.GroupId = groupId;
+			command.Course.Id = courseId;
 			command.UserId = User.GetUserId();
 			await _courseService.UpdateCourse(command);
 

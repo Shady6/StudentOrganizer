@@ -79,7 +79,9 @@ namespace StudentOrganizer.Core.Models
 			var foundCourse = Courses.FirstOrDefault(c => c.Id == course.Id);
 			if (foundCourse == null)
 				throw new Exception("The course you're trying to update doesn't exist.");
-			foundCourse = course;
+			else if (Courses.Any(c => c.Equals(course)))
+				throw new Exception("The course with provided values already exists.");
+			foundCourse.Update(course);
 		}
 
 		public void AddTeams(IEnumerable<Team> teams)

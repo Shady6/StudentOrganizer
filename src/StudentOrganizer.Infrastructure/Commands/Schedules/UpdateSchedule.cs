@@ -1,18 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using StudentOrganizer.Infrastructure.Dto;
 
-namespace StudentOrganizer.Infrastructure.Commands.Courses
+namespace StudentOrganizer.Infrastructure.Commands.Schedules
 {
-	public class AddCourses
+	public class UpdateSchedule
 	{
+		[JsonIgnore]
+		public string TeamName { get; set; }
+
 		[JsonIgnore]
 		public Guid UserId { get; set; }
 
 		[JsonIgnore]
 		public Guid GroupId { get; set; }
 
-		public List<AddCourseDto> Courses { get; set; }
+		public ScheduleDto Schedule { get; set; }
 	}
 }

@@ -49,7 +49,7 @@ namespace StudentOrganizer.Infrastructure.Services
 
 			var course = _mapper.Map<Course>(command.Course);			
 			group.UpdateCourse(course);
-
+			
 			await _groupRepository.SaveChangesAsync();
 		}
 	}

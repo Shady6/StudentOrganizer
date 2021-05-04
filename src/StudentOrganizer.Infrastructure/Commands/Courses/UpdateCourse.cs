@@ -12,6 +12,6 @@ namespace StudentOrganizer.Infrastructure.Commands.Courses
 		[JsonIgnore]
 		public Guid GroupId { get; set; }		
 
-		public CourseDto Course { get; set; }
+		public UpdateCourseDto Course { get; set; }
 	}
 }

@@ -56,7 +56,18 @@ namespace StudentOrganizer.Infrastructure.Services
 				Name = group.Name,
 				Assignments = _mapper.Map<List<AssignmentDto>>(group.Assignmets),
 				Schedules = _mapper.Map<List<ScheduleDto>>(group.Schedules),
-				Teams = _mapper.Map<List<TeamDto>>(group.Teams),
+				Teams = group.Teams.Select(t => 
+				new TeamDto
+				{
+					Assignments = _mapper.Map<List<AssignmentDto>>(t.Assignmets),
+					Name = t.Name,
+					Schedules = t.Schedules.Select(s => 
+					new ScheduleDto
+					{
+						Semester = s.Semester,
+						ScheduledCourses = _mapper.Map<List<ScheduledCourseDto>>(s.ScheduledCourses)
+					}).ToList()
+				}).ToList(),
 				Students = group.Students.Select(s => new StudentDto
 				{
 					FirstName = s.FirstName,

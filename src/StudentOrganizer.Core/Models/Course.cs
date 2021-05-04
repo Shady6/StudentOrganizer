@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Linq;
 
 namespace StudentOrganizer.Core.Models
 {
@@ -15,6 +16,11 @@ namespace StudentOrganizer.Core.Models
 			SetLecturer(lecturer);
 			Location = location;
 			SetSemester(semester);
+		}
+
+		public Course(Guid id)
+		{
+			Id = id;
 		}
 
 		public Course()
@@ -46,6 +52,14 @@ namespace StudentOrganizer.Core.Models
 				throw new Exception("Semester can not be lower than zero.");
 			}
 			Semester = semester;
+		}
+
+		public void Update(Course course)
+		{
+			SetName(course.Name);
+			SetLecturer(course.Lecturer);
+			Location = course.Location;
+			SetSemester(course.Semester);
 		}
 
 		public override bool Equals(object obj)

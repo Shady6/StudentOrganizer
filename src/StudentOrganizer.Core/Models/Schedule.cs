@@ -5,14 +5,25 @@ namespace StudentOrganizer.Core.Models
 {
 	public class Schedule : Entity
 	{
-		public ISet<ScheduledCourse> _scheduledCourses = new HashSet<ScheduledCourse>();
-		public IEnumerable<ScheduledCourse> ScheduledCourse => _scheduledCourses;
+		public IList<ScheduledCourse> ScheduledCourses { get; protected set; }
 		public int Semester { get; protected set; }
 
-        public Schedule(int semester)
+		public Schedule()
+		{
+
+		}
+
+        public Schedule(int semester, IList<ScheduledCourse> courses)
         {
 			Semester = semester;
+			ScheduledCourses = courses;
         }
+
+		public void Update(int semester, IList<ScheduledCourse> courses)
+		{
+			Semester = semester;
+			ScheduledCourses = courses;
+		}
 
 		public void SetSemester(int semester)
         {

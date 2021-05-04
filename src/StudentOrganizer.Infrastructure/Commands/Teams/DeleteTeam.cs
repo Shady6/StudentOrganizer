@@ -9,6 +9,7 @@ namespace StudentOrganizer.Infrastructure.Commands.Teams
 		public Guid UserId { get; set; }
 		[JsonIgnore]
 		public Guid GroupId { get; set; }
+		[JsonIgnore]
 		public string TeamName { get; set; }
 	}
 }
