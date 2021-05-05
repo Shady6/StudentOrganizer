@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -25,7 +25,7 @@ namespace StudentOrganizer.Api.Controllers
 		public async Task<ActionResult> CreateGroup([FromBody] CreateGroup command)
 		{
 			command.UserId = User.GetUserId();
-			await _groupService.CreateAsync(command);
+            await Mediator.Send(command);
 			return Ok(new { Id = command.Id });
 			//return CreatedAtAction("GetGroup", new { Id = command.Id });
 		}
