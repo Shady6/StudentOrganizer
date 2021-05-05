@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
+using StudentOrganizer.Api.Exceptions;
 using StudentOrganizer.Api.Extensions;
 using StudentOrganizer.Infrastructure.Mongo;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
@@ -52,8 +53,9 @@ namespace StudentOrganizer.Api
 			}
 
 			app.UseRouting();
+            app.UseMiddleware<ExceptionHandler>();
 
-			app.UseAuthentication();
+            app.UseAuthentication();
 			app.UseAuthorization();
 			MongoConfiguration.Initialize();
 			app.UseEndpoints(endpoints =>
