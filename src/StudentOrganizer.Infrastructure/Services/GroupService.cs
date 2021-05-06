@@ -16,13 +16,31 @@ namespace StudentOrganizer.Infrastructure.Services
 		private readonly IGroupRepository _groupRepository;
 		private readonly IUserRepository _userRepository;
 		private readonly IMapper _mapper;
+		private readonly IAdministratorService _administratorService;
 
-		public GroupService(IGroupRepository groupRepository, IMapper mapper, IUserRepository userRepository)
+
+        public GroupService(IGroupRepository groupRepository, IMapper mapper, IUserRepository userRepository, IAdministratorService administratorService)
+        {
+            _groupRepository = groupRepository;
+            _mapper = mapper;
+            _userRepository = userRepository;
+            _administratorService = administratorService;
+        }
+
+        public async Task AddUsersToGroup(AddUsersToGroup command)
 		{
-			_groupRepository = groupRepository;
-			_mapper = mapper;
-			_userRepository = userRepository;
-		}
+			await _administratorService.ValidateAdministrativePrivileges(command.UserId, command.GroupId);
+			var group = await _groupRepository.GetWithStudents(command.GroupId);			
+			var users = await _userRepository.GetUsersByEmails(command.Emails);
+
+            group.AddStudents(users);
+            await _groupRepository.SaveChangesAsync();
+
+			var usersNotExistingInDb = command.Emails.Where(e => !users.Select(u => u.Email).Contains(e));
+
+			if (usersNotExistingInDb.ToList().Count != 0)
+				throw new Exception($"Users with those emails don't exist {string.Join(", ", usersNotExistingInDb)}");
+        }
 
 		public async Task CreateAsync(CreateGroup command)
 		{
@@ -45,7 +63,7 @@ namespace StudentOrganizer.Infrastructure.Services
 			var group = await _groupRepository.GetWholeGroupAsync(command.GroupId);
 			if (group == null)
 				throw new Exception($"Group doesn't exist");
-			else if (!group.Students.Any(s => s.Id == command.UserId) ||
+			else if (!group.Students.Any(s => s.Id == command.UserId) &&
 				!group.Administrators.Any(a => a.Id == command.UserId))
 				throw new Exception("You don't belong to this group");
 
