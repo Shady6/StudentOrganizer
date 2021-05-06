@@ -1,4 +1,5 @@
 ﻿using System;
+using StudentOrganizer.Core.Common;
 
 namespace StudentOrganizer.Core.Models
 {
@@ -28,7 +29,7 @@ namespace StudentOrganizer.Core.Models
 		{
 			if (string.IsNullOrWhiteSpace(room))
 			{
-				throw new Exception("Room can not be empty.");
+				throw new AppException("Room can not be empty.", AppErrorCode.VALIDATION_ERROR);
 			}
 			Room = room;
 		}
@@ -37,7 +38,7 @@ namespace StudentOrganizer.Core.Models
 		{
 			if (address == null)
 			{
-				throw new Exception("Address can not be null.");
+				throw new AppException("Address can not be null.", AppErrorCode.VALIDATION_ERROR);
 			}
 			Address = address;
 		}

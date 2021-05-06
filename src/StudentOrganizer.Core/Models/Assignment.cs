@@ -1,4 +1,5 @@
 ﻿using System;
+using StudentOrganizer.Core.Common;
 
 namespace StudentOrganizer.Core.Models
 {
@@ -27,7 +28,7 @@ namespace StudentOrganizer.Core.Models
 		{
 			if (string.IsNullOrWhiteSpace(name))
 			{
-				throw new Exception("Name can not be empty.");
+				throw new AppException("Name can not be empty.", AppErrorCode.VALIDATION_ERROR);
 			}
 			Name = name;
 		}
@@ -36,7 +37,7 @@ namespace StudentOrganizer.Core.Models
 		{
 			if (string.IsNullOrWhiteSpace(description))
 			{
-				throw new Exception("Description can not be empty.");
+				throw new AppException("Description can not be empty.", AppErrorCode.VALIDATION_ERROR);
 			}
 			Description = description;
 		}
@@ -45,7 +46,7 @@ namespace StudentOrganizer.Core.Models
 		{
 			if (semester < 0)
 			{
-				throw new Exception("Semester can not be lower than zero.");
+				throw new AppException("Semester can not be lower than zero.", AppErrorCode.VALIDATION_ERROR);
 			}
 			Semester = semester;
 		}

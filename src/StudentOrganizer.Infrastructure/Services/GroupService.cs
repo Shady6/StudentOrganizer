@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using StudentOrganizer.Core.Common;
 using StudentOrganizer.Core.Models;
 using StudentOrganizer.Core.Repositories;
 using StudentOrganizer.Infrastructure.Commands.Groups;
@@ -47,7 +48,7 @@ namespace StudentOrganizer.Infrastructure.Services
 			var foundGroup = await _groupRepository.GetAsync(command.Name);
 
 			if (foundGroup != null)
-				throw new Exception($"Group with name ${command.Name} already exists.");
+				throw new AppException($"Group with name ${command.Name} already exists.", AppErrorCode.ALREADY_EXISTS);
 
 			var group = new Group(command.Id, command.Name);
 			var author = await _userRepository.GetAsync(command.UserId);
@@ -62,10 +63,10 @@ namespace StudentOrganizer.Infrastructure.Services
 		{
 			var group = await _groupRepository.GetWholeGroupAsync(command.GroupId);
 			if (group == null)
-				throw new Exception($"Group doesn't exist");
+				throw new AppException($"Group doesn't exist", AppErrorCode.DOESNT_EXIST);
 			else if (!group.Students.Any(s => s.Id == command.UserId) &&
 				!group.Administrators.Any(a => a.Id == command.UserId))
-				throw new Exception("You don't belong to this group");
+				throw new AppException("You don't belong to this group", AppErrorCode.CANT_DO_THAT);
 
 			return new GroupDto
 			{

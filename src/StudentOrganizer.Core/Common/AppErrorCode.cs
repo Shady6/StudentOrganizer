@@ -1,0 +1,17 @@
+﻿namespace StudentOrganizer.Core.Common
+{
+	public enum AppErrorCode
+	{
+		DEFAULT_ERROR,
+		ALREADY_EXISTS,
+		VOTING_FINISHED,
+		DOESNT_EXIST,
+		NOT_FOUND,
+		NOT_OWNED,
+		CANT_DO_THAT_YET,
+		CANT_DO_THAT,
+		VALIDATION_ERROR,
+		IMAGES_MAXED,
+		TOO_MANY_IMAGES
+	}
+}

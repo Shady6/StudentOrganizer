@@ -1,5 +1,6 @@
 ﻿using System;
 using NodaTime;
+using StudentOrganizer.Core.Common;
 
 namespace StudentOrganizer.Core.Models
 {
@@ -13,7 +14,7 @@ namespace StudentOrganizer.Core.Models
 		public ScheduledCourse(IsoDayOfWeek dayOfTheWeek, LocalTime startTime, LocalTime endTime, Course course)
 		{
 			if (startTime > endTime)
-				throw new Exception("Start time of the course cannot be after the end time.");
+				throw new AppException("Start time of the course cannot be after the end time.", AppErrorCode.VALIDATION_ERROR);
 
 			DayOfTheWeek = dayOfTheWeek;
 			StartTime = startTime;
