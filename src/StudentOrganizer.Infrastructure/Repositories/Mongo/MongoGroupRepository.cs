@@ -89,5 +89,10 @@ namespace StudentOrganizer.Infrastructure.Mongo.Repositories
 		{
 			throw new NotImplementedException();
 		}
-	}
+
+        public Task<Group> GetWithStudents(Guid GroupId)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

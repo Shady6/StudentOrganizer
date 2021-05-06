@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using StudentOrganizer.Core.Models;
 
@@ -18,5 +19,6 @@ namespace StudentOrganizer.Core.Repositories
 
 		Task SaveChangesAsync();
 		Task<User> GetWithAdministratedGroupsAsync(Guid userId);
-	}
+        Task<List<User>> GetUsersByEmails(List<string> Emails);
+    }
 }

@@ -62,5 +62,14 @@ namespace StudentOrganizer.Api.Controllers
 			}
 			return Ok(_groupService.GetAllGroups(command));
 		}
+
+		[HttpPost("addUsers")]
+		public async Task<ActionResult> AddUsersToGroup([FromBody] AddUsersToGroup command)
+		{
+			command.UserId = User.GetUserId();
+			await _groupService.AddUsersToGroup(command);
+			return Ok();
+		}
+
 	}
 }

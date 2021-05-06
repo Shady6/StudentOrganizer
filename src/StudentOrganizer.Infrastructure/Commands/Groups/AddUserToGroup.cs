@@ -1,13 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace StudentOrganizer.Infrastructure.Commands.Groups
 {
-    public class CreateGroup : CreateCommandBase
+	public class AddUsersToGroup
 	{
-		public string Name { get; set; }
-
 		[JsonIgnore]
 		public Guid UserId { get; set; }
+		public Guid GroupId { get; set; }
+		public List<string> Emails { get; set; }
 	}
 }

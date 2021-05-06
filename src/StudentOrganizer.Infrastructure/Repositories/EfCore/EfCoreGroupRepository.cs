@@ -24,6 +24,13 @@ namespace StudentOrganizer.Infrastructure.Repositories.EfCore
 			return await _dbContext.Group.FirstOrDefaultAsync(g => g.Name == name);
 		}
 
+		public async Task<Group> GetWithStudents(Guid GroupId)
+		{
+			return await _dbContext.Group.Where(g => g.Id == GroupId)
+				.Include(g => g.Students)
+				.FirstOrDefaultAsync();
+		}
+
 		public async Task<Group> GetWithCoursesAsync(Guid id)
 		{
 			return await _dbContext.Group.Where(g => g.Id == id)

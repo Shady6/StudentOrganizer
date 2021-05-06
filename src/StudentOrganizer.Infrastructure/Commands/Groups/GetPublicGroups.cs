@@ -2,8 +2,8 @@
 
 namespace StudentOrganizer.Infrastructure.Commands.Groups
 {
-	public class GetMyGroups
-	{						
+	public class GetPublicGroups
+	{
 		public Guid UserId { get; set; }
 	}
 }
