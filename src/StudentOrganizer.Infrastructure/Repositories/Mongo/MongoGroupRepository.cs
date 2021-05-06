@@ -90,7 +90,7 @@ namespace StudentOrganizer.Infrastructure.Mongo.Repositories
 			throw new NotImplementedException();
 		}
 
-        public Task<Group> GetStudentsGroupAsync(Guid GroupId)
+        public Task<Group> GetWithStudents(Guid GroupId)
         {
             throw new NotImplementedException();
         }

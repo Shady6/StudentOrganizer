@@ -19,6 +19,6 @@ namespace StudentOrganizer.Core.Repositories
 
 		Task SaveChangesAsync();
 		Task<User> GetWithAdministratedGroupsAsync(Guid userId);
-        Task<List<User>> GetUsersAsync(List<string> Emails);
+        Task<List<User>> GetUsersByEmails(List<string> Emails);
     }
 }

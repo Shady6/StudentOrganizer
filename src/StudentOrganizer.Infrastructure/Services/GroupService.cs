@@ -30,17 +30,16 @@ namespace StudentOrganizer.Infrastructure.Services
         public async Task AddUsersToGroup(AddUsersToGroup command)
 		{
 			await _administratorService.ValidateAdministrativePrivileges(command.UserId, command.GroupId);
-			var group = await _groupRepository.GetStudentsGroupAsync(command.GroupId);			
-			var users = await _userRepository.GetUsersAsync(command.Emails);
-            group.AddStudents(users);
+			var group = await _groupRepository.GetWithStudents(command.GroupId);			
+			var users = await _userRepository.GetUsersByEmails(command.Emails);
 
+            group.AddStudents(users);
             await _groupRepository.SaveChangesAsync();
 
 			var usersNotExistingInDb = command.Emails.Where(e => !users.Select(u => u.Email).Contains(e));
 
-
 			if (usersNotExistingInDb.ToList().Count != 0)
-				throw new Exception(string.Join(',', usersNotExistingInDb) + " Emails don't exist!");
+				throw new Exception($"Users with those emails don't exist {string.Join(", ", usersNotExistingInDb)}");
         }
 
 		public async Task CreateAsync(CreateGroup command)

@@ -28,7 +28,7 @@ namespace StudentOrganizer.Infrastructure.Repositories.EfCore
 				.FirstOrDefaultAsync();
 		}
 
-		public async Task<List<User>> GetUsersAsync(List<string> Emails)
+		public async Task<List<User>> GetUsersByEmails(List<string> Emails)
 		{
 			return await _dbContext.Users.Where(u => Emails.Contains(u.Email))
                 .ToListAsync();

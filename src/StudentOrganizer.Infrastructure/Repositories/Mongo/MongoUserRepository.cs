@@ -70,7 +70,7 @@ namespace StudentOrganizer.Infrastructure.Mongo.Repositories
 			throw new NotImplementedException();
 		}
 
-        public Task<List<User>> GetUsersAsync(List<string> Emails)
+        public Task<List<User>> GetUsersByEmails(List<string> Emails)
         {
             throw new NotImplementedException();
         }
