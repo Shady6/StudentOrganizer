@@ -25,5 +25,6 @@ namespace StudentOrganizer.Core.Repositories
 		Task<Group> GetWithCoursesAsync(Guid id);
 		Task<Group> GetWithTeamsAsync(Guid id);
 		Task<Group> GetWithTeamScheduleAndCourses(Guid id, string teamName);
-	}
+        Task<Group> GetStudentsGroupAsync(Guid GroupId);
+    }
 }

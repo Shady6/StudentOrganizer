@@ -143,5 +143,11 @@ namespace StudentOrganizer.Core.Models
 		{
 			_students.Add(user);
 		}
+
+		public void AddStudents(List<User> users)
+        {
+            var usersToAdd = users.Where(u => !_students.Select(s => s.Id).Contains(u.Id));
+			_students.UnionWith(usersToAdd);
+        }
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +26,12 @@ namespace StudentOrganizer.Infrastructure.Repositories.EfCore
 			return await _dbContext.Users.Where(u => u.Id == userId)
 				.Include(u => u.AdministratedGroups)
 				.FirstOrDefaultAsync();
+		}
+
+		public async Task<List<User>> GetUsersAsync(List<string> Emails)
+		{
+			return await _dbContext.Users.Where(u => Emails.Contains(u.Email))
+                .ToListAsync();
 		}
 	}
 }
