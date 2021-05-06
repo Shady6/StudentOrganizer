@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using StudentOrganizer.Core.Common;
 
 namespace StudentOrganizer.Core.Models
 {
@@ -29,7 +30,7 @@ namespace StudentOrganizer.Core.Models
 		{
 			if (string.IsNullOrWhiteSpace(name))
 			{
-				throw new Exception("Name can not be empty.");
+				throw new AppException("Name can not be empty.", AppErrorCode.VALIDATION_ERROR);
 			}
 			Name = name;
 		}
@@ -37,7 +38,7 @@ namespace StudentOrganizer.Core.Models
 		public void AddSchedule(Schedule schedule)
 		{
 			if (Schedules.Any(s => s.Semester == schedule.Semester))
-				throw new Exception($"Schedule for semester {schedule.Semester} already exists, update the existing one or delete and then add.");
+				throw new AppException($"Schedule for semester {schedule.Semester} already exists, update the existing one or delete and then add.", AppErrorCode.ALREADY_EXISTS);
 
 			Schedules.Add(schedule);
 		}
@@ -46,7 +47,7 @@ namespace StudentOrganizer.Core.Models
 		{
 			var foundSchedule = Schedules.FirstOrDefault(s => s.Semester == semester);
 			if (foundSchedule == null)
-				throw new Exception($"Schedule for semester {semester} doesn't exist.");
+				throw new AppException($"Schedule for semester {semester} doesn't exist.", AppErrorCode.DOESNT_EXIST);
 			Schedules.Remove(foundSchedule);
 		}
 	}

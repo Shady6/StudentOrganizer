@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using StudentOrganizer.Core.Common;
 
 namespace StudentOrganizer.Core.Models
 {
@@ -51,26 +52,20 @@ namespace StudentOrganizer.Core.Models
 			foreach (var course in courses)
 			{
 				if (Courses.Any(c => c.Equals(course)))
-					coursesAlreadyExisting.Add(course.Name);					
+					coursesAlreadyExisting.Add(course.Name);
 				else
 					Courses.Add(course);
 			}
 			if (coursesAlreadyExisting.Count != 0)
-			{
-				var message = "These courses weren't added because they already exist:\n";
-				foreach (var existingCourse in coursesAlreadyExisting)
-				{
-					message += existingCourse + "\n";
-				}
-				throw new Exception(message);
-			}				
+				throw new AppException($"These courses weren't added because they already exist:\n" +
+					$"{string.Join('\n', coursesAlreadyExisting)}", AppErrorCode.ALREADY_EXISTS);
 		}
 
 		public void DeleteCourse(Guid courseId)
 		{
 			var course = Courses.FirstOrDefault(c => c.Id == courseId);
 			if (course == null)
-				throw new Exception("The course you're trying to delete doesn't exist.");
+				throw new AppException("The course you're trying to delete doesn't exist.", AppErrorCode.DOESNT_EXIST);
 			Courses.Remove(course);
 		}
 
@@ -78,9 +73,9 @@ namespace StudentOrganizer.Core.Models
 		{
 			var foundCourse = Courses.FirstOrDefault(c => c.Id == course.Id);
 			if (foundCourse == null)
-				throw new Exception("The course you're trying to update doesn't exist.");
+				throw new AppException("The course you're trying to update doesn't exist.", AppErrorCode.DOESNT_EXIST);
 			else if (Courses.Any(c => c.Equals(course)))
-				throw new Exception("The course with provided values already exists.");
+				throw new AppException("The course with provided values already exists.", AppErrorCode.ALREADY_EXISTS);
 			foundCourse.Update(course);
 		}
 
@@ -95,21 +90,15 @@ namespace StudentOrganizer.Core.Models
 					Teams.Add(team);
 			}
 			if (teamsAreadyExisting.Count != 0)
-			{
-				var message = "These teams weren't added because they already exist:\n";
-				foreach (var existingTeam in teamsAreadyExisting)
-				{
-					message += existingTeam + "\n";
-				}
-				throw new Exception(message);
-			}
+				throw new AppException($"These teams weren't added because they already exist:\n" +
+					$"{string.Join('\n', teamsAreadyExisting)}", AppErrorCode.ALREADY_EXISTS);
 		}
 
 		public void DeleteTeam(string teamName)
 		{
 			var team = Teams.FirstOrDefault(t => t.Name == teamName);
 			if (team == null)
-				throw new Exception("The team you're trying to delete doesn't exist.");
+				throw new AppException("The team you're trying to delete doesn't exist.", AppErrorCode.DOESNT_EXIST);
 			Teams.Remove(team);
 		}
 
@@ -117,7 +106,7 @@ namespace StudentOrganizer.Core.Models
 		{
 			var team = Teams.FirstOrDefault(t => t.Name == teamName);
 			if (team == null)
-				throw new Exception("The team you're trying to update doesn't exist.");
+				throw new AppException("The team you're trying to update doesn't exist.", AppErrorCode.DOESNT_EXIST);
 			team.SetName(newTeamName);
 		}
 
@@ -125,11 +114,11 @@ namespace StudentOrganizer.Core.Models
 		{
 			if (string.IsNullOrWhiteSpace(name))
 			{
-				throw new Exception("Name can not be empty.");
+				throw new AppException("Name can not be empty.", AppErrorCode.VALIDATION_ERROR);
 			}
 			if (name.Length > 200)
 			{
-				throw new Exception("Name cannot be longer than 200 characters.");
+				throw new AppException("Name cannot be longer than 200 characters.", AppErrorCode.VALIDATION_ERROR);
 			}
 			Name = name;
 		}

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using StudentOrganizer.Core.Common;
 using StudentOrganizer.Core.Repositories;
 using StudentOrganizer.Infrastructure.Commands.Schedules;
 using StudentOrganizer.Infrastructure.Factories;
@@ -28,7 +29,7 @@ namespace StudentOrganizer.Infrastructure.Services
 			var group = await _groupRepository.GetWithTeamScheduleAndCourses(command.GroupId, command.TeamName);
 
 			if (group == null)
-				throw new Exception($"Team with name {command.TeamName} doesn't exist.");
+				throw new AppException($"Team with name {command.TeamName} doesn't exist.", AppErrorCode.DOESNT_EXIST);
 
 			var schedule = ScheduleFactory.Create(command.Schedule, group.Courses);
 			var team = group.Teams.First(t => t.Name == command.TeamName);
@@ -43,7 +44,7 @@ namespace StudentOrganizer.Infrastructure.Services
 			var group = await _groupRepository.GetWithTeamScheduleAndCourses(command.GroupId, command.TeamName);
 
 			if (group == null)
-				throw new Exception($"Team with name {command.TeamName} doesn't exist.");
+				throw new AppException($"Team with name {command.TeamName} doesn't exist.", AppErrorCode.DOESNT_EXIST);
 
 			var team = group.Teams.First(t => t.Name == command.TeamName);
 			team.DeleteSchedule(command.Semester);
@@ -57,14 +58,14 @@ namespace StudentOrganizer.Infrastructure.Services
 			var group = await _groupRepository.GetWithTeamScheduleAndCourses(command.GroupId, command.TeamName);
 
 			if (group == null)
-				throw new Exception($"Team with name {command.TeamName} doesn't exist.");
+				throw new AppException($"Team with name {command.TeamName} doesn't exist.", AppErrorCode.DOESNT_EXIST);
 
 			var schedule = ScheduleFactory.Create(command.Schedule, group.Courses);
 			var scheduleToUpdate = group.Teams.First(t => t.Name == command.TeamName)
 				.Schedules.FirstOrDefault(s => s.Semester == command.Schedule.Semester);
 
 			if (scheduleToUpdate == null)
-				throw new Exception($"There is no schedule to update for semester {command.Schedule.Semester}");
+				throw new AppException($"There is no schedule to update for semester {command.Schedule.Semester}", AppErrorCode.DOESNT_EXIST);
 
 			scheduleToUpdate.Update(schedule.Semester, schedule.ScheduledCourses);
 

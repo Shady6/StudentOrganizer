@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using StudentOrganizer.Core.Common;
 
 namespace StudentOrganizer.Core.Models
 {
@@ -12,7 +13,7 @@ namespace StudentOrganizer.Core.Models
 		public string Salt { get; protected set; }
 		public string FirstName { get; protected set; }
 		public string LastName { get; protected set; }
-		public Role Role { get; protected set; }		
+		public Role Role { get; protected set; }
 
 		public IEnumerable<Group> Groups
 		{
@@ -49,7 +50,7 @@ namespace StudentOrganizer.Core.Models
 		{
 			if (string.IsNullOrWhiteSpace(email))
 			{
-				throw new Exception("Email cannot be empty.");
+				throw new AppException("Email cannot be empty.", AppErrorCode.VALIDATION_ERROR);
 			}
 			Email = email;
 		}
@@ -58,11 +59,11 @@ namespace StudentOrganizer.Core.Models
 		{
 			if (string.IsNullOrWhiteSpace(passwordHash))
 			{
-				throw new Exception("Password hash cannot be empty.");
+				throw new AppException("Password hash cannot be empty.", AppErrorCode.VALIDATION_ERROR);
 			}
 			if (string.IsNullOrWhiteSpace(salt))
 			{
-				throw new Exception("Salt cannot be empty.");
+				throw new AppException("Salt cannot be empty.", AppErrorCode.VALIDATION_ERROR);
 			}
 			PasswordHash = passwordHash;
 			Salt = salt;
@@ -72,7 +73,7 @@ namespace StudentOrganizer.Core.Models
 		{
 			if (string.IsNullOrWhiteSpace(firstName))
 			{
-				throw new Exception("First name cannot be empty.");
+				throw new AppException("First name cannot be empty.", AppErrorCode.VALIDATION_ERROR);
 			}
 			FirstName = firstName;
 		}
@@ -81,7 +82,7 @@ namespace StudentOrganizer.Core.Models
 		{
 			if (string.IsNullOrWhiteSpace(lastName))
 			{
-				throw new Exception("Last name cannot be empty.");
+				throw new AppException("Last name cannot be empty.", AppErrorCode.VALIDATION_ERROR);
 			}
 			LastName = lastName;
 		}

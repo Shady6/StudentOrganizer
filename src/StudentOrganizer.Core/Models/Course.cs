@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Xml.Linq;
+using StudentOrganizer.Core.Common;
 
 namespace StudentOrganizer.Core.Models
 {
@@ -7,7 +7,7 @@ namespace StudentOrganizer.Core.Models
 	{
 		public string Name { get; protected set; }
 		public string Lecturer { get; protected set; }
-		public Location Location { get; protected set; }		
+		public Location Location { get; protected set; }
 		public int Semester { get; protected set; }
 
 		public Course(string name, string lecturer, Location location, int semester)
@@ -31,7 +31,7 @@ namespace StudentOrganizer.Core.Models
 		{
 			if (string.IsNullOrWhiteSpace(name))
 			{
-				throw new Exception("Name can not be empty.");
+				throw new AppException("Name can not be empty.", AppErrorCode.VALIDATION_ERROR);
 			}
 			Name = name;
 		}
@@ -40,7 +40,7 @@ namespace StudentOrganizer.Core.Models
 		{
 			if (string.IsNullOrWhiteSpace(lecturer))
 			{
-				throw new Exception("Lecturer can not be empty.");
+				throw new AppException("Lecturer can not be empty.", AppErrorCode.VALIDATION_ERROR);
 			}
 			Lecturer = lecturer;
 		}
@@ -49,7 +49,7 @@ namespace StudentOrganizer.Core.Models
 		{
 			if (semester < 0)
 			{
-				throw new Exception("Semester can not be lower than zero.");
+				throw new AppException("Semester can not be lower than zero.", AppErrorCode.VALIDATION_ERROR);
 			}
 			Semester = semester;
 		}
@@ -66,7 +66,7 @@ namespace StudentOrganizer.Core.Models
 		{
 			var other = obj as Course;
 
-			return Name == other.Name&&
+			return Name == other.Name &&
 				Lecturer == other.Lecturer &&
 				Semester == other.Semester &&
 				Location.Equals(other.Location);

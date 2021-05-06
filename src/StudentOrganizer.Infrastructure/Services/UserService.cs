@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using StudentOrganizer.Core.Common;
 using StudentOrganizer.Core.Models;
 using StudentOrganizer.Core.Repositories;
 using StudentOrganizer.Infrastructure.Dto;
@@ -27,7 +28,7 @@ namespace StudentOrganizer.Infrastructure.Services
 			string firstName, string lastName, RoleDto role)
 		{			
 			if (await _userRepository.GetAsync(email) != null)
-				throw new Exception($"User with email {email} already exists.");
+				throw new AppException($"User with email {email} already exists.", AppErrorCode.ALREADY_EXISTS);
 
 			string salt = _encrypter.GetSalt(password);
 			string passwordHash = _encrypter.GetHash(password, salt);
@@ -42,11 +43,11 @@ namespace StudentOrganizer.Infrastructure.Services
 			var user = await _userRepository.GetAsync(email);
 
 			if (user == null)
-				throw new Exception("Wrong email or password.");
+				throw new AppException("Wrong email or password.", AppErrorCode.VALIDATION_ERROR);
 
 			string generatedHash = _encrypter.GetHash(password, user.Salt);
 			if (user.PasswordHash != generatedHash)
-				throw new Exception("Wrong email or password.");
+				throw new AppException("Wrong email or password.", AppErrorCode.VALIDATION_ERROR);
 
 			JwtDto token = _jwtHandler.CreateToken(user.Id, user.Role);
 			_memoryCache.Set(id, token);

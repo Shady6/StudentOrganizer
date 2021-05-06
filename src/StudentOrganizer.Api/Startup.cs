@@ -53,9 +53,9 @@ namespace StudentOrganizer.Api
 			}
 
 			app.UseRouting();
-            app.UseMiddleware<ExceptionHandler>();
+			app.UseMiddleware<ExceptionHandler>();
 
-            app.UseAuthentication();
+			app.UseAuthentication();
 			app.UseAuthorization();
 			MongoConfiguration.Initialize();
 			app.UseEndpoints(endpoints =>

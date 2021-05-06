@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using StudentOrganizer.Core.Common;
 
 namespace StudentOrganizer.Core.Models
 {
@@ -29,7 +30,7 @@ namespace StudentOrganizer.Core.Models
         {
 			if (semester < 0)
             {
-				throw new Exception("Semester can not be lower than zero.");
+				throw new AppException("Semester can not be lower than zero.", AppErrorCode.VALIDATION_ERROR);
             }
 			Semester = semester;
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using StudentOrganizer.Core.Common;
 
 namespace StudentOrganizer.Core.Models
 {
@@ -19,7 +20,7 @@ namespace StudentOrganizer.Core.Models
 		{
 			if (string.IsNullOrWhiteSpace(streetName))
 			{
-				throw new Exception("Street name can not be empty.");
+				throw new AppException("Street name can not be empty.", AppErrorCode.VALIDATION_ERROR);
 			}
 			StreetName = streetName;
 		}
@@ -28,7 +29,7 @@ namespace StudentOrganizer.Core.Models
 		{
 			if (string.IsNullOrWhiteSpace(buildingNumber))
 			{
-				throw new Exception("Building number can not be empty.");
+				throw new AppException("Building number can not be empty.", AppErrorCode.VALIDATION_ERROR);
 			}
 			BuildingNumber = buildingNumber;
 		}
@@ -37,7 +38,7 @@ namespace StudentOrganizer.Core.Models
 		{
 			if (string.IsNullOrWhiteSpace(city))
 			{
-				throw new Exception("City can not be empty.");
+				throw new AppException("City can not be empty.", AppErrorCode.VALIDATION_ERROR);
 			}
 			City = city;
 		}
