@@ -1,11 +1,15 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
+using Microsoft.Extensions.Caching.Memory;
 using StudentOrganizer.Core.Common;
 using StudentOrganizer.Core.Models;
 using StudentOrganizer.Core.Repositories;
 using StudentOrganizer.Infrastructure.Dto;
 using StudentOrganizer.Infrastructure.IServices;
-using System;
-using System.Threading.Tasks;
+using StudentOrganizer.Infrastructure.Users.Commands;
 
 namespace StudentOrganizer.Infrastructure.Services
 {
@@ -15,18 +19,38 @@ namespace StudentOrganizer.Infrastructure.Services
 		private readonly IEncrypter _encrypter;
 		private readonly IJwtHandler _jwtHandler;
 		private readonly IMemoryCache _memoryCache;
+		private readonly IAdministratorService _administratorService;
+		private readonly IMapper __mapper;
 
-		public UserService(IUserRepository userRepository, IEncrypter encrypter, IJwtHandler jwtHandler, IMemoryCache memoryCache)
+		public UserService(
+			IUserRepository userRepository,
+			IEncrypter encrypter,
+			IJwtHandler jwtHandler,
+			IMemoryCache memoryCache,
+			IAdministratorService administratorService,
+			IMapper mapper)
 		{
 			_userRepository = userRepository;
 			_encrypter = encrypter;
 			_jwtHandler = jwtHandler;
 			_memoryCache = memoryCache;
+			_administratorService = administratorService;
+			__mapper = mapper;
+		}
+
+		public async Task<List<SuggestedUserDto>> GetSuggestedUsers(GetSuggestedUsers command)
+		{
+			if (string.IsNullOrWhiteSpace(command.SearchLetters) || command.SearchLetters.Length < 3)
+				throw new AppException("You need to specify at least three letters to search suggested users", AppErrorCode.BAD_INPUT);
+			await _administratorService.ValidateAdministrativePrivileges(command.UserId, command.GroupId);
+
+			var foundUsers = _userRepository.GetSuggestedAsync(command.SearchLetters, command.GroupId).Take(10);
+			return __mapper.ProjectTo<SuggestedUserDto>(foundUsers).ToList();
 		}
 
 		public async Task RegisterAsync(Guid id, string email, string username, string password,
 			string firstName, string lastName, RoleDto role)
-		{			
+		{
 			if (await _userRepository.GetAsync(email) != null)
 				throw new AppException($"User with email {email} already exists.", AppErrorCode.ALREADY_EXISTS);
 

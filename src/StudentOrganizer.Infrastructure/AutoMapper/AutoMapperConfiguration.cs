@@ -18,6 +18,7 @@ namespace StudentOrganizer.Infrastructure.AutoMapper
 				cfg.CreateMap<UpdateCourseDto, Course>();
 				cfg.CreateMap<User, DisplayUserDto>();
 				cfg.CreateMap<User, StudentDto>();
+				cfg.CreateMap<User, SuggestedUserDto>();
 				cfg.CreateMap<Team, TeamDto>();
 				cfg.CreateMap<Schedule, ScheduleDto>().ReverseMap();
 				cfg.CreateMap<Group, GroupDto>();

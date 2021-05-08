@@ -38,6 +38,8 @@ namespace StudentOrganizer.Api.Exceptions
 				else
 					context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
 			}
+			else
+				context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
 			var errorResponse = new ErrorResponse
 			{

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using StudentOrganizer.Core.Models;
 
@@ -18,7 +19,10 @@ namespace StudentOrganizer.Core.Repositories
 		void Update(User user);
 
 		Task SaveChangesAsync();
+
 		Task<User> GetWithAdministratedGroupsAsync(Guid userId);
-        Task<List<User>> GetUsersByEmails(List<string> Emails);
-    }
+
+		Task<List<User>> GetUsersByEmailsAsync(List<string> Emails);		
+		IQueryable<User> GetSuggestedAsync(string searchLetters, Guid groupId);
+	}
 }

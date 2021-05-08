@@ -1,15 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace StudentOrganizer.Infrastructure.Commands.Groups
+namespace StudentOrganizer.Infrastructure.Users.Commands
 {
-	public class AddUsersToGroup
+	public class GetSuggestedUsers
 	{
 		[JsonIgnore]
 		public Guid UserId { get; set; }
+
 		[JsonIgnore]
 		public Guid GroupId { get; set; }
-		public List<string> Emails { get; set; }
+
+		public string SearchLetters { get; set; }
 	}
 }

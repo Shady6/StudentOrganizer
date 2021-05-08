@@ -21,6 +21,14 @@ namespace StudentOrganizer.Infrastructure.Repositories.EfCore
 			return await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == mail);
 		}
 
+		public IQueryable<User> GetSuggestedAsync(string searchLetters, Guid groupId)
+		{
+			return _dbContext.Users.Where(u =>
+			!u.Groups.Any(g => g.Id == groupId) &&
+			(EF.Functions.ILike(u.Email, $"%{searchLetters}%") ||
+			EF.Functions.ILike(u.FirstName + " " + u.LastName, $"%{searchLetters}%")));
+		}
+
 		public async Task<User> GetWithAdministratedGroupsAsync(Guid userId)
 		{
 			return await _dbContext.Users.Where(u => u.Id == userId)
@@ -28,7 +36,7 @@ namespace StudentOrganizer.Infrastructure.Repositories.EfCore
 				.FirstOrDefaultAsync();
 		}
 
-		public async Task<List<User>> GetUsersByEmails(List<string> Emails)
+		public async Task<List<User>> GetUsersByEmailsAsync(List<string> Emails)
 		{
 			return await _dbContext.Users.Where(u => Emails.Contains(u.Email))
                 .ToListAsync();

@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using StudentOrganizer.Core.Common;
 using StudentOrganizer.Core.Repositories;
+using StudentOrganizer.Infrastructure.IServices;
 
 namespace StudentOrganizer.Infrastructure.Services
 {
@@ -23,10 +22,11 @@ namespace StudentOrganizer.Infrastructure.Services
 			if (!user.AdministratedGroups.Any(g => g.Id == groupId))
 				throw new AppException("You're not administrator of this group.", AppErrorCode.CANT_DO_THAT);
 		}
-	}
 
-	public interface IAdministratorService
-	{
-		Task ValidateAdministrativePrivileges(Guid userId, Guid groupId);
+		public async Task<bool> IsAdministratorInAnyGroup(Guid userId)
+		{
+			var user = await _userRepository.GetWithAdministratedGroupsAsync(userId);
+			return user.AdministratedGroups.Count() > 0;
+		}
 	}
 }

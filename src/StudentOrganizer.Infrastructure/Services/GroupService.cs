@@ -32,7 +32,7 @@ namespace StudentOrganizer.Infrastructure.Services
 		{
 			await _administratorService.ValidateAdministrativePrivileges(command.UserId, command.GroupId);
 			var group = await _groupRepository.GetWithStudents(command.GroupId);			
-			var users = await _userRepository.GetUsersByEmails(command.Emails);
+			var users = await _userRepository.GetUsersByEmailsAsync(command.Emails);
 
             group.AddStudents(users);
             await _groupRepository.SaveChangesAsync();
@@ -55,7 +55,7 @@ namespace StudentOrganizer.Infrastructure.Services
 			group.AddAdministrator(author);
 			group.AddStudent(author);
 
-			await _groupRepository.AddAsync(group);
+			await _groupRepository.AddAsync(group);			
 			await _groupRepository.SaveChangesAsync();
 		}
 

@@ -1,14 +1,13 @@
-﻿using MediatR;
+﻿using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using StudentOrganizer.Infrastructure.Dto;
 using StudentOrganizer.Infrastructure.Users.Commands;
-using System;
-using System.Threading.Tasks;
 
 namespace StudentOrganizer.Api.Controllers
 {
-	[Route("[controller]")]	
+	[Route("[controller]")]
 	public class UsersController : ControllerBase
 	{
 		protected readonly IMediator _mediator;
@@ -29,7 +28,7 @@ namespace StudentOrganizer.Api.Controllers
 
 		[HttpPost("login")]
 		public async Task<ActionResult<JwtDto>> Login([FromBody] LoginUser command)
-		{			
+		{
 			await _mediator.Send(command);
 			var jwt = _memoryCache.Get<JwtDto>(command.Id);
 			return Ok(jwt);

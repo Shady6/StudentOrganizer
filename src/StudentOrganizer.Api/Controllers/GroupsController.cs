@@ -7,6 +7,7 @@ using StudentOrganizer.Api.Extentions;
 using StudentOrganizer.Infrastructure.Commands.Groups;
 using StudentOrganizer.Infrastructure.Dto;
 using StudentOrganizer.Infrastructure.IServices;
+using StudentOrganizer.Infrastructure.Users.Commands;
 
 namespace StudentOrganizer.Api.Controllers
 {
@@ -15,10 +16,21 @@ namespace StudentOrganizer.Api.Controllers
 	public class GroupsController : ApiControllerBase
 	{
 		private readonly IGroupService _groupService;
+		private readonly IUserService _userService;
 
-		public GroupsController(IGroupService groupService)
+		public GroupsController(IGroupService groupService, IUserService userService)
 		{
 			_groupService = groupService;
+			_userService = userService;
+		}
+
+		[HttpGet("{groupId}/suggestedUsers")]
+		public async Task<ActionResult<List<SuggestedUserDto>>> GetSuggestedUsers(Guid groupId, [FromQuery] GetSuggestedUsers command)
+		{
+			command.UserId = User.GetUserId();
+			command.GroupId = groupId;
+			var data = await _userService.GetSuggestedUsers(command);
+			return Ok(data);
 		}
 
 		[HttpPost]
@@ -26,8 +38,7 @@ namespace StudentOrganizer.Api.Controllers
 		{
 			command.UserId = User.GetUserId();
 			await _groupService.CreateAsync(command);
-			return Ok(new { Id = command.Id });
-			//return CreatedAtAction("GetGroup", new { Id = command.Id });
+			return Ok(new { command.Id });
 		}
 
 		[HttpGet("attended/{groupId}")]
@@ -63,13 +74,13 @@ namespace StudentOrganizer.Api.Controllers
 			return Ok(_groupService.GetAllGroups(command));
 		}
 
-		[HttpPost("addUsers")]
-		public async Task<ActionResult> AddUsersToGroup([FromBody] AddUsersToGroup command)
+		[HttpPost("{groupId}/addUsers")]
+		public async Task<ActionResult> AddUsersToGroup(Guid groupId, [FromBody] AddUsersToGroup command)
 		{
 			command.UserId = User.GetUserId();
+			command.GroupId = groupId;
 			await _groupService.AddUsersToGroup(command);
 			return Ok();
 		}
-
 	}
 }

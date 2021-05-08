@@ -7,6 +7,7 @@ using MongoDB.Driver;
 using Microsoft.Extensions.Configuration;
 using StudentOrganizer.Infrastructure.Settings;
 using MongoDB.Driver.Linq;
+using System.Linq;
 
 namespace StudentOrganizer.Infrastructure.Mongo.Repositories
 {
@@ -70,9 +71,19 @@ namespace StudentOrganizer.Infrastructure.Mongo.Repositories
 			throw new NotImplementedException();
 		}
 
-        public Task<List<User>> GetUsersByEmails(List<string> Emails)
-        {
-            throw new NotImplementedException();
-        }
-    }
+		public Task<IQueryable<User>> GetSuggestedAsync(string searchLetters)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<List<User>> GetUsersByEmailsAsync(List<string> emails)
+		{
+			throw new NotImplementedException();
+		}
+
+		public IQueryable<User> GetSuggestedAsync(string searchLetters, Guid groupId)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }
