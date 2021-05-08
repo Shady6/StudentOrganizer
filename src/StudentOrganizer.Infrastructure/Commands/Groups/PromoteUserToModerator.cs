@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace StudentOrganizer.Infrastructure.Commands.Groups
 {
-	public class AddUsersToGroup
+	public class PromoteUserToModerator
 	{
 		[JsonIgnore]
 		public Guid UserId { get; set; }
@@ -12,6 +11,6 @@ namespace StudentOrganizer.Infrastructure.Commands.Groups
 		[JsonIgnore]
 		public Guid GroupId { get; set; }
 
-		public List<string> Emails { get; set; }
+		public string UserEmailToPromote{ get; set; }
 	}
 }

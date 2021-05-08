@@ -23,7 +23,7 @@ namespace StudentOrganizer.Infrastructure.Services
 
 		public async Task AddCourses(AddCourses command)
 		{
-			await _administratorService.ValidateAdministrativePrivileges(command.UserId, command.GroupId);
+			await _administratorService.ValidateAtLeastModerator(command.UserId, command.GroupId);
 			var group = await _groupRepository.GetWithCoursesAsync(command.GroupId);
 
 			var courses = _mapper.Map<List<Course>>(command.Courses);
@@ -34,7 +34,7 @@ namespace StudentOrganizer.Infrastructure.Services
 
 		public async Task DeleteCourse(DeleteCourse command)
 		{
-			await _administratorService.ValidateAdministrativePrivileges(command.UserId, command.GroupId);
+			await _administratorService.ValidateAtLeastAdministrator(command.UserId, command.GroupId);
 			var group = await _groupRepository.GetWithCoursesAsync(command.GroupId);
 			
 			group.DeleteCourse(command.CourseId);
@@ -44,7 +44,7 @@ namespace StudentOrganizer.Infrastructure.Services
 
 		public async Task UpdateCourse(UpdateCourse command)
 		{
-			await _administratorService.ValidateAdministrativePrivileges(command.UserId, command.GroupId);
+			await _administratorService.ValidateAtLeastModerator(command.UserId, command.GroupId);
 			var group = await _groupRepository.GetWithCoursesAsync(command.GroupId);
 
 			var course = _mapper.Map<Course>(command.Course);			

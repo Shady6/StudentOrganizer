@@ -8,6 +8,7 @@ namespace StudentOrganizer.Core.Models
 	public class Group : Entity
 	{
 		private ISet<User> _administrators = new HashSet<User>();
+		private ISet<User> _moderators = new HashSet<User>();
 		private ISet<User> _students = new HashSet<User>();
 		public string Name { get; protected set; }
 
@@ -15,6 +16,12 @@ namespace StudentOrganizer.Core.Models
 		{
 			get => _administrators;
 			protected set { _administrators = new HashSet<User>(value); }
+		}
+
+		public IEnumerable<User> Moderators
+		{
+			get => _moderators;
+			protected set { _moderators = new HashSet<User>(value); }
 		}
 
 		public IEnumerable<User> Students
@@ -134,9 +141,23 @@ namespace StudentOrganizer.Core.Models
 		}
 
 		public void AddStudents(List<User> users)
-        {
-            var usersToAdd = users.Where(u => !_students.Select(s => s.Id).Contains(u.Id));
+		{
+			var usersToAdd = users.Where(u => !_students.Select(s => s.Id).Contains(u.Id));
 			_students.UnionWith(usersToAdd);
-        }
+		}
+
+		public void PromoteToMod(string email)
+		{
+			if (_administrators.FirstOrDefault(a => a.Email == email) != null)
+				throw new AppException($"User with email {email} is already an administrator.", AppErrorCode.ALREADY_EXISTS);
+			else if (_moderators.FirstOrDefault(m => m.Email == email) != null)
+				throw new AppException($"User with email {email} is already a moderator.", AppErrorCode.ALREADY_EXISTS);
+
+			var student = _students.FirstOrDefault(s => s.Email == email);
+			if (student == null)
+				throw new AppException($"The user with email {email} doesn't exist in the group", AppErrorCode.DOESNT_EXIST);
+
+			_moderators.Add(student);
+		}
 	}
 }

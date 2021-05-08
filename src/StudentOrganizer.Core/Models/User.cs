@@ -8,6 +8,7 @@ namespace StudentOrganizer.Core.Models
 	{
 		private ISet<Group> _groups = new HashSet<Group>();
 		private ISet<Group> _administratedGroups = new HashSet<Group>();
+		private ISet<Group> _moderatedGroups = new HashSet<Group>();
 		public string Email { get; protected set; }
 		public string PasswordHash { get; protected set; }
 		public string Salt { get; protected set; }
@@ -25,6 +26,12 @@ namespace StudentOrganizer.Core.Models
 		{
 			get => _administratedGroups;
 			protected set { _administratedGroups = new HashSet<Group>(value); }
+		}
+
+		public IEnumerable<Group> ModeratedGroups
+		{
+			get => _moderatedGroups;
+			protected set { _moderatedGroups = new HashSet<Group>(value); }
 		}
 
 		private IEnumerable<Team> Teams { get; set; }

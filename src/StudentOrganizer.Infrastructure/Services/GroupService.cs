@@ -19,29 +19,37 @@ namespace StudentOrganizer.Infrastructure.Services
 		private readonly IMapper _mapper;
 		private readonly IAdministratorService _administratorService;
 
-
-        public GroupService(IGroupRepository groupRepository, IMapper mapper, IUserRepository userRepository, IAdministratorService administratorService)
-        {
-            _groupRepository = groupRepository;
-            _mapper = mapper;
-            _userRepository = userRepository;
-            _administratorService = administratorService;
-        }
-
-        public async Task AddUsersToGroup(AddUsersToGroup command)
+		public GroupService(IGroupRepository groupRepository, IMapper mapper, IUserRepository userRepository, IAdministratorService administratorService)
 		{
-			await _administratorService.ValidateAdministrativePrivileges(command.UserId, command.GroupId);
-			var group = await _groupRepository.GetWithStudents(command.GroupId);			
+			_groupRepository = groupRepository;
+			_mapper = mapper;
+			_userRepository = userRepository;
+			_administratorService = administratorService;
+		}
+
+		public async Task AddUsersToGroup(AddUsersToGroup command)
+		{
+			await _administratorService.ValidateAtLeastModerator(command.UserId, command.GroupId);
+			var group = await _groupRepository.GetWithStudents(command.GroupId);
 			var users = await _userRepository.GetUsersByEmailsAsync(command.Emails);
 
-            group.AddStudents(users);
-            await _groupRepository.SaveChangesAsync();
+			group.AddStudents(users);
+			await _groupRepository.SaveChangesAsync();
 
 			var usersNotExistingInDb = command.Emails.Where(e => !users.Select(u => u.Email).Contains(e));
 
 			if (usersNotExistingInDb.ToList().Count != 0)
 				throw new Exception($"Users with those emails don't exist {string.Join(", ", usersNotExistingInDb)}");
-        }
+		}
+
+		public async Task PromoteUserToModerator(PromoteUserToModerator command)
+		{
+			await _administratorService.ValidateAtLeastAdministrator(command.UserId, command.GroupId);			
+			var group = await _groupRepository.GetWithAllUsers(command.GroupId);
+
+			group.PromoteToMod(command.UserEmailToPromote);
+			await _groupRepository.SaveChangesAsync();
+		}
 
 		public async Task CreateAsync(CreateGroup command)
 		{
@@ -55,7 +63,7 @@ namespace StudentOrganizer.Infrastructure.Services
 			group.AddAdministrator(author);
 			group.AddStudent(author);
 
-			await _groupRepository.AddAsync(group);			
+			await _groupRepository.AddAsync(group);
 			await _groupRepository.SaveChangesAsync();
 		}
 
@@ -75,12 +83,12 @@ namespace StudentOrganizer.Infrastructure.Services
 				Name = group.Name,
 				Assignments = _mapper.Map<List<AssignmentDto>>(group.Assignmets),
 				Schedules = _mapper.Map<List<ScheduleDto>>(group.Schedules),
-				Teams = group.Teams.Select(t => 
+				Teams = group.Teams.Select(t =>
 				new TeamDto
 				{
 					Assignments = _mapper.Map<List<AssignmentDto>>(t.Assignmets),
 					Name = t.Name,
-					Schedules = t.Schedules.Select(s => 
+					Schedules = t.Schedules.Select(s =>
 					new ScheduleDto
 					{
 						Semester = s.Semester,
@@ -94,7 +102,7 @@ namespace StudentOrganizer.Infrastructure.Services
 					Teams = group.Teams.Where(t => t.Students.Any(st => st.Id == s.Id))
 					.Select(t => t.Name).ToList()
 				}).ToList()
-			};			
+			};
 		}
 
 		public List<GroupDto> GetMyGroupsFull(GetMyGroups command)
@@ -139,7 +147,7 @@ namespace StudentOrganizer.Infrastructure.Services
 				Name = g.Name,
 				UserBelongsToGroup = g.Students.Any(s => s.Id == command.UserId) ||
 				g.Administrators.Any(a => a.Id == command.UserId)
-			});	
+			});
 
 			return groupsDto.ToList();
 		}

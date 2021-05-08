@@ -15,5 +15,6 @@ namespace StudentOrganizer.Infrastructure.IServices
 
 		List<SmallGroupDto> GetMyGroups(GetMyGroups command);
 		List<GroupDto> GetMyGroupsFull(GetMyGroups command);
+		Task PromoteUserToModerator(PromoteUserToModerator command);
 	}
 }

@@ -25,7 +25,7 @@ namespace StudentOrganizer.Infrastructure.Services
 
 		public async Task AddTeamSchedule(AddSchedule command)
 		{
-			await _administratorService.ValidateAdministrativePrivileges(command.UserId, command.GroupId);
+			await _administratorService.ValidateAtLeastModerator(command.UserId, command.GroupId);
 			var group = await _groupRepository.GetWithTeamScheduleAndCourses(command.GroupId, command.TeamName);
 
 			if (group == null)
@@ -40,7 +40,7 @@ namespace StudentOrganizer.Infrastructure.Services
 
 		public async Task DeleteTeamSchedule(DeleteSchedule command)
 		{
-			await _administratorService.ValidateAdministrativePrivileges(command.UserId, command.GroupId);
+			await _administratorService.ValidateAtLeastAdministrator(command.UserId, command.GroupId);
 			var group = await _groupRepository.GetWithTeamScheduleAndCourses(command.GroupId, command.TeamName);
 
 			if (group == null)
@@ -54,7 +54,7 @@ namespace StudentOrganizer.Infrastructure.Services
 
 		public async Task UpdateTeamSchedule(UpdateSchedule command)
 		{
-			await _administratorService.ValidateAdministrativePrivileges(command.UserId, command.GroupId);
+			await _administratorService.ValidateAtLeastModerator(command.UserId, command.GroupId);
 			var group = await _groupRepository.GetWithTeamScheduleAndCourses(command.GroupId, command.TeamName);
 
 			if (group == null)

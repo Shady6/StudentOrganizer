@@ -6,6 +6,7 @@ namespace StudentOrganizer.Infrastructure.IServices
 	public interface IAdministratorService
 	{
 		Task<bool> IsAdministratorInAnyGroup(Guid userId);
-		Task ValidateAdministrativePrivileges(Guid userId, Guid groupId);
+		Task ValidateAtLeastAdministrator(Guid userId, Guid groupId);
+		Task ValidateAtLeastModerator(Guid userId, Guid groupId);
 	}
 }

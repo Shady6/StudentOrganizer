@@ -85,5 +85,10 @@ namespace StudentOrganizer.Infrastructure.Mongo.Repositories
 		{
 			throw new NotImplementedException();
 		}
+
+		public Task<User> GetWithAdministratedAndModeratedGroups(Guid userId)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

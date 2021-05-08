@@ -24,6 +24,15 @@ namespace StudentOrganizer.Api.Controllers
 			_userService = userService;
 		}
 
+		[HttpPost("{groupId}/users/promoteToMod")]
+		public async Task<ActionResult> PromoteUserToModerator(Guid groupId, [FromBody] PromoteUserToModerator command)
+		{
+			command.UserId = User.GetUserId();
+			command.GroupId = groupId;
+			await _groupService.PromoteUserToModerator(command);
+			return Ok();
+		}
+
 		[HttpGet("{groupId}/suggestedUsers")]
 		public async Task<ActionResult<List<SuggestedUserDto>>> GetSuggestedUsers(Guid groupId, [FromQuery] GetSuggestedUsers command)
 		{

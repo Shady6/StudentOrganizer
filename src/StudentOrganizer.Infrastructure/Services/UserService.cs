@@ -42,7 +42,7 @@ namespace StudentOrganizer.Infrastructure.Services
 		{
 			if (string.IsNullOrWhiteSpace(command.SearchLetters) || command.SearchLetters.Length < 3)
 				throw new AppException("You need to specify at least three letters to search suggested users", AppErrorCode.BAD_INPUT);
-			await _administratorService.ValidateAdministrativePrivileges(command.UserId, command.GroupId);
+			await _administratorService.ValidateAtLeastModerator(command.UserId, command.GroupId);
 
 			var foundUsers = _userRepository.GetSuggestedAsync(command.SearchLetters, command.GroupId).Take(10);
 			return __mapper.ProjectTo<SuggestedUserDto>(foundUsers).ToList();

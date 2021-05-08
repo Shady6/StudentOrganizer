@@ -16,7 +16,15 @@ namespace StudentOrganizer.Infrastructure.Services
 			_userRepository = userRepository;
 		}
 
-		public async Task ValidateAdministrativePrivileges(Guid userId, Guid groupId)
+		public async Task ValidateAtLeastModerator(Guid userId, Guid groupId)
+		{
+			var user = await _userRepository.GetWithAdministratedAndModeratedGroups(userId);
+			if (!user.ModeratedGroups.Any(g => g.Id == groupId) &&
+				!user.AdministratedGroups.Any(g => g.Id == groupId))
+				throw new AppException("You're not moderator or administrator of this group.", AppErrorCode.CANT_DO_THAT);
+		}
+
+		public async Task ValidateAtLeastAdministrator(Guid userId, Guid groupId)
 		{
 			var user = await _userRepository.GetWithAdministratedGroupsAsync(userId);
 			if (!user.AdministratedGroups.Any(g => g.Id == groupId))

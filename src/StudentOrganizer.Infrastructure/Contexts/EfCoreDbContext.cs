@@ -12,9 +12,7 @@ namespace StudentOrganizer.Infrastructure.Contexts
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
-		{
-			//modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
+		{			
 			modelBuilder.Entity<ScheduledCourse>().Property(e => e.Id).ValueGeneratedNever();
 			modelBuilder.Entity<Course>().Property(e => e.Id).ValueGeneratedNever();
 			modelBuilder.Entity<Group>().Property(e => e.Id).ValueGeneratedNever();			
@@ -33,6 +31,10 @@ namespace StudentOrganizer.Infrastructure.Contexts
 			modelBuilder.Entity<Group>()
 				.HasMany(g => g.Administrators)
 				.WithMany(u => u.AdministratedGroups);
+
+			modelBuilder.Entity<Group>()
+				.HasMany(g => g.Moderators)
+				.WithMany(u => u.ModeratedGroups);
 
 			modelBuilder.Entity<Group>()
 				.HasMany(g => g.Students)

@@ -85,6 +85,15 @@ namespace StudentOrganizer.Infrastructure.Repositories.EfCore
 				.AsQueryable();
 		}
 
+		public async Task<Group> GetWithAllUsers(Guid groupId)
+		{
+			return await _dbContext.Group.Where(g => g.Id == groupId)
+				.Include(g => g.Students)
+				.Include(g => g.Administrators)
+				.Include(g => g.Moderators)
+				.FirstOrDefaultAsync();
+		}
+
 		public IQueryable<Group> GetAll()
 		{
 			return _dbContext.Group;

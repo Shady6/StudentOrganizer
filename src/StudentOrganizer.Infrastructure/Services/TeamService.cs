@@ -20,7 +20,7 @@ namespace StudentOrganizer.Infrastructure.Services
 
 		public async Task AddTeams(AddTeams command)
 		{
-			await _administratorService.ValidateAdministrativePrivileges(command.UserId, command.GroupId);
+			await _administratorService.ValidateAtLeastModerator(command.UserId, command.GroupId);
 			var group = await _groupRepository.GetWithTeamsAsync(command.GroupId);
 
 			var teams = command.TeamNames.Select(tn => new Team(tn));
@@ -31,7 +31,7 @@ namespace StudentOrganizer.Infrastructure.Services
 
 		public async Task DeleteTeam(DeleteTeam command)
 		{
-			await _administratorService.ValidateAdministrativePrivileges(command.UserId, command.GroupId);
+			await _administratorService.ValidateAtLeastAdministrator(command.UserId, command.GroupId);
 			var group = await _groupRepository.GetWithTeamsAsync(command.GroupId);
 
 			group.DeleteTeam(command.TeamName);
@@ -41,7 +41,7 @@ namespace StudentOrganizer.Infrastructure.Services
 
 		public async Task UpdateTeamName(UpdateTeamName command)
 		{
-			await _administratorService.ValidateAdministrativePrivileges(command.UserId, command.GroupId);
+			await _administratorService.ValidateAtLeastModerator(command.UserId, command.GroupId);
 			var group = await _groupRepository.GetWithTeamsAsync(command.GroupId);
 
 			group.UpdateTeamName(command.TeamName, command.NewTeamName);
