@@ -1,12 +1,12 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using StudentOrganizer.Core.Models;
 using StudentOrganizer.Core.Repositories;
 using StudentOrganizer.Infrastructure.Settings;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace StudentOrganizer.Infrastructure.Mongo.Repositories
 {
@@ -90,10 +90,10 @@ namespace StudentOrganizer.Infrastructure.Mongo.Repositories
 			throw new NotImplementedException();
 		}
 
-        public Task<Group> GetWithStudents(Guid GroupId)
-        {
-            throw new NotImplementedException();
-        }
+		public Task<Group> GetWithStudents(Guid GroupId)
+		{
+			throw new NotImplementedException();
+		}
 
 		public IQueryable<Group> GetWholeGroupsAsync(Guid userId)
 		{
@@ -101,6 +101,11 @@ namespace StudentOrganizer.Infrastructure.Mongo.Repositories
 		}
 
 		public Task<Group> GetWithAllUsers(Guid groupId)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<Group> GetWithTeamsAndStudentsAsync(Guid id)
 		{
 			throw new NotImplementedException();
 		}

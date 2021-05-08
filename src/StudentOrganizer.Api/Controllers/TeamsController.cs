@@ -94,5 +94,15 @@ namespace StudentOrganizer.Api.Controllers
 
 			return Ok();
 		}
+
+		[HttpPost("{teamName}/addUsers")]
+		public async Task<ActionResult> AddUsersToTeam(Guid groupId, string teamName, [FromBody] AddUsersToTeam command)
+		{
+			command.GroupId = groupId;
+			command.TeamName = teamName;
+			command.UserId = User.GetUserId();
+			await _teamService.AddUsersToTeam(command);
+			return Ok();
+		}
 	}
 }
