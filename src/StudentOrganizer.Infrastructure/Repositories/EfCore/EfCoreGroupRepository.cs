@@ -71,9 +71,23 @@ namespace StudentOrganizer.Infrastructure.Repositories.EfCore
 				.FirstOrDefaultAsync();
 		}
 
+		public IQueryable<Group> GetWholeGroupsAsync(Guid userId)
+		{
+			return _dbContext.Group.Where(g => g.Students.Any(s => s.Id == userId))
+				.Include(g => g.Students)
+				.Include(g => g.Administrators)
+				.Include(g => g.Schedules).ThenInclude(s => s.ScheduledCourses).ThenInclude(c => c.Course)
+				.Include(g => g.Teams).ThenInclude(t => t.Schedules).ThenInclude(t => t.ScheduledCourses).ThenInclude(c => c.Course)
+				.Include(g => g.Teams).ThenInclude(t => t.Students)
+				.Include(g => g.Teams).ThenInclude(t => t.Assignmets).ThenInclude(a => a.Course)
+				.Include(g => g.Assignmets).ThenInclude(a => a.Course)
+				.Include(g => g.Courses)
+				.AsQueryable();
+		}
+
 		public IQueryable<Group> GetAll()
 		{
 			return _dbContext.Group;
-		}
+		}		
 	}
 }

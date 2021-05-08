@@ -48,14 +48,24 @@ namespace StudentOrganizer.Api.Controllers
 			return Ok(await _groupService.GetMyGroup(command));
 		}
 
-		[HttpGet("attended")]
-		public ActionResult<List<SmallGroupDto>> GetMyGroups()
+		[HttpGet("attended/partial")]
+		public ActionResult<List<SmallGroupDto>> GetMyGroupsPartial()
 		{
 			var command = new GetMyGroups
 			{
 				UserId = User.GetUserId()
 			};
 			return Ok(_groupService.GetMyGroups(command));
+		}
+
+		[HttpGet("attended/full")]
+		public ActionResult<List<GroupDto>> GetMyGroupsFull()
+		{
+			var command = new GetMyGroups
+			{
+				UserId = User.GetUserId()
+			};
+			return Ok(_groupService.GetMyGroupsFull(command));
 		}
 
 		[HttpGet()]

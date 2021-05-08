@@ -97,6 +97,39 @@ namespace StudentOrganizer.Infrastructure.Services
 			};			
 		}
 
+		public List<GroupDto> GetMyGroupsFull(GetMyGroups command)
+		{
+			IQueryable<Group> groups = _groupRepository.GetWholeGroupsAsync(command.UserId);
+
+			return groups.Select(g => new GroupDto
+			{
+				Administrators = _mapper.Map<List<DisplayUserDto>>(g.Administrators),
+				Courses = _mapper.Map<List<CourseDto>>(g.Courses),
+				Name = g.Name,
+				Assignments = _mapper.Map<List<AssignmentDto>>(g.Assignmets),
+				Schedules = _mapper.Map<List<ScheduleDto>>(g.Schedules),
+				Teams = g.Teams.Select(t =>
+				new TeamDto
+				{
+					Assignments = _mapper.Map<List<AssignmentDto>>(t.Assignmets),
+					Name = t.Name,
+					Schedules = t.Schedules.Select(s =>
+					new ScheduleDto
+					{
+						Semester = s.Semester,
+						ScheduledCourses = _mapper.Map<List<ScheduledCourseDto>>(s.ScheduledCourses)
+					}).ToList()
+				}).ToList(),
+				Students = g.Students.Select(s => new StudentDto
+				{
+					FirstName = s.FirstName,
+					LastName = s.LastName,
+					Teams = g.Teams.Where(t => t.Students.Any(st => st.Id == s.Id))
+					.Select(t => t.Name).ToList()
+				}).ToList()
+			}).ToList();
+		}
+
 		public List<PublicGroupDto> GetAllGroups(GetPublicGroups command)
 		{
 			var groups = _groupRepository.GetAll();

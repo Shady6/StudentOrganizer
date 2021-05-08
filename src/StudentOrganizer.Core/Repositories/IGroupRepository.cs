@@ -22,9 +22,15 @@ namespace StudentOrganizer.Core.Repositories
 		Task<Group> GetWholeGroupAsync(Guid id);
 
 		Task SaveChangesAsync();
+
 		Task<Group> GetWithCoursesAsync(Guid id);
+
 		Task<Group> GetWithTeamsAsync(Guid id);
+
 		Task<Group> GetWithTeamScheduleAndCourses(Guid id, string teamName);
-        Task<Group> GetWithStudents(Guid GroupId);
-    }
+
+		Task<Group> GetWithStudents(Guid GroupId);
+
+		IQueryable<Group> GetWholeGroupsAsync(Guid userId);
+	}
 }

@@ -14,5 +14,6 @@ namespace StudentOrganizer.Infrastructure.IServices
 		Task<GroupDto> GetMyGroup(GetMyGroup command);
 
 		List<SmallGroupDto> GetMyGroups(GetMyGroups command);
+		List<GroupDto> GetMyGroupsFull(GetMyGroups command);
 	}
 }

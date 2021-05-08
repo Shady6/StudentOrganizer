@@ -94,5 +94,10 @@ namespace StudentOrganizer.Infrastructure.Mongo.Repositories
         {
             throw new NotImplementedException();
         }
-    }
+
+		public IQueryable<Group> GetWholeGroupsAsync(Guid userId)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }
