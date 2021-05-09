@@ -39,7 +39,8 @@ namespace StudentOrganizer.Infrastructure.Services
 			var usersNotExistingInDb = command.Emails.Where(e => !users.Select(u => u.Email).Contains(e));
 
 			if (usersNotExistingInDb.ToList().Count != 0)
-				throw new Exception($"Users with those emails don't exist {string.Join(", ", usersNotExistingInDb)}");
+				throw new AppException($"Users with those emails don't exist {string.Join(", ", usersNotExistingInDb)}." +
+					$"Other users were added successfully.", AppErrorCode.DOESNT_EXIST);
 		}
 
 		public async Task PromoteUserToModerator(PromoteUserToModerator command)

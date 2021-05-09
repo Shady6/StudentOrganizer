@@ -45,6 +45,15 @@ namespace StudentOrganizer.Infrastructure.Repositories.EfCore
 				.FirstOrDefaultAsync();
 		}
 
+		public async Task<Group> GetWithGroupAndTeamStudents(Guid id)
+		{
+			return await _dbContext.Group.Where(g => g.Id == id)
+				.Include(g => g.Students)
+				.Include(g => g.Teams)
+				.ThenInclude(t => t.Students)
+				.FirstOrDefaultAsync();
+		}
+
 		public async Task<Group> GetWithTeamScheduleAndCourses(Guid id, string teamName)
 		{
 			return await _dbContext.Group.Where(g => g.Id == id &&
@@ -97,6 +106,6 @@ namespace StudentOrganizer.Infrastructure.Repositories.EfCore
 		public IQueryable<Group> GetAll()
 		{
 			return _dbContext.Group;
-		}		
+		}
 	}
 }
