@@ -28,7 +28,7 @@ namespace StudentOrganizer.Infrastructure.Services
 		}
 
 		public async Task EditGroupName(EditGroupName command)
-        {
+		{
 			await _administratorService.ValidateAtLeastAdministrator(command.UserId, command.GroupId);
 			var group = await _groupRepository.GetAsync(command.GroupId);
 
@@ -58,7 +58,7 @@ namespace StudentOrganizer.Infrastructure.Services
 
 		public async Task PromoteUserToModerator(PromoteUserToModerator command)
 		{
-			await _administratorService.ValidateAtLeastAdministrator(command.UserId, command.GroupId);			
+			await _administratorService.ValidateAtLeastAdministrator(command.UserId, command.GroupId);
 			var group = await _groupRepository.GetWithAllUsers(command.GroupId);
 
 			group.PromoteToMod(command.UserEmailToPromote);
@@ -78,6 +78,13 @@ namespace StudentOrganizer.Infrastructure.Services
 			group.AddStudent(author);
 
 			await _groupRepository.AddAsync(group);
+			await _groupRepository.SaveChangesAsync();
+		}
+
+		public async Task DeleteGroup(DeleteGroup command)
+		{
+			await _administratorService.ValidateAtLeastAdministrator(command.UserId, command.GroupId);
+			_groupRepository.Delete(command.GroupId);
 			await _groupRepository.SaveChangesAsync();
 		}
 
