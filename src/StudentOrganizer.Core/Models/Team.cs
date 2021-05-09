@@ -35,23 +35,6 @@ namespace StudentOrganizer.Core.Models
 			Name = name;
 		}
 
-		public void AddAssignment(Assignment assignment)
-		{
-			if(Assignmets.Contains(assignment)) {
-				throw new ApplicationException("Assignment already exists", AppErrorCode.ALREADY_EXISTS);
-			}
-
-			Assignmets.Add(assignment);
-		}
-
-		public void DeleteAssignment(Assignment assignment)
-		{
-			if (!Assignmets.Contains(assignment))
-				throw new AppException("Assignment doesn't exist.", AppErrorCode.DOESNT_EXIST);
-
-			Assignmets.Remove(assignment);
-		}
-
 		public void AddSchedule(Schedule schedule)
 		{
 			if (Schedules.Any(s => s.Semester == schedule.Semester))
