@@ -50,10 +50,10 @@ namespace StudentOrganizer.Core.Models
 				throw new AppException($"Schedule for semester {semester} doesn't exist.", AppErrorCode.DOESNT_EXIST);
 			Schedules.Remove(foundSchedule);
 		}
-		public void AddStudents(List<User> users)
+		public void AddStudents(List<User> groupStudents)
         {
-			var usersToAdd = users.Where(u => !_students.Select(s => s.Id).Contains(u.Id));
-			_students.UnionWith(usersToAdd);
+			var usersToAdd = groupStudents.Where(u => !_students.Select(s => s.Id).Contains(u.Id));
+			_students.UnionWith(groupStudents);
 		}
 	}
 }
