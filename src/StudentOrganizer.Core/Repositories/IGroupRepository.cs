@@ -36,5 +36,6 @@ namespace StudentOrganizer.Core.Repositories
 		IQueryable<Group> GetWholeGroupsAsync(Guid userId);
 
 		Task<Group> GetWithAllUsers(Guid groupId);
+		Task<Group> GetWithTeamStudentsAsync(Guid id);
 	}
 }

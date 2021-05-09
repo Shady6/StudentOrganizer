@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using StudentOrganizer.Core.Behaviors;
+using StudentOrganizer.Core.Behaviors.RemoveBehaviors;
 using StudentOrganizer.Core.Common;
 
 namespace StudentOrganizer.Core.Models
@@ -10,16 +12,18 @@ namespace StudentOrganizer.Core.Models
 		private ISet<User> _students = new HashSet<User>();
 		public string Name { get; protected set; }
 		public IList<Schedule> Schedules { get; protected set; } = new List<Schedule>();
+
 		public IEnumerable<User> Students
 		{
 			get => _students;
 			protected set { _students = new HashSet<User>(value); }
 		}
+
 		public IList<Assignment> Assignmets { get; protected set; } = new List<Assignment>();
 
 		public Team(string name)
 		{
-			SetName(name);			
+			SetName(name);
 		}
 
 		public Team()
@@ -50,10 +54,18 @@ namespace StudentOrganizer.Core.Models
 				throw new AppException($"Schedule for semester {semester} doesn't exist.", AppErrorCode.DOESNT_EXIST);
 			Schedules.Remove(foundSchedule);
 		}
+
 		public void AddStudents(List<User> groupStudents)
-        {
+		{
 			var usersToAdd = groupStudents.Where(u => !_students.Select(s => s.Id).Contains(u.Id));
 			_students.UnionWith(groupStudents);
+		}
+
+		public void RemoveStudents(List<string> emails, Guid userId)
+		{
+			IRemoveUsersBehavior removeStudentsBehavior =
+				new RemoveBehavior(_students, "Team", "Students");
+			removeStudentsBehavior.Remove(emails, userId);
 		}
 	}
 }

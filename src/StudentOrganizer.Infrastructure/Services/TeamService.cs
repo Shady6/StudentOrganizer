@@ -12,12 +12,12 @@ namespace StudentOrganizer.Infrastructure.Services
 	public class TeamService : ITeamService
 	{
 		private readonly IGroupRepository _groupRepository;
-		private readonly IAdministratorService _administratorService;		
+		private readonly IAdministratorService _administratorService;
 
 		public TeamService(IGroupRepository groupRepository, IAdministratorService administratorService)
 		{
 			_groupRepository = groupRepository;
-			_administratorService = administratorService;			
+			_administratorService = administratorService;
 		}
 
 		public async Task AddUsersToTeam(AddUsersToTeam command)
@@ -39,6 +39,20 @@ namespace StudentOrganizer.Infrastructure.Services
 			if (usersNotExistingInDb.ToList().Count != 0)
 				throw new AppException($"Users with those emails don't exist in your group {string.Join(", ", usersNotExistingInDb)}." +
 					$"Other users were added successfully.", AppErrorCode.DOESNT_EXIST);
+		}
+
+		public async Task RemoveUsersFromTeam(RemoveUsersFromTeam command)
+		{
+			await _administratorService.ValidateAtLeastAdministrator(command.UserId, command.GroupId);
+			var group = await _groupRepository.GetWithTeamStudentsAsync(command.GroupId);
+			var team = group.Teams.FirstOrDefault(t => t.Name == command.TeamName);
+
+			if (team == null)
+				throw new AppException($"Team {command.TeamName} doesn't exist", AppErrorCode.DOESNT_EXIST);
+
+			team.RemoveStudents(command.Emails, command.UserId);
+
+			await _groupRepository.SaveChangesAsync();
 		}
 
 		public async Task AddTeams(AddTeams command)

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using StudentOrganizer.Core.Common;
+using StudentOrganizer.Core.Enums;
 using StudentOrganizer.Core.Models;
 using StudentOrganizer.Core.Repositories;
 using StudentOrganizer.Infrastructure.Commands.Groups;
@@ -36,6 +37,16 @@ namespace StudentOrganizer.Infrastructure.Services
 			if (isNotUniqueName)
 				throw new AppException($"A group with name {command.NewName} already exists.", AppErrorCode.ALREADY_EXISTS);
 			group.SetName(command.NewName);
+
+			await _groupRepository.SaveChangesAsync();
+		}
+
+		public async Task RemoveUsersFromGroup(RemoveUsersFromGroup command)
+		{
+			await _administratorService.ValidateAtLeastAdministrator(command.UserId, command.GroupId);
+			var group = await _groupRepository.GetWithStudents(command.GroupId);
+
+			group.RemoveUsersFromGroup(command.Emails, command.UserId, _mapper.Map<Role>(command.Role));
 
 			await _groupRepository.SaveChangesAsync();
 		}

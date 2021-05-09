@@ -1,9 +1,8 @@
 ﻿namespace StudentOrganizer.Infrastructure.Dto
 {
-	public enum RoleDto
+	public enum RemoveFromGroupRoleDto
 	{
 		Student,
-		Moderator,
-		Administrator
+		Moderator
 	}
 }

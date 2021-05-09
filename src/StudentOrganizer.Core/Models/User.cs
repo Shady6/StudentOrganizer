@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using StudentOrganizer.Core.Behaviors.LeaveBehaviors;
 using StudentOrganizer.Core.Common;
+using StudentOrganizer.Core.Enums;
 
 namespace StudentOrganizer.Core.Models
 {
@@ -34,7 +36,7 @@ namespace StudentOrganizer.Core.Models
 			protected set { _moderatedGroups = new HashSet<Group>(value); }
 		}
 
-		private IEnumerable<Team> Teams { get; set; }
+		public ICollection<Team> Teams { get; protected set; }
 
 		public User(string email, string password, string salt, string firstName, string lastName)
 		{
@@ -94,9 +96,32 @@ namespace StudentOrganizer.Core.Models
 			LastName = lastName;
 		}
 
-		public void AddGroup(Group group)
+		public void Leave(Guid leavedEntityId, EntityToLeave entityToLeave)
 		{
-			_groups.Add(group);
+			ILeaveBehavior leaveBehavior;
+
+			switch (entityToLeave)
+			{
+				case EntityToLeave.Group:
+					leaveBehavior = new LeaveGroupBehavior(_groups, _moderatedGroups, _administratedGroups);
+					break;
+
+				case EntityToLeave.Moderation:
+					leaveBehavior = new LeaveModeratorBehavior(_moderatedGroups);
+					break;
+
+				case EntityToLeave.Administration:
+					leaveBehavior = new LeaveAdministrationBehavior(_administratedGroups);
+					break;
+
+				case EntityToLeave.Team:
+					leaveBehavior = new LeaveTeamBehavior(Teams);
+					break;
+
+				default:
+					throw new ArgumentException("Specified EntityToLeave is not handled.", nameof(entityToLeave));
+			}
+			leaveBehavior.Leave(leavedEntityId);
 		}
 	}
 }

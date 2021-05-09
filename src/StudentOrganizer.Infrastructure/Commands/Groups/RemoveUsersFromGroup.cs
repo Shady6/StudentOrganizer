@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using StudentOrganizer.Infrastructure.Dto;
 
-namespace StudentOrganizer.Infrastructure.Commands.Teams
+namespace StudentOrganizer.Infrastructure.Commands.Groups
 {
-	public class AddUsersToTeam
+	public class RemoveUsersFromGroup
 	{
 		[JsonIgnore]
 		public Guid UserId { get; set; }
@@ -13,7 +14,7 @@ namespace StudentOrganizer.Infrastructure.Commands.Teams
 		public Guid GroupId { get; set; }
 
 		[JsonIgnore]
-		public string TeamName { get; set; }
+		public RemoveFromGroupRoleDto Role { get; set; }
 
 		public List<string> Emails { get; set; }
 	}

@@ -114,5 +114,10 @@ namespace StudentOrganizer.Infrastructure.Mongo.Repositories
 		{
 			throw new NotImplementedException();
 		}
+
+		public Task<Group> GetWithTeamStudentsAsync(Guid id)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

@@ -24,5 +24,6 @@ namespace StudentOrganizer.Infrastructure.IServices
 		List<GroupDto> GetMyGroupsFull(GetMyGroups command);
 
 		Task PromoteUserToModerator(PromoteUserToModerator command);
+		Task RemoveUsersFromGroup(RemoveUsersFromGroup command);
 	}
 }

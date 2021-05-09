@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using StudentOrganizer.Core.Behaviors.RemoveBehaviors;
 using StudentOrganizer.Core.Common;
+using StudentOrganizer.Core.Enums;
 
 namespace StudentOrganizer.Core.Models
 {
@@ -144,6 +146,31 @@ namespace StudentOrganizer.Core.Models
 		{
 			var usersToAdd = users.Where(u => !_students.Select(s => s.Id).Contains(u.Id));
 			_students.UnionWith(usersToAdd);
+		}
+
+		public void RemoveUsersFromGroup(List<string> emails, Guid removerId, Role role)
+		{
+			IRemoveUsersBehavior removeUsersBehavior;
+			switch (role)
+			{
+				case Role.Student:
+					removeUsersBehavior = new RemoveStudentsFromGroupBehavior(
+						_students,
+						_moderators,
+						_administrators);
+					break;
+
+				case Role.Moderator:
+					removeUsersBehavior = new RemoveBehavior(_moderators, "Group", "Moderators");
+					break;
+
+				case Role.Administrator:
+					throw new AppException("Can't remove administrators from group", AppErrorCode.CANT_DO_THAT);
+				default:
+					throw new ArgumentException($"Case not handled for {role}", nameof(role));
+			}
+
+			removeUsersBehavior.Remove(emails, removerId);
 		}
 
 		public void PromoteToMod(string email)
