@@ -101,5 +101,15 @@ namespace StudentOrganizer.Api.Controllers
 			await _groupService.AddUsersToGroup(command);
 			return Ok();
 		}
+
+		[HttpPut("{groupId}")]
+		public async Task<ActionResult> EditGroupName(Guid groupId, [FromBody] EditGroupName command)
+		{
+			command.GroupId = groupId;
+			command.UserId = User.GetUserId();
+			await _groupService.EditGroupName(command);
+
+			return Ok();
+		}
 	}
 }
