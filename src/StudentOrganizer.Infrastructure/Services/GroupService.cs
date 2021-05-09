@@ -32,9 +32,9 @@ namespace StudentOrganizer.Infrastructure.Services
 			await _administratorService.ValidateAtLeastAdministrator(command.UserId, command.GroupId);
 			var group = await _groupRepository.GetAsync(command.GroupId);
 
-			var isUniqueName = _groupRepository.GetAll().Select(n => n.Name).Contains(command.NewName);
-			if (isUniqueName)
-				throw new AppException("This group name already exist", AppErrorCode.ALREADY_EXISTS);
+			var isNotUniqueName = _groupRepository.GetAll().Select(n => n.Name).Contains(command.NewName);
+			if (isNotUniqueName)
+				throw new AppException($"A group with name {command.NewName} already exists.", AppErrorCode.ALREADY_EXISTS);
 			group.SetName(command.NewName);
 
 			await _groupRepository.SaveChangesAsync();
