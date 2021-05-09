@@ -30,10 +30,13 @@ namespace StudentOrganizer.Api
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddServices();
-			services.AddContextInfrastructure(Configuration);
+			services.AddContextInfrastructure(Configuration);					
+			services.AddControllers().AddNewtonsoftJson(options =>
+			{
+				options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+				options.SerializerSettings.Formatting = Formatting.Indented;
+			});
 			services.AddSwagger();
-			services.AddControllers();
-			services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.Formatting = Formatting.Indented);
 		}
 
 		public void ConfigureContainer(ContainerBuilder builder)

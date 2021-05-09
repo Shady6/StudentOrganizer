@@ -79,6 +79,7 @@ namespace StudentOrganizer.Api.Extensions
 					},
 			});
 			});
+			services.AddSwaggerGenNewtonsoftSupport();
 		}
 	}
 }

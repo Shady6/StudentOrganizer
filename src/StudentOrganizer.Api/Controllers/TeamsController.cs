@@ -22,6 +22,7 @@ namespace StudentOrganizer.Api.Controllers
 			_scheduleService = scheduleService;
 		}
 
+		// TODO fix add schedule course only needs ID here, no need for all the fields
 		[HttpPost("{teamName}/schedules")]
 		public async Task<ActionResult> AddSchedule(Guid groupId, string teamName, [FromBody] AddSchedule command)
 		{
