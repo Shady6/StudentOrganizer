@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using StudentOrganizer.Infrastructure.Commands.Teams;
 
 namespace StudentOrganizer.Infrastructure.IServices
@@ -12,5 +12,9 @@ namespace StudentOrganizer.Infrastructure.IServices
 		Task UpdateTeamName(UpdateTeamName command);
 
 		Task AddUsersToTeam(AddUsersToTeam command);
-	}
+
+        Task AddAssignment(AddAssignment command);
+
+        Task DeleteAssignment(DeleteAssignment command);
+    }
 }

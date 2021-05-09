@@ -1,4 +1,4 @@
-﻿using StudentOrganizer.Core.Models;
+using StudentOrganizer.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +15,6 @@ namespace StudentOrganizer.Core.Repositories
         Task<Team> GetAsync(string name);
         Task DeleteAsync(Guid id);
         Task UpdateAsync();
+        Task UpdateAsync(Team team);
     }
 }

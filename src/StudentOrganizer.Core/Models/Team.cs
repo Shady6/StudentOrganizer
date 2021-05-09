@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using StudentOrganizer.Core.Common;
@@ -50,7 +50,25 @@ namespace StudentOrganizer.Core.Models
 				throw new AppException($"Schedule for semester {semester} doesn't exist.", AppErrorCode.DOESNT_EXIST);
 			Schedules.Remove(foundSchedule);
 		}
-		public void AddStudents(List<User> groupStudents)
+
+        public void AddAssignment(Assignment assignment)
+        {
+            if (Assignmets.Any(s => s.Id.Equals(assignment.Id)))
+                throw new AppException($"Assignment {assignment.Id} already exists, update the existing one or delete and then add.", AppErrorCode.ALREADY_EXISTS);
+
+            Assignmets.Add(assignment);
+        }
+
+        public void DeleteAssignment(Assignment assignment)
+        {
+            var foundAssignment = Assignmets.FirstOrDefault(s => s.Id.Equals(assignment.Id));
+            if (foundAssignment == null)
+                throw new AppException($"Assignment {assignment.Id} doesn't exist.", AppErrorCode.DOESNT_EXIST);
+
+            Assignmets.Remove(foundAssignment);
+        }
+
+        public void AddStudents(List<User> groupStudents)
         {
 			var usersToAdd = groupStudents.Where(u => !_students.Select(s => s.Id).Contains(u.Id));
 			_students.UnionWith(groupStudents);

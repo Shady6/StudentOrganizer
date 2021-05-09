@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -104,5 +104,33 @@ namespace StudentOrganizer.Api.Controllers
 			await _teamService.AddUsersToTeam(command);
 			return Ok();
 		}
-	}
+
+        [HttpPost("{teamName}/addAssignment/{assignmentId}")]
+        public async Task<ActionResult> AddAssignment(Guid groupId, string teamName, Guid assignmentId)
+        {
+            var command = new AddAssignment
+            {
+                UserId = User.GetUserId(),
+                GroupId = groupId,
+                TeamName = teamName,
+                AssignmentId = assignmentId
+            };
+            await _teamService.AddAssignment(command);
+            return Ok();
+        }
+
+        [HttpPost("{teamName}/deleteAssignment/{assignmentId}")]
+        public async Task<ActionResult> DeleteAssignment(Guid groupId, string teamName, Guid assignmentId)
+        {
+            var command = new DeleteAssignment
+            {
+                UserId = User.GetUserId(),
+                GroupId = groupId,
+                TeamName = teamName,
+                AssignmentId = assignmentId
+            };
+            await _teamService.DeleteAssignment(command);
+            return Ok();
+        }
+    }
 }

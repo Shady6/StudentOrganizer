@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using StudentOrganizer.Core.Common;
@@ -12,12 +12,16 @@ namespace StudentOrganizer.Infrastructure.Services
 	public class TeamService : ITeamService
 	{
 		private readonly IGroupRepository _groupRepository;
-		private readonly IAdministratorService _administratorService;		
+		private readonly IAdministratorService _administratorService;
+        private readonly IAssignmentRepository _assignmentRepository;
+        private readonly ITeamRepository _teamRepository;
 
-		public TeamService(IGroupRepository groupRepository, IAdministratorService administratorService)
+		public TeamService(IGroupRepository groupRepository, IAdministratorService administratorService, IAssignmentRepository assignmentRepository, ITeamRepository teamRepository)
 		{
 			_groupRepository = groupRepository;
-			_administratorService = administratorService;			
+			_administratorService = administratorService;
+            _assignmentRepository = assignmentRepository;
+            _teamRepository = teamRepository;
 		}
 
 		public async Task AddUsersToTeam(AddUsersToTeam command)
@@ -71,5 +75,49 @@ namespace StudentOrganizer.Infrastructure.Services
 
 			await _groupRepository.SaveChangesAsync();
 		}
-	}
+
+        public async Task AddAssignment(AddAssignment command)
+        {
+            await _administratorService.ValidateAtLeastModerator(command.UserId, command.GroupId);
+
+            var assignment = await _assignmentRepository.GetAsync(command.AssignmentId);
+
+            if(assignment == null)
+            {
+                throw new AppException($"Assignment {command.AssignmentId} doesn't exist", AppErrorCode.DOESNT_EXIST);
+            }
+
+            var team = await _teamRepository.GetAsync(command.TeamName);
+
+            if(team == null)
+            {
+                throw new AppException($"Team {command.TeamName} doesn't exist", AppErrorCode.DOESNT_EXIST);
+            }
+
+            team.AddAssignment(assignment);
+            await _teamRepository.UpdateAsync(team);
+        }
+
+        public async Task DeleteAssignment(DeleteAssignment command)
+        {
+            await _administratorService.ValidateAtLeastModerator(command.UserId, command.GroupId);
+
+            var assignment = await _assignmentRepository.GetAsync(command.AssignmentId);
+
+            if (assignment == null)
+            {
+                throw new AppException($"Assignment {command.AssignmentId} doesn't exist", AppErrorCode.DOESNT_EXIST);
+            }
+
+            var team = await _teamRepository.GetAsync(command.TeamName);
+
+            if (team == null)
+            {
+                throw new AppException($"Team {command.TeamName} doesn't exist", AppErrorCode.DOESNT_EXIST);
+            }
+
+            team.DeleteAssignment(assignment);
+            await _teamRepository.UpdateAsync(team);
+        }
+    }
 }
