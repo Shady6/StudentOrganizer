@@ -12,5 +12,6 @@ namespace StudentOrganizer.Infrastructure.IServices
 		Task UpdateTeamName(UpdateTeamName command);
 
 		Task AddUsersToTeam(AddUsersToTeam command);
+		Task RemoveUsersFromTeam(RemoveUsersFromTeam command);
 	}
 }

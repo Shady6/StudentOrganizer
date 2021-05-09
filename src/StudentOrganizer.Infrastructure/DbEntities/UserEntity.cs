@@ -1,11 +1,12 @@
-﻿using StudentOrganizer.Core.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using StudentOrganizer.Core.Enums;
+using StudentOrganizer.Core.Models;
 
 namespace StudentOrganizer.Infrastructure.DbEntities
 {
 	public class UserEntity : Entity
-	{		
+	{
 		public string Email { get; set; }
 		public string PasswordHash { get; set; }
 		public string Salt { get; set; }

@@ -33,6 +33,17 @@ namespace StudentOrganizer.Api.Controllers
 			return Ok();
 		}
 
+		[HttpPut("{teamName}/schedules")]
+		public async Task<ActionResult> UpdateSchedule(Guid groupId, string teamName, [FromBody] UpdateSchedule command)
+		{
+			command.GroupId = groupId;
+			command.UserId = User.GetUserId();
+			command.TeamName = teamName;
+			await _scheduleService.UpdateTeamSchedule(command);
+
+			return Ok();
+		}
+
 		[HttpDelete("{teamName}/schedules/{semester}")]
 		public async Task<ActionResult> DeleteSchedule(Guid groupId, string teamName, int semester)
 		{
@@ -44,17 +55,6 @@ namespace StudentOrganizer.Api.Controllers
 				Semester = semester
 			};
 			await _scheduleService.DeleteTeamSchedule(command);
-
-			return Ok();
-		}
-
-		[HttpPut("{teamName}/schedules")]
-		public async Task<ActionResult> UpdateSchedule(Guid groupId, string teamName, [FromBody] UpdateSchedule command)
-		{
-			command.GroupId = groupId;
-			command.UserId = User.GetUserId();
-			command.TeamName = teamName;
-			await _scheduleService.UpdateTeamSchedule(command);
 
 			return Ok();
 		}
@@ -95,13 +95,24 @@ namespace StudentOrganizer.Api.Controllers
 			return Ok();
 		}
 
-		[HttpPost("{teamName}/addUsers")]
+		[HttpPost("{teamName}/users")]
 		public async Task<ActionResult> AddUsersToTeam(Guid groupId, string teamName, [FromBody] AddUsersToTeam command)
 		{
 			command.GroupId = groupId;
 			command.TeamName = teamName;
 			command.UserId = User.GetUserId();
 			await _teamService.AddUsersToTeam(command);
+			return Ok();
+		}
+
+		// TODO test this
+		[HttpDelete("{teamName}/users")]
+		public async Task<ActionResult> RemoveUsersFromTeam(Guid groupId, string teamName, [FromBody] RemoveUsersFromTeam command)
+		{
+			command.GroupId = groupId;
+			command.TeamName = teamName;
+			command.UserId = User.GetUserId();
+			await _teamService.RemoveUsersFromTeam(command);
 			return Ok();
 		}
 	}

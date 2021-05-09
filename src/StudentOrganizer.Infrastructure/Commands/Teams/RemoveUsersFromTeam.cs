@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace StudentOrganizer.Infrastructure.Commands.Teams
 {
-	public class AddUsersToTeam
+	public class RemoveUsersFromTeam
 	{
 		[JsonIgnore]
 		public Guid UserId { get; set; }

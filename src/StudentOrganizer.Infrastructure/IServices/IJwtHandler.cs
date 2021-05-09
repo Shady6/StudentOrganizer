@@ -1,6 +1,6 @@
-﻿using StudentOrganizer.Core.Models;
+﻿using System;
+using StudentOrganizer.Core.Enums;
 using StudentOrganizer.Infrastructure.Dto;
-using System;
 
 namespace StudentOrganizer.Infrastructure.IServices
 {

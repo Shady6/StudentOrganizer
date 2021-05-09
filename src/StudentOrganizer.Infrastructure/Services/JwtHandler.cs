@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using StudentOrganizer.Core.Enums;
 using StudentOrganizer.Core.Models;
 using StudentOrganizer.Infrastructure.Dto;
 using StudentOrganizer.Infrastructure.Extentions;

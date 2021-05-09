@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Extensions.Caching.Memory;
 using StudentOrganizer.Core.Common;
+using StudentOrganizer.Core.Enums;
 using StudentOrganizer.Core.Models;
 using StudentOrganizer.Core.Repositories;
 using StudentOrganizer.Infrastructure.Dto;
@@ -16,11 +17,12 @@ namespace StudentOrganizer.Infrastructure.Services
 	public class UserService : IUserService
 	{
 		private readonly IUserRepository _userRepository;
+		private readonly IGroupRepository _groupRepository;
 		private readonly IEncrypter _encrypter;
 		private readonly IJwtHandler _jwtHandler;
 		private readonly IMemoryCache _memoryCache;
 		private readonly IAdministratorService _administratorService;
-		private readonly IMapper __mapper;
+		private readonly IMapper _mapper;
 
 		public UserService(
 			IUserRepository userRepository,
@@ -28,14 +30,35 @@ namespace StudentOrganizer.Infrastructure.Services
 			IJwtHandler jwtHandler,
 			IMemoryCache memoryCache,
 			IAdministratorService administratorService,
-			IMapper mapper)
+			IMapper mapper, IGroupRepository groupRepository)
 		{
 			_userRepository = userRepository;
 			_encrypter = encrypter;
 			_jwtHandler = jwtHandler;
 			_memoryCache = memoryCache;
 			_administratorService = administratorService;
-			__mapper = mapper;
+			_mapper = mapper;
+			_groupRepository = groupRepository;
+		}
+
+		public async Task LeaveGroup(LeaveGroup command)
+		{
+			var user = await _userRepository.GetWithAllGroupsAsync(command.UserId);
+
+			user.Leave(command.GroupId, _mapper.Map<EntityToLeave>(command.GroupToLeave));
+
+			await _userRepository.SaveChangesAsync();
+		}
+
+		public async Task LeaveTeam(LeaveTeam command)
+		{
+			var group = await _groupRepository.GetWithTeamsAsync(command.GroupId);
+			var user = await _userRepository.GetWithTeamsAsync(command.UserId);
+
+			var teamId = group.Teams.FirstOrDefault(t => t.Name == command.TeamName)?.Id ?? Guid.NewGuid();
+			user.Leave(teamId, EntityToLeave.Team);
+
+			await _userRepository.SaveChangesAsync();
 		}
 
 		public async Task<List<SuggestedUserDto>> GetSuggestedUsers(GetSuggestedUsers command)
@@ -45,7 +68,7 @@ namespace StudentOrganizer.Infrastructure.Services
 			await _administratorService.ValidateAtLeastModerator(command.UserId, command.GroupId);
 
 			var foundUsers = _userRepository.GetSuggestedAsync(command.SearchLetters, command.GroupId).Take(10);
-			return __mapper.ProjectTo<SuggestedUserDto>(foundUsers).ToList();
+			return _mapper.ProjectTo<SuggestedUserDto>(foundUsers).ToList();
 		}
 
 		public async Task RegisterAsync(Guid id, string email, string username, string password,

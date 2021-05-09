@@ -25,5 +25,7 @@ namespace StudentOrganizer.Core.Repositories
 		Task<List<User>> GetUsersByEmailsAsync(List<string> Emails);		
 		IQueryable<User> GetSuggestedAsync(string searchLetters, Guid groupId);
 		Task<User> GetWithAdministratedAndModeratedGroups(Guid userId);
+		Task<User> GetWithAllGroupsAsync(Guid userId);
+		Task<User> GetWithTeamsAsync(Guid userId);
 	}
 }
