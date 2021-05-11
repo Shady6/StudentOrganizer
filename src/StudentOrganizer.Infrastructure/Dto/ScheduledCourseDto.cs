@@ -7,7 +7,7 @@ namespace StudentOrganizer.Infrastructure.Dto
 		public IsoDayOfWeek DayOfTheWeek { get; set; }
 		public LocalTime StartTime { get; set; }
 		public LocalTime EndTime { get; set; }
-		public CourseDto Course { get; set; }
+		public Identifier Course { get; set; }
 	}
 	
 }

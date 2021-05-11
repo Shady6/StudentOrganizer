@@ -10,5 +10,4 @@ namespace StudentOrganizer.Infrastructure.Dto
 		public LocationDto Location { get; set; }		
 		public int Semester { get; set; }
 	}
-
 }

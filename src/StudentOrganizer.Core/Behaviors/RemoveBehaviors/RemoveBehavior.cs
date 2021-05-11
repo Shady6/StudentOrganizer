@@ -28,17 +28,19 @@ namespace StudentOrganizer.Core.Behaviors.RemoveBehaviors
 			{
 				var foundUsers = users.FirstOrDefault(s => s.Email == email);
 
-				if (foundUsers.Id == removerId)
+				if (foundUsers?.Id == removerId)
 					selfDeleteMsg = $"Can't remove yourself from the {removeFrom}. Please use dedicated funcionality for that. ";
 				else if (foundUsers != null)
 					users.Remove(foundUsers);
 				else
-					usersNotExisting.Add(foundUsers.Email);
+					usersNotExisting.Add(email);
 			}
 
 			if (usersNotExisting.Count > 0)
-				throw new AppException($"{selfDeleteMsg}{removeWho} with those emails don't exist in the {removeFrom} {string.Join(", ", usersNotExisting)}." +
-					$"Other {removeWho} were removed successfully", AppErrorCode.DOESNT_EXIST);
+				throw new AppException($"{selfDeleteMsg}{removeWho} with those emails: {string.Join(", ", usersNotExisting)} don't exist in the {removeFrom}." +
+					$" Other {removeWho} were removed successfully", AppErrorCode.DOESNT_EXIST);
+			else if (!string.IsNullOrEmpty(selfDeleteMsg))
+				throw new AppException(selfDeleteMsg, AppErrorCode.CANT_DO_THAT);
 		}
 	}
 }

@@ -61,14 +61,14 @@ namespace StudentOrganizer.Infrastructure.Services
 			await _userRepository.SaveChangesAsync();
 		}
 
-		public async Task<List<SuggestedUserDto>> GetSuggestedUsers(GetSuggestedUsers command)
+		public async Task<List<DisplayUserDto>> GetSuggestedUsers(GetSuggestedUsers command)
 		{
 			if (string.IsNullOrWhiteSpace(command.SearchLetters) || command.SearchLetters.Length < 3)
 				throw new AppException("You need to specify at least three letters to search suggested users", AppErrorCode.BAD_INPUT);
 			await _administratorService.ValidateAtLeastModerator(command.UserId, command.GroupId);
 
 			var foundUsers = _userRepository.GetSuggestedAsync(command.SearchLetters, command.GroupId).Take(10);
-			return _mapper.ProjectTo<SuggestedUserDto>(foundUsers).ToList();
+			return _mapper.ProjectTo<DisplayUserDto>(foundUsers).ToList();
 		}
 
 		public async Task RegisterAsync(Guid id, string email, string username, string password,

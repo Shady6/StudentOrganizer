@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using StudentOrganizer.Core.Common;
 using StudentOrganizer.Core.Models;
 
@@ -31,7 +32,7 @@ namespace StudentOrganizer.Core.Behaviors.LeaveBehaviors
 			}
 			catch (AppException)
 			{
-				if (administratedGroups.Count > 1)
+				if (!administratedGroups.Any(g => g.Id == groupId) || administratedGroups.Count > 1)
 					leftAdministration = false;
 				else
 					throw;

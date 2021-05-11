@@ -44,7 +44,7 @@ namespace StudentOrganizer.Infrastructure.Services
 		public async Task RemoveUsersFromGroup(RemoveUsersFromGroup command)
 		{
 			await _administratorService.ValidateAtLeastAdministrator(command.UserId, command.GroupId);
-			var group = await _groupRepository.GetWithStudents(command.GroupId);
+			var group = await _groupRepository.GetWithAllUsers(command.GroupId);
 
 			group.RemoveUsersFromGroup(command.Emails, command.UserId, _mapper.Map<Role>(command.Role));
 
@@ -143,6 +143,8 @@ namespace StudentOrganizer.Infrastructure.Services
 
 			return groups.Select(g => new GroupDto
 			{
+				Id = g.Id,
+				Moderators = _mapper.Map<List<DisplayUserDto>>(g.Moderators),
 				Administrators = _mapper.Map<List<DisplayUserDto>>(g.Administrators),
 				Courses = _mapper.Map<List<CourseDto>>(g.Courses),
 				Name = g.Name,
@@ -164,6 +166,7 @@ namespace StudentOrganizer.Infrastructure.Services
 				{
 					FirstName = s.FirstName,
 					LastName = s.LastName,
+					Email = s.Email,
 					Teams = g.Teams.Where(t => t.Students.Any(st => st.Id == s.Id))
 					.Select(t => t.Name).ToList()
 				}).ToList()

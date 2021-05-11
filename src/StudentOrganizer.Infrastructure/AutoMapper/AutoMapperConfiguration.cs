@@ -15,12 +15,12 @@ namespace StudentOrganizer.Infrastructure.AutoMapper
 				cfg.CreateMap<Assignment, AssignmentDto>();
 				cfg.CreateMap<Location, LocationDto>().ReverseMap();
 				cfg.CreateMap<Course, CourseDto>().ReverseMap();
+				cfg.CreateMap<Identifier, Course>();
 				cfg.CreateMap<ScheduledCourseDto, ScheduledCourse>().ReverseMap();
 				cfg.CreateMap<AddCourseDto, Course>();
 				cfg.CreateMap<UpdateCourseDto, Course>();
 				cfg.CreateMap<User, DisplayUserDto>();
-				cfg.CreateMap<User, StudentDto>();
-				cfg.CreateMap<User, SuggestedUserDto>();
+				cfg.CreateMap<User, StudentDto>();				
 				cfg.CreateMap<Team, TeamDto>();
 				cfg.CreateMap<Schedule, ScheduleDto>().ReverseMap();
 				cfg.CreateMap<Group, GroupDto>();

@@ -99,7 +99,7 @@ namespace StudentOrganizer.Api.Controllers
 		}
 
 		[HttpGet("{groupId}/users")]
-		public async Task<ActionResult<List<SuggestedUserDto>>> GetSuggestedUsers(Guid groupId, [FromQuery] GetSuggestedUsers command)
+		public async Task<ActionResult<List<DisplayUserDto>>> GetSuggestedUsers(Guid groupId, [FromQuery] GetSuggestedUsers command)
 		{
 			command.UserId = User.GetUserId();
 			command.GroupId = groupId;
@@ -116,18 +116,16 @@ namespace StudentOrganizer.Api.Controllers
 			return Ok();
 		}
 
-		// TODO test this
 		[HttpDelete("{groupId}/users")]
-		public async Task<ActionResult> RemoveUsersFromGroup(Guid groupId, [FromQuery] RemoveFromGroupRoleDto role, [FromBody] RemoveUsersFromGroup command)
+		public async Task<ActionResult> RemoveUsersFromGroup(Guid groupId, [FromQuery] RemoveFromGroupRoleDto roleToRemoveFrom, [FromBody] RemoveUsersFromGroup command)
 		{
 			command.UserId = User.GetUserId();
 			command.GroupId = groupId;
-			command.Role = role;
+			command.Role = roleToRemoveFrom;
 			await _groupService.RemoveUsersFromGroup(command);
 			return Ok();
 		}
-
-		// TODO test this
+		
 		[HttpPost("{groupId}/users/promoteToMod")]
 		public async Task<ActionResult> PromoteUserToModerator(Guid groupId, [FromBody] PromoteUserToModerator command)
 		{

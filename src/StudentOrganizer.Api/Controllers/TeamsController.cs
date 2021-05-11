@@ -21,8 +21,7 @@ namespace StudentOrganizer.Api.Controllers
 			_teamService = courseService;
 			_scheduleService = scheduleService;
 		}
-
-		// TODO fix add schedule course only needs ID here, no need for all the fields
+		
 		[HttpPost("{teamName}/schedules")]
 		public async Task<ActionResult> AddSchedule(Guid groupId, string teamName, [FromBody] AddSchedule command)
 		{
@@ -105,8 +104,7 @@ namespace StudentOrganizer.Api.Controllers
 			await _teamService.AddUsersToTeam(command);
 			return Ok();
 		}
-
-		// TODO test this
+		
 		[HttpDelete("{teamName}/users")]
 		public async Task<ActionResult> RemoveUsersFromTeam(Guid groupId, string teamName, [FromBody] RemoveUsersFromTeam command)
 		{

@@ -7,6 +7,7 @@ namespace StudentOrganizer.Infrastructure.Dto
 	{
 		public Guid Id { get; set; }
 		public List<DisplayUserDto> Administrators { get; set; }
+		public List<DisplayUserDto> Moderators { get; set; }
 		public List<StudentDto> Students { get; set; }
 		public string Name { get; set; }
 		public List<ScheduleDto> Schedules { get; set; }

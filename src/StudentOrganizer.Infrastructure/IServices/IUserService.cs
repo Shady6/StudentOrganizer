@@ -8,7 +8,7 @@ namespace StudentOrganizer.Infrastructure.IServices
 {
 	public interface IUserService : IService
 	{
-		Task<List<SuggestedUserDto>> GetSuggestedUsers(GetSuggestedUsers command);
+		Task<List<DisplayUserDto>> GetSuggestedUsers(GetSuggestedUsers command);
 		Task LeaveGroup(LeaveGroup command);
 		Task LoginAsync(Guid id, string email, string password);		
 		Task RegisterAsync(Guid id, string email, string username, string password, string firstName, string lastName, RoleDto role);

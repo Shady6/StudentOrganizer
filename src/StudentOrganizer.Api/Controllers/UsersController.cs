@@ -23,8 +23,7 @@ namespace StudentOrganizer.Api.Controllers
 			_memoryCache = memoryCache;
 			_userService = userService;
 		}
-
-		// TODO test group leaving
+		
 		[HttpDelete("groups/{groupId}/users/leave")]
 		public async Task<ActionResult> LeaveGroup(Guid groupId, [FromQuery] GroupToLeave groupToLeave)
 		{
@@ -37,8 +36,7 @@ namespace StudentOrganizer.Api.Controllers
 			await _userService.LeaveGroup(command);
 			return Ok();
 		}
-
-		// TODO teast team leaving
+		
 		[HttpDelete("groups/{groupId}/teams/{teamName}/users/leave")]
 		public async Task<ActionResult> LeaveTeam(Guid groupId, string teamName)
 		{
