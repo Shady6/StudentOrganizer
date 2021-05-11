@@ -27,5 +27,6 @@ namespace StudentOrganizer.Core.Repositories
 		Task<User> GetWithAdministratedAndModeratedGroups(Guid userId);
 		Task<User> GetWithAllGroupsAsync(Guid userId);
 		Task<User> GetWithTeamsAsync(Guid userId);
-	}
+        IQueryable<User> GetAll();
+    }
 }

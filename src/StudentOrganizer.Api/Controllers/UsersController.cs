@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using StudentOrganizer.Api.Extentions;
@@ -65,6 +66,15 @@ namespace StudentOrganizer.Api.Controllers
 			await _mediator.Send(command);
 			var jwt = _memoryCache.Get<JwtDto>(command.Id);
 			return Ok(jwt);
+		}
+
+		[HttpPut("users/edit")]
+		[Authorize]
+		public async Task<ActionResult> Edit([FromBody] EditUser command)
+		{
+			command.UserId = User.GetUserId();
+			await _userService.EditData(command);
+			return Ok();
 		}
 	}
 }

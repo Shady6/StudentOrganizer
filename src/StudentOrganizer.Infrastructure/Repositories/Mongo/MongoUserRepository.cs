@@ -100,5 +100,10 @@ namespace StudentOrganizer.Infrastructure.Mongo.Repositories
 		{
 			throw new NotImplementedException();
 		}
-	}
+
+        public IQueryable<User> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
