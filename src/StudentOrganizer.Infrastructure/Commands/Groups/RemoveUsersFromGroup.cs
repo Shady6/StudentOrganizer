@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 using StudentOrganizer.Infrastructure.Dto;
 
 namespace StudentOrganizer.Infrastructure.Commands.Groups

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 using StudentOrganizer.Infrastructure.Dto;
 
 namespace StudentOrganizer.Infrastructure.Commands.Schedules
