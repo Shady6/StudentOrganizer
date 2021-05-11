@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using StudentOrganizer.Api.Extentions;
@@ -63,6 +64,19 @@ namespace StudentOrganizer.Api.Controllers
 			await _mediator.Send(command);
 			var jwt = _memoryCache.Get<JwtDto>(command.Id);
 			return Ok(jwt);
+		}
+
+		[HttpDelete("users")]
+		[Authorize]
+		public async Task<ActionResult> DeleteUser()
+		{
+			var command = new DeleteUser
+			{
+				UserId = User.GetUserId()
+			};
+
+			await _userService.DeleteUser(command);
+			return Ok();
 		}
 	}
 }

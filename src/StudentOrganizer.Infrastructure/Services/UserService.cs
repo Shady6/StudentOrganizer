@@ -99,5 +99,11 @@ namespace StudentOrganizer.Infrastructure.Services
 			JwtDto token = _jwtHandler.CreateToken(user.Id, user.Role);
 			_memoryCache.Set(id, token);
 		}
+
+		public async Task DeleteUser(DeleteUser command)
+		{
+			_userRepository.Delete(command.UserId);
+			await _userRepository.SaveChangesAsync();
+		}
 	}
 }
