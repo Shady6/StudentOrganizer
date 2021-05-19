@@ -15,6 +15,6 @@ namespace StudentOrganizer.Infrastructure.Commands.Schedules
 		[JsonIgnore]
 		public Guid GroupId { get; set; }
 
-		public ScheduleDto Schedule { get; set; }
+		public AddScheduleDto Schedule { get; set; }
 	}
 }

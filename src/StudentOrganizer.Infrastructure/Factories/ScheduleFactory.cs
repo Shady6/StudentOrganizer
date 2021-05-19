@@ -10,7 +10,7 @@ namespace StudentOrganizer.Infrastructure.Factories
 {
 	public class ScheduleFactory
 	{
-		public static Schedule Create(ScheduleDto scheduleDto, IEnumerable<Course> courses)
+		public static Schedule Create(AddScheduleDto scheduleDto, IEnumerable<Course> courses)
 		{
 			foreach (var scheduledCourse in scheduleDto.ScheduledCourses)
 			{
