@@ -55,6 +55,14 @@ namespace StudentOrganizer.Core.Models
 		{
 		}
 
+		public void UpdateData(string email, string password, string salt, string firstName, string lastName)
+        {
+			SetMail(email);
+			SetPassword(password, salt);
+			SetFirstName(firstName);
+			SetLastName(lastName);
+		}
+
 		public void SetMail(string email)
 		{
 			if (string.IsNullOrWhiteSpace(email))

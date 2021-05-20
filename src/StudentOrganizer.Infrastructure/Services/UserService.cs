@@ -71,7 +71,7 @@ namespace StudentOrganizer.Infrastructure.Services
 			return _mapper.ProjectTo<DisplayUserDto>(foundUsers).ToList();
 		}
 
-		public async Task RegisterAsync(Guid id, string email, string username, string password,
+		public async Task RegisterAsync(Guid id, string email, string password,
 			string firstName, string lastName, RoleDto role)
 		{
 			if (await _userRepository.GetAsync(email) != null)
@@ -98,6 +98,21 @@ namespace StudentOrganizer.Infrastructure.Services
 
 			JwtDto token = _jwtHandler.CreateToken(user.Id, user.Role);
 			_memoryCache.Set(id, token);
+		}
+
+		public async Task EditData(EditUser command)
+        {
+			var user = await _userRepository.GetAsync(command.UserId);
+
+			var isNotUniqueEmail = _userRepository.GetAll().Select(u => u.Email).Contains(command.NewEmail);
+			if (isNotUniqueEmail)
+				throw new AppException($"A group with name {command.NewEmail} already exists.", AppErrorCode.ALREADY_EXISTS);
+
+			string salt = _encrypter.GetSalt(command.NewPassword);
+			string passwordHash = _encrypter.GetHash(command.NewPassword, salt);
+
+			user.UpdateData(command.NewEmail, passwordHash, salt, command.NewFirstName, command.NewLastName);
+			await _userRepository.SaveChangesAsync();
 		}
 	}
 }

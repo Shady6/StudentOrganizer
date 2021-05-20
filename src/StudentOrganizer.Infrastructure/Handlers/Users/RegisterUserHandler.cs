@@ -18,7 +18,7 @@ namespace StudentOrganizer.Infrastructure.Users.Handlers
 
 		public async Task<Unit> Handle(RegisterUser command, CancellationToken cancellationToken)
 		{
-			await _userService.RegisterAsync(Guid.NewGuid(), command.Email, command.Username, command.Password,
+			await _userService.RegisterAsync(Guid.NewGuid(), command.Email, command.Password,
 				command.FirstName, command.LastName, command.Role);
 			return Unit.Value;
 		}

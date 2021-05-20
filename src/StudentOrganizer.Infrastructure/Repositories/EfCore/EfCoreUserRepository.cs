@@ -65,5 +65,9 @@ namespace StudentOrganizer.Infrastructure.Repositories.EfCore
 			return await _dbContext.Users.Where(u => Emails.Contains(u.Email))
                 .ToListAsync();
 		}
+		public IQueryable<User> GetAll()
+		{
+			return _dbContext.Users;
+		}
 	}
 }
