@@ -7,7 +7,6 @@ using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using StudentOrganizer.Api.Exceptions;
 using StudentOrganizer.Api.Extensions;
-using StudentOrganizer.Infrastructure.Mongo;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace StudentOrganizer.Api
@@ -42,7 +41,7 @@ namespace StudentOrganizer.Api
 		public void ConfigureContainer(ContainerBuilder builder)
 		{
 			builder.AddServices();
-			builder.AddRepositories(isMongo: false);
+			builder.AddRepositories();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,8 +58,7 @@ namespace StudentOrganizer.Api
 			app.UseMiddleware<ExceptionHandler>();
 
 			app.UseAuthentication();
-			app.UseAuthorization();
-			MongoConfiguration.Initialize();
+			app.UseAuthorization();			
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllers();

@@ -1,10 +1,9 @@
-﻿using System.Reflection;
-using Autofac;
-using StudentOrganizer.Core.Repositories;
+﻿using Autofac;
 using StudentOrganizer.Infrastructure.Contexts;
 using StudentOrganizer.Infrastructure.IServices;
-using StudentOrganizer.Infrastructure.Mongo.Repositories;
+using StudentOrganizer.Infrastructure.Repositories.EfCore;
 using StudentOrganizer.Infrastructure.Services;
+using System.Reflection;
 
 namespace StudentOrganizer.Api.Extensions
 {
@@ -19,16 +18,15 @@ namespace StudentOrganizer.Api.Extensions
 			builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(UserService)))
 				.Where(t => t.Name.EndsWith("Service"))
 				.AsImplementedInterfaces()
-				.InstancePerLifetimeScope();			
+				.InstancePerLifetimeScope();
 		}
 
-		public static void AddRepositories(this ContainerBuilder builder, bool isMongo = true)
+		public static void AddRepositories(this ContainerBuilder builder)
 		{
-			if (!isMongo)
-				builder.RegisterType<EfCoreDbContext>().InstancePerLifetimeScope();
+			builder.RegisterType<EfCoreDbContext>().InstancePerLifetimeScope();
 
-			builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(MongoUserRepository)))
-				.Where(t => t.Name.StartsWith(isMongo ? "Mongo" : "EfCore") && t.Name.EndsWith("Repository"))
+			builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(EfCoreUserRepository)))
+				.Where(t => t.Name.StartsWith("EfCore") && t.Name.EndsWith("Repository"))
 				.AsImplementedInterfaces();
 		}
 	}

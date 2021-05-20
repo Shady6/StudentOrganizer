@@ -32,6 +32,14 @@ namespace StudentOrganizer.Infrastructure.Repositories.EfCore
 				.FirstOrDefaultAsync();
 		}
 
+		public async Task<Group> GetWithAssignments(Guid GroupId)
+		{
+			return await _dbContext.Group.Where(g => g.Id == GroupId)
+				.Include(g => g.Assignmets)
+				.Include(g => g.Courses)
+				.FirstOrDefaultAsync();
+		}
+
 		public async Task<Group> GetWithCoursesAsync(Guid id)
 		{
 			return await _dbContext.Group.Where(g => g.Id == id)
@@ -43,6 +51,15 @@ namespace StudentOrganizer.Infrastructure.Repositories.EfCore
 		{
 			return await _dbContext.Group.Where(g => g.Id == id)
 				.Include(g => g.Teams)
+				.FirstOrDefaultAsync();
+		}
+
+		public async Task<Group> GetWithTeamAssignmentsAsync(Guid id)
+		{
+			return await _dbContext.Group.Where(g => g.Id == id)
+				.Include(g => g.Teams)
+				.ThenInclude(t => t.Assignmets)
+				.Include(g => g.Courses)
 				.FirstOrDefaultAsync();
 		}
 

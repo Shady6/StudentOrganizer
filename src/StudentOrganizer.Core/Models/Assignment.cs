@@ -1,5 +1,5 @@
-﻿using System;
-using StudentOrganizer.Core.Common;
+﻿using StudentOrganizer.Core.Common;
+using System;
 
 namespace StudentOrganizer.Core.Models
 {
@@ -10,14 +10,25 @@ namespace StudentOrganizer.Core.Models
 		public DateTime? Deadline { get; protected set; }
 		public int Semester { get; protected set; }
 		public Course Course { get; protected set; }
-		public bool HasAssignmentExpired => Deadline != null && Deadline < DateTime.Now;		
+		public bool HasAssignmentExpired => Deadline != null && Deadline < DateTime.Now;
 
 		protected Assignment()
 		{
 		}
 
-		public Assignment(string name, string description, int semester, DateTime deadline)
+		public Assignment(string name, string description, int semester, DateTime? deadline, Guid courseId)
 		{
+			SetValues(name, description, semester, deadline, courseId);
+		}
+
+		public void Update(string name, string description, int semester, DateTime? deadline, Guid courseId)
+		{
+			SetValues(name, description, semester, deadline, courseId);
+		}
+
+		private void SetValues(string name, string description, int semester, DateTime? deadline, Guid courseId)
+		{
+			Course = new Course(courseId);
 			SetName(name);
 			SetDescription(description);
 			SetSemester(semester);
@@ -51,7 +62,7 @@ namespace StudentOrganizer.Core.Models
 			Semester = semester;
 		}
 
-		public void SetDeadline(DateTime deadline)
+		public void SetDeadline(DateTime? deadline)
 		{
 			Deadline = deadline;
 		}

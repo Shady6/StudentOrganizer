@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using StudentOrganizer.Core.Behaviors.Assignments;
 using StudentOrganizer.Core.Behaviors.RemoveBehaviors;
 using StudentOrganizer.Core.Common;
 using StudentOrganizer.Core.Enums;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace StudentOrganizer.Core.Models
 {
-	public class Group : Entity
+	public class Group : Entity, IAssignmentActions
 	{
 		private ISet<User> _administrators = new HashSet<User>();
 		private ISet<User> _moderators = new HashSet<User>();
@@ -35,7 +36,14 @@ namespace StudentOrganizer.Core.Models
 		public IList<Schedule> Schedules { get; protected set; }
 		public IList<Team> Teams { get; protected set; }
 		public IList<Course> Courses { get; protected set; }
-		public IList<Assignment> Assignmets { get; protected set; }
+		private readonly AssignmentActions AssignmentActions = new();
+
+		public IList<Assignment> Assignmets
+		{
+			get => AssignmentActions.Assignmets;
+
+			protected set => AssignmentActions.Assignmets = value;
+		}
 
 		public Group(Guid id, string name)
 		{
@@ -186,5 +194,14 @@ namespace StudentOrganizer.Core.Models
 
 			_moderators.Add(student);
 		}
+
+		public void AddAsignment(Assignment assignment)
+			=> AssignmentActions.AddAsignment(assignment);
+
+		public void UpdateAssignment(string name, string description, int semester, DateTime? deadline, Guid courseId, Guid assignmentId)
+			=> AssignmentActions.UpdateAssignment(name, description, semester, deadline, courseId, assignmentId);
+
+		public void DeleteAssignment(Guid id)
+			=> AssignmentActions.DeleteAssignment(id);
 	}
 }

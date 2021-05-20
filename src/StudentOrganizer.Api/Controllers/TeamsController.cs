@@ -1,11 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudentOrganizer.Api.Extentions;
-using StudentOrganizer.Infrastructure.Commands.Schedules;
 using StudentOrganizer.Infrastructure.Commands.Teams;
 using StudentOrganizer.Infrastructure.IServices;
+using System;
+using System.Threading.Tasks;
 
 namespace StudentOrganizer.Api.Controllers
 {
@@ -14,49 +13,10 @@ namespace StudentOrganizer.Api.Controllers
 	public class TeamsController : ApiControllerBase
 	{
 		private readonly ITeamService _teamService;
-		private readonly IScheduleService _scheduleService;
 
-		public TeamsController(ITeamService courseService, IScheduleService scheduleService)
+		public TeamsController(ITeamService courseService)
 		{
 			_teamService = courseService;
-			_scheduleService = scheduleService;
-		}
-		
-		[HttpPost("{teamName}/schedules")]
-		public async Task<ActionResult> AddSchedule(Guid groupId, string teamName, [FromBody] AddSchedule command)
-		{
-			command.GroupId = groupId;
-			command.UserId = User.GetUserId();
-			command.TeamName = teamName;
-			await _scheduleService.AddTeamSchedule(command);
-
-			return Ok();
-		}
-
-		[HttpPut("{teamName}/schedules")]
-		public async Task<ActionResult> UpdateSchedule(Guid groupId, string teamName, [FromBody] UpdateSchedule command)
-		{
-			command.GroupId = groupId;
-			command.UserId = User.GetUserId();
-			command.TeamName = teamName;
-			await _scheduleService.UpdateTeamSchedule(command);
-
-			return Ok();
-		}
-
-		[HttpDelete("{teamName}/schedules/{semester}")]
-		public async Task<ActionResult> DeleteSchedule(Guid groupId, string teamName, int semester)
-		{
-			var command = new DeleteSchedule
-			{
-				GroupId = groupId,
-				UserId = User.GetUserId(),
-				TeamName = teamName,
-				Semester = semester
-			};
-			await _scheduleService.DeleteTeamSchedule(command);
-
-			return Ok();
 		}
 
 		[HttpPost]
@@ -104,7 +64,7 @@ namespace StudentOrganizer.Api.Controllers
 			await _teamService.AddUsersToTeam(command);
 			return Ok();
 		}
-		
+
 		[HttpDelete("{teamName}/users")]
 		public async Task<ActionResult> RemoveUsersFromTeam(Guid groupId, string teamName, [FromBody] RemoveUsersFromTeam command)
 		{

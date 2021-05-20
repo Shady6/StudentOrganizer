@@ -1,50 +1,95 @@
-﻿using AutoMapper;
+﻿using StudentOrganizer.Core.Behaviors.Assignments;
+using StudentOrganizer.Core.Common;
 using StudentOrganizer.Core.Models;
 using StudentOrganizer.Core.Repositories;
-using StudentOrganizer.Infrastructure.Dto;
+using StudentOrganizer.Infrastructure.Commands.Assignments;
 using StudentOrganizer.Infrastructure.IServices;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace StudentOrganizer.Infrastructure.Services
 {
 	public class AssignmentService : IAssignmentService
 	{
-		private readonly IAssignmentRepository _assignmentRepository;
-		private readonly IMapper _mapper;
+		private readonly IAdministratorService _administratorService;
+		private readonly IGroupRepository _groupRepository;
 
-		public AssignmentService(IAssignmentRepository assignmentRepository, IMapper mapper)
+		public AssignmentService(IAdministratorService administratorService, IGroupRepository groupRepository)
 		{
-			_assignmentRepository = assignmentRepository;
-			_mapper = mapper;
+			_administratorService = administratorService;
+			_groupRepository = groupRepository;
 		}
 
-		public async Task<IEnumerable<AssignmentDto>> BrowseAsync(string name = "")
+		// TODO add these to controller 
+		public async Task AddAssignment(AddAssignment command)
 		{
-			var assignments = await _assignmentRepository.BrowseAsync(name);
-			return _mapper.Map<IEnumerable<AssignmentDto>>(assignments);
+			await _administratorService.ValidateAtLeastModerator(command.UserId, command.GroupId);
+			var group = await GetGroupForAssignmentActions(command);
+			ValidateCourseExists(command.CourseId, group);
+			IAssignmentActions assignmentActions =
+				command is ITeamAssignment cmd ? group.Teams.First(t => t.Name == cmd.TeamName) : group;
+
+			assignmentActions.AddAsignment(new Assignment(
+				command.Name,
+				command.Description,
+				command.Semester,
+				command.Deadline,
+				command.CourseId));
+
+			await _groupRepository.SaveChangesAsync();
 		}
 
-		public async Task CreateAsync(Guid id, string name, string description, int semester, DateTime deadline)
+		public async Task UpdateAssignment(UpdateAssignment command)
 		{
-			var assignment = await _assignmentRepository.GetAsync(id);
-			if (assignment != null)
+			await _administratorService.ValidateAtLeastModerator(command.UserId, command.GroupId);
+			var group = await GetGroupForAssignmentActions(command);
+			ValidateCourseExists(command.CourseId, group);
+			IAssignmentActions assignmentActions =
+				command is ITeamAssignment cmd ? group.Teams.First(t => t.Name == cmd.TeamName) : group;
+
+			assignmentActions.UpdateAssignment(command.Name,
+				command.Description,
+				command.Semester,
+				command.Deadline,
+				command.CourseId,
+				command.AssignmentId);
+
+			await _groupRepository.SaveChangesAsync();
+		}
+
+		public async Task DeleteAssignment(DeleteAssignment command)
+		{
+			await _administratorService.ValidateAtLeastAdministrator(command.UserId, command.GroupId);
+			var group = await GetGroupForAssignmentActions(command);
+			IAssignmentActions assignmentActions =
+				command is ITeamAssignment cmd ? group.Teams.First(t => t.Name == cmd.TeamName) : group;
+
+			assignmentActions.DeleteAssignment(command.AssignmentId);
+
+			await _groupRepository.SaveChangesAsync();
+		}
+
+		private void ValidateCourseExists(Guid courseId, Group group)
+		{
+			if (!group.Courses.Any(c => c.Id == courseId))
+				throw new AppException($"You're trying to add an assignment which has non existing course id", AppErrorCode.DOESNT_EXIST);
+		}
+
+		private async Task<Group> GetGroupForAssignmentActions(IGroupIdentifier command)
+		{
+			Group group;
+			if (command is ITeamAssignment cmd)
 			{
-				throw new Exception("Such ID already exists");
+				group = await _groupRepository.GetWithTeamAssignmentsAsync(command.GroupId);
+				var team = group.Teams.FirstOrDefault(t => t.Name == cmd.TeamName);
+				if (team == null)
+					throw new AppException($"The team with name {cmd.TeamName} doesn't exist in the group", AppErrorCode.DOESNT_EXIST);
 			}
-			assignment = new Assignment(name, description, semester, deadline);
-			await _assignmentRepository.AddAsync(assignment);
-		}
+			else
+				group = await _groupRepository.GetWithAssignments(command.GroupId);
 
-		public async Task<AssignmentDto> GetAsync(Guid id)
-		{
-			var assignment = await _assignmentRepository.GetAsync(id);
-			if (assignment == null)
-			{
-				throw new Exception("There is no assignment with such id");
-			}
-			return _mapper.Map<AssignmentDto>(assignment);
+			return group;
 		}
 	}
 }
