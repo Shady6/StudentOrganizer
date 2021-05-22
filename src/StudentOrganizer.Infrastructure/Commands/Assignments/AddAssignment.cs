@@ -13,6 +13,6 @@ namespace StudentOrganizer.Infrastructure.Commands.Assignments
 		public string Description { get; set; }
 		public int Semester { get; set; }
 		public DateTime? Deadline { get; set; }
-		public Guid CourseId { get; set; }
+		public Guid? CourseId { get; set; }
 	}
 }

@@ -16,19 +16,19 @@ namespace StudentOrganizer.Core.Models
 		{
 		}
 
-		public Assignment(string name, string description, int semester, DateTime? deadline, Guid courseId)
+		public Assignment(string name, string description, int semester, DateTime? deadline, Course course)
 		{
-			SetValues(name, description, semester, deadline, courseId);
+			SetValues(name, description, semester, deadline, course);
 		}
 
-		public void Update(string name, string description, int semester, DateTime? deadline, Guid courseId)
+		public void Update(string name, string description, int semester, DateTime? deadline, Course course)
 		{
-			SetValues(name, description, semester, deadline, courseId);
+			SetValues(name, description, semester, deadline, course);
 		}
 
-		private void SetValues(string name, string description, int semester, DateTime? deadline, Guid courseId)
+		private void SetValues(string name, string description, int semester, DateTime? deadline, Course course)
 		{
-			Course = new Course(courseId);
+			Course = course;
 			SetName(name);
 			SetDescription(description);
 			SetSemester(semester);

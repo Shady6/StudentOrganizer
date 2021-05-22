@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>StudentOrganizer.Api</name>
+    </assembly>
+    <members>
+        <member name="M:StudentOrganizer.Api.Controllers.AssignmentsController.AddAssignment(System.Guid,StudentOrganizer.Infrastructure.Commands.Assignments.AddAssignment)">
+            <remarks>
+            If sending courseId don't send the semester because it will be overwritten by the semester of specified course.&#xA;&#xD;
+            Otherwise if not sending courseId you should send the semester of the given assignment
+            </remarks>		
+        </member>
+        <member name="M:StudentOrganizer.Api.Controllers.AssignmentsController.UpdateAssignment(System.Guid,System.Guid,StudentOrganizer.Infrastructure.Commands.Assignments.UpdateAssignment)">
+            <remarks>
+            If sending courseId don't send the semester because it will be overwritten by the semester of specified course.&#xA;&#xD;
+            Otherwise if not sending courseId you should send the semester of the given assignment
+            </remarks>		
+        </member>
+        <member name="M:StudentOrganizer.Api.Controllers.AssignmentsController.AddAssignmentToTeam(System.Guid,System.String,StudentOrganizer.Infrastructure.Commands.Assignments.AddAssignmentToTeam)">
+            <remarks>
+            If sending courseId don't send the semester because it will be overwritten by the semester of specified course.&#xA;&#xD;
+            Otherwise if not sending courseId you should send the semester of the given assignment
+            </remarks>		
+        </member>
+        <member name="M:StudentOrganizer.Api.Controllers.AssignmentsController.UpdateAssignmentInTeam(System.Guid,System.String,System.Guid,StudentOrganizer.Infrastructure.Commands.Assignments.UpdateAssignmentInTeam)">
+            <remarks>
+            If sending courseId don't send the semester because it will be overwritten by the semester of specified course.&#xA;&#xD;
+            Otherwise if not sending courseId you should send the semester of the given assignment
+            </remarks>		
+        </member>
+    </members>
+</doc>

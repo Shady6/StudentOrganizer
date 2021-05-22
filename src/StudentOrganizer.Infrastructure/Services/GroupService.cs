@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using StudentOrganizer.Core.Common;
@@ -108,52 +109,46 @@ namespace StudentOrganizer.Infrastructure.Services
 				!group.Administrators.Any(a => a.Id == command.UserId))
 				throw new AppException("You don't belong to this group", AppErrorCode.CANT_DO_THAT);
 
-			return new GroupDto
-			{
-				Administrators = _mapper.Map<List<DisplayUserDto>>(group.Administrators),
-				Courses = _mapper.Map<List<CourseDto>>(group.Courses),
-				Name = group.Name,
-				Assignments = _mapper.Map<List<AssignmentDto>>(group.Assignmets),
-				Schedules = _mapper.Map<List<ScheduleDto>>(group.Schedules),
-				Teams = group.Teams.Select(t =>
-				new TeamDto
-				{
-					Assignments = _mapper.Map<List<AssignmentDto>>(t.Assignmets),
-					Name = t.Name,
-					Schedules = t.Schedules.Select(s =>
-					new ScheduleDto
-					{
-						Semester = s.Semester,
-						ScheduledCourses = _mapper.Map<List<ScheduledCourseDto>>(s.ScheduledCourses)
-					}).ToList()
-				}).ToList(),
-				Students = group.Students.Select(s => new StudentDto
-				{
-					FirstName = s.FirstName,
-					LastName = s.LastName,
-					Teams = group.Teams.Where(t => t.Students.Any(st => st.Id == s.Id))
-					.Select(t => t.Name).ToList()
-				}).ToList()
-			};
+			return CreateFullGroup().Compile().Invoke(group);
 		}
 
 		public List<GroupDto> GetMyGroupsFull(GetMyGroups command)
 		{
 			IQueryable<Group> groups = _groupRepository.GetWholeGroupsAsync(command.UserId);
 
-			return groups.Select(g => new GroupDto
+			return groups.Select(CreateFullGroup().Compile()).ToList();
+		}
+
+		private Expression<Func<Group, GroupDto>> CreateFullGroup()
+			=> (g) => new GroupDto
 			{
 				Id = g.Id,
-				Moderators = _mapper.Map<List<DisplayUserDto>>(g.Moderators),
 				Administrators = _mapper.Map<List<DisplayUserDto>>(g.Administrators),
+				Moderators = _mapper.Map<List<DisplayUserDto>>(g.Moderators),
 				Courses = _mapper.Map<List<CourseDto>>(g.Courses),
 				Name = g.Name,
-				Assignments = _mapper.Map<List<AssignmentDto>>(g.Assignmets),
+				Assignments = g.Assignmets.Select(a => new AssignmentDto
+				{
+					Semester = a.Semester,
+					Deadline = a.Deadline,
+					Description = a.Description,
+					Id = a.Id,
+					Name = a.Name,
+					Course = _mapper.Map<CourseDto>(a.Course)
+				}).ToList(),
 				Schedules = _mapper.Map<List<ScheduleDto>>(g.Schedules),
 				Teams = g.Teams.Select(t =>
 				new TeamDto
 				{
-					Assignments = _mapper.Map<List<AssignmentDto>>(t.Assignmets),
+					Assignments = g.Assignmets.Select(a => new AssignmentDto
+					{
+						Semester = a.Semester,
+						Deadline = a.Deadline,
+						Description = a.Description,
+						Id = a.Id,
+						Name = a.Name,
+						Course = _mapper.Map<CourseDto>(a.Course)
+					}).ToList(),
 					Name = t.Name,
 					Schedules = t.Schedules.Select(s =>
 					new ScheduleDto
@@ -170,8 +165,7 @@ namespace StudentOrganizer.Infrastructure.Services
 					Teams = g.Teams.Where(t => t.Students.Any(st => st.Id == s.Id))
 					.Select(t => t.Name).ToList()
 				}).ToList()
-			}).ToList();
-		}
+			};
 
 		public List<PublicGroupDto> GetAllGroups(GetPublicGroups command)
 		{

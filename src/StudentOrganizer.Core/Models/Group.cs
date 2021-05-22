@@ -198,8 +198,8 @@ namespace StudentOrganizer.Core.Models
 		public void AddAsignment(Assignment assignment)
 			=> AssignmentActions.AddAsignment(assignment);
 
-		public void UpdateAssignment(string name, string description, int semester, DateTime? deadline, Guid courseId, Guid assignmentId)
-			=> AssignmentActions.UpdateAssignment(name, description, semester, deadline, courseId, assignmentId);
+		public void UpdateAssignment(string name, string description, int semester, DateTime? deadline, Course course, Guid assignmentId)
+			=> AssignmentActions.UpdateAssignment(name, description, semester, deadline, course, assignmentId);
 
 		public void DeleteAssignment(Guid id)
 			=> AssignmentActions.DeleteAssignment(id);

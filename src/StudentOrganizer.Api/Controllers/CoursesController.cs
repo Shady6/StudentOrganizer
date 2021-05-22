@@ -19,6 +19,7 @@ namespace StudentOrganizer.Api.Controllers
 			_courseService = courseService;
 		}
 
+
 		[HttpPost]
 		public async Task<ActionResult> AddCourses(Guid groupId, [FromBody] AddCourses command)
 		{

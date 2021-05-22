@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using Autofac;
 using MediatR;
@@ -53,6 +55,9 @@ namespace StudentOrganizer.Api.Extensions
 			services.AddSwaggerGen(c =>
 			{
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "StudentOrganizer.Api", Version = "v1" });
+				c.IncludeXmlComments(
+					AppDomain.CurrentDomain.BaseDirectory + AppDomain.CurrentDomain.FriendlyName + ".xml"
+					, true);
 				c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
 				{
 					Name = "Authorization",

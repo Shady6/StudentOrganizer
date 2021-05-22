@@ -20,22 +20,21 @@ namespace StudentOrganizer.Infrastructure.Services
 			_administratorService = administratorService;
 			_groupRepository = groupRepository;
 		}
-
-		// TODO add these to controller 
+		
 		public async Task AddAssignment(AddAssignment command)
 		{
 			await _administratorService.ValidateAtLeastModerator(command.UserId, command.GroupId);
 			var group = await GetGroupForAssignmentActions(command);
-			ValidateCourseExists(command.CourseId, group);
+			var course = command.CourseId == null ? null : ValidateCourseExists(command.CourseId.Value, group);
 			IAssignmentActions assignmentActions =
 				command is ITeamAssignment cmd ? group.Teams.First(t => t.Name == cmd.TeamName) : group;
 
 			assignmentActions.AddAsignment(new Assignment(
 				command.Name,
 				command.Description,
-				command.Semester,
+				course == null ? command.Semester : course.Semester,
 				command.Deadline,
-				command.CourseId));
+				course));
 
 			await _groupRepository.SaveChangesAsync();
 		}
@@ -44,15 +43,15 @@ namespace StudentOrganizer.Infrastructure.Services
 		{
 			await _administratorService.ValidateAtLeastModerator(command.UserId, command.GroupId);
 			var group = await GetGroupForAssignmentActions(command);
-			ValidateCourseExists(command.CourseId, group);
+			var course = command.CourseId == null ? null : ValidateCourseExists(command.CourseId.Value, group);
 			IAssignmentActions assignmentActions =
 				command is ITeamAssignment cmd ? group.Teams.First(t => t.Name == cmd.TeamName) : group;
 
 			assignmentActions.UpdateAssignment(command.Name,
 				command.Description,
-				command.Semester,
+				course == null ? command.Semester : course.Semester,
 				command.Deadline,
-				command.CourseId,
+				course,
 				command.AssignmentId);
 
 			await _groupRepository.SaveChangesAsync();
@@ -70,10 +69,12 @@ namespace StudentOrganizer.Infrastructure.Services
 			await _groupRepository.SaveChangesAsync();
 		}
 
-		private void ValidateCourseExists(Guid courseId, Group group)
-		{
-			if (!group.Courses.Any(c => c.Id == courseId))
+		private Course ValidateCourseExists(Guid courseId, Group group)
+		{			
+			var course = group.Courses.FirstOrDefault(c => c.Id == courseId);
+			if (course == null)
 				throw new AppException($"You're trying to add an assignment which has non existing course id", AppErrorCode.DOESNT_EXIST);
+			return course;
 		}
 
 		private async Task<Group> GetGroupForAssignmentActions(IGroupIdentifier command)

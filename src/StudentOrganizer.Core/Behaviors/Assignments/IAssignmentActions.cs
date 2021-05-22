@@ -7,7 +7,7 @@ namespace StudentOrganizer.Core.Behaviors.Assignments
 	{
 		public void AddAsignment(Assignment assignment);
 
-		public void UpdateAssignment(string name, string description, int semester, DateTime? deadline, Guid courseId, Guid assignmentId);
+		public void UpdateAssignment(string name, string description, int semester, DateTime? deadline, Course course, Guid assignmentId);
 
 		public void DeleteAssignment(Guid id);
 	}

@@ -2,7 +2,7 @@
 
 namespace StudentOrganizer.Infrastructure.Commands.Assignments
 {
-	public class AddAsignmentToTeam : AddAssignment, ITeamAssignment
+	public class AddAssignmentToTeam : AddAssignment, ITeamAssignment
 	{
 		[JsonIgnore]
 		public string TeamName { get; set; }
