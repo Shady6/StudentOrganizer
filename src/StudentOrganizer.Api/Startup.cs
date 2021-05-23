@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using StudentOrganizer.Api.Exceptions;
 using StudentOrganizer.Api.Extensions;
+using System.IO;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace StudentOrganizer.Api
@@ -53,6 +55,12 @@ namespace StudentOrganizer.Api
 				app.UseSwagger();
 				app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "StudentOrganizer.Api v1"));
 			}
+
+			app.UseStaticFiles(new StaticFileOptions
+			{
+				FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "UserAvatars")),
+				RequestPath = "/UserAvatars"
+			});
 
 			app.UseRouting();
 			app.UseMiddleware<ExceptionHandler>();

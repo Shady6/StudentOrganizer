@@ -28,5 +28,10 @@
             Otherwise if not sending courseId you should send the semester of the given assignment
             </remarks>		
         </member>
+        <member name="M:StudentOrganizer.Api.Controllers.UsersController.SetAvatar(StudentOrganizer.Infrastructure.Users.Commands.SetAvatar)">
+            <summary>
+            Only send ImageFile, don't send other values they will be overwritten
+            </summary>		
+        </member>
     </members>
 </doc>

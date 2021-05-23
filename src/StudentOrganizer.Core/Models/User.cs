@@ -16,6 +16,7 @@ namespace StudentOrganizer.Core.Models
 		public string Salt { get; protected set; }
 		public string FirstName { get; protected set; }
 		public string LastName { get; protected set; }
+		public string ImageHttpPath { get; set; }
 		public Role Role { get; protected set; }
 
 		public IEnumerable<Group> Groups
@@ -53,6 +54,11 @@ namespace StudentOrganizer.Core.Models
 
 		public User()
 		{
+		}
+
+		public void SetImage(string path)
+		{
+			ImageHttpPath = path;
 		}
 
 		public void SetMail(string email)

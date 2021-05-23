@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using StudentOrganizer.Core.Common;
 using StudentOrganizer.Core.Enums;
@@ -11,6 +8,11 @@ using StudentOrganizer.Core.Repositories;
 using StudentOrganizer.Infrastructure.Dto;
 using StudentOrganizer.Infrastructure.IServices;
 using StudentOrganizer.Infrastructure.Users.Commands;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace StudentOrganizer.Infrastructure.Services
 {
@@ -39,6 +41,30 @@ namespace StudentOrganizer.Infrastructure.Services
 			_administratorService = administratorService;
 			_mapper = mapper;
 			_groupRepository = groupRepository;
+		}
+
+		public async Task SetAvatar(SetAvatar command)
+		{
+			var user = await _userRepository.GetAsync(command.UserId);
+			if (!string.IsNullOrWhiteSpace(user.ImageHttpPath))
+				throw new AppException("User already has an avatar. If you want to update it please use dedicated updating functionality.", AppErrorCode.ALREADY_EXISTS);
+			var imageName =
+				user.Email + "_" +
+				DateTime.Now.ToString("dd_mm_yy_HH_MM_ss") +
+				Path.GetExtension(command.ImageFile.FileName);
+
+			await SaveImage(command.ImageFile, command.ImagesFolderPath, imageName);
+			user.SetImage(command.ImageBaseHttpPath + "/" + imageName);
+			await _userRepository.SaveChangesAsync();
+		}
+
+		private async Task SaveImage(IFormFile imageFile, string imagesFolderPath, string imageName)
+		{
+			var path = Path.Combine(imagesFolderPath, imageName);
+			using (var fs = new FileStream(path, FileMode.Create))
+			{
+				await imageFile.CopyToAsync(fs);
+			}
 		}
 
 		public async Task LeaveGroup(LeaveGroup command)
