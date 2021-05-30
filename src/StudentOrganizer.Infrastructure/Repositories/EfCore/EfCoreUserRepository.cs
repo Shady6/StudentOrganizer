@@ -29,6 +29,15 @@ namespace StudentOrganizer.Infrastructure.Repositories.EfCore
 			EF.Functions.ILike(u.FirstName + " " + u.LastName, $"%{searchLetters}%")));
 		}
 
+		public async Task<User> GetWithGroupTeamsAndStudents(string email)
+		{
+			return await _dbContext.Users.Where(u => u.Email == email)
+				.Include(u => u.Groups)
+				.ThenInclude(g => g.Teams)
+				.ThenInclude(t => t.Students)
+				.FirstOrDefaultAsync();
+		}
+
 		public async Task<User> GetWithTeamsAsync(Guid userId)
 		{
 			return await _dbContext.Users.Where(u => u.Id == userId)

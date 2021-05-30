@@ -26,6 +26,7 @@ namespace StudentOrganizer.Core.Repositories
 		IQueryable<User> GetSuggestedAsync(string searchLetters, Guid groupId);
 		Task<User> GetWithAdministratedAndModeratedGroups(Guid userId);
 		Task<User> GetWithAllGroupsAsync(Guid userId);
-		Task<User> GetWithTeamsAsync(Guid userId);
+		Task<User> GetWithTeamsAsync(Guid userId);		
+		Task<User> GetWithGroupTeamsAndStudents(string email);
 	}
 }

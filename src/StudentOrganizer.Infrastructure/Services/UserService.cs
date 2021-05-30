@@ -111,19 +111,36 @@ namespace StudentOrganizer.Infrastructure.Services
 			await _userRepository.SaveChangesAsync();
 		}
 
-		public async Task LoginAsync(Guid id, string email, string password)
+		public async Task<UserLoginData> LoginAsync(LoginUserCommand command)
 		{
-			var user = await _userRepository.GetAsync(email);
+			var user = await _userRepository.GetWithGroupTeamsAndStudents(command.Email);
 
 			if (user == null)
 				throw new AppException("Wrong email or password.", AppErrorCode.VALIDATION_ERROR);
 
-			string generatedHash = _encrypter.GetHash(password, user.Salt);
+			string generatedHash = _encrypter.GetHash(command.Password, user.Salt);
 			if (user.PasswordHash != generatedHash)
 				throw new AppException("Wrong email or password.", AppErrorCode.VALIDATION_ERROR);
 
 			JwtDto token = _jwtHandler.CreateToken(user.Id, user.Role);
-			_memoryCache.Set(id, token);
+			return new UserLoginData
+			{
+				Token = token,
+				User = new LoginUser
+				{
+					FirstName = user.FirstName,
+					LastName = user.LastName,
+					Email = user.Email,
+					Groups = user.Groups.Select(g => new LoginGroupDto
+					{
+						Name = g.Name,
+						Teams = g.Teams.Select(t => t.Name).ToList(),
+						UserTeams = g.Teams.Where(t =>
+						t.Students.Any(s => s.Id == user.Id))
+						.Select(t => t.Name).ToList()
+					}).ToList()
+				}
+			};	
 		}
 	}
 }

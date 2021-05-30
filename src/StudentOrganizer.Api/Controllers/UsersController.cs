@@ -80,11 +80,10 @@ namespace StudentOrganizer.Api.Controllers
 
 		[AllowAnonymous]
 		[HttpPost("users/login")]
-		public async Task<ActionResult<JwtDto>> Login([FromBody] LoginUser command)
+		public async Task<ActionResult<JwtDto>> Login([FromBody] LoginUserCommand command)
 		{
-			await _mediator.Send(command);
-			var jwt = _memoryCache.Get<JwtDto>(command.Id);
-			return Ok(jwt);
+			var result = await _userService.LoginAsync(command);			
+			return Ok(result);
 		}
 	}
 }
