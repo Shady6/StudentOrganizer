@@ -32,6 +32,9 @@ namespace StudentOrganizer.Infrastructure.Repositories.EfCore
 		public async Task<User> GetWithGroupTeamsAndStudents(string email)
 		{
 			return await _dbContext.Users.Where(u => u.Email == email)
+				.Include(u => u.Groups).ThenInclude(g => g.Administrators)
+				.Include(u => u.Groups).ThenInclude(g => g.Moderators)
+				.Include(u => u.Groups).ThenInclude(g => g.Students)
 				.Include(u => u.Groups)
 				.ThenInclude(g => g.Teams)
 				.ThenInclude(t => t.Students)

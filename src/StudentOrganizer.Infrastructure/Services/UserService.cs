@@ -123,7 +123,7 @@ namespace StudentOrganizer.Infrastructure.Services
 				throw new AppException("Wrong email or password.", AppErrorCode.VALIDATION_ERROR);
 
 			JwtDto token = _jwtHandler.CreateToken(user.Id, user.Role);
-			return new UserLoginData
+			var userData = new UserLoginData
 			{
 				Token = token,
 				User = new LoginUser
@@ -133,6 +133,8 @@ namespace StudentOrganizer.Infrastructure.Services
 					Email = user.Email,
 					Groups = user.Groups.Select(g => new LoginGroupDto
 					{
+						Id = g.Id,		
+						UserRoles = new List<RoleDto>(),
 						Name = g.Name,
 						Teams = g.Teams.Select(t => t.Name).ToList(),
 						UserTeams = g.Teams.Where(t =>
@@ -140,7 +142,19 @@ namespace StudentOrganizer.Infrastructure.Services
 						.Select(t => t.Name).ToList()
 					}).ToList()
 				}
-			};	
+			};
+
+			for (int i = 0; i < user.Groups.Count(); i++)
+			{
+				if (user.Groups.ElementAt(i).Students.Any(s => s.Id == user.Id))
+					userData.User.Groups.ElementAt(i).UserRoles.Add(RoleDto.Student);
+				if (user.Groups.ElementAt(i).Moderators.Any(s => s.Id == user.Id))
+					userData.User.Groups.ElementAt(i).UserRoles.Add(RoleDto.Moderator);
+				if (user.Groups.ElementAt(i).Administrators.Any(s => s.Id == user.Id))
+					userData.User.Groups.ElementAt(i).UserRoles.Add(RoleDto.Administrator);
+			}
+
+			return userData;
 		}
 	}
 }

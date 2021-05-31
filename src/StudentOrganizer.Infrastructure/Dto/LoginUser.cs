@@ -9,5 +9,4 @@ namespace StudentOrganizer.Infrastructure.Dto
 		public string Email { get; set; }
 		public List<LoginGroupDto> Groups { get; set; }
 	}
-
 }
