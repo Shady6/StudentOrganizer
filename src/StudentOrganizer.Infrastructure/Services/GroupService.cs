@@ -140,7 +140,7 @@ namespace StudentOrganizer.Infrastructure.Services
 				Teams = g.Teams.Select(t =>
 				new TeamDto
 				{
-					Assignments = g.Assignmets.Select(a => new AssignmentDto
+					Assignments = t.Assignmets.Select(a => new AssignmentDto
 					{
 						Semester = a.Semester,
 						Deadline = a.Deadline,
