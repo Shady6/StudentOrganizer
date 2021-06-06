@@ -7,5 +7,6 @@ namespace StudentOrganizer.Infrastructure.Dto
 		public string Name { get; set; }
 		public List<ScheduleDto> Schedules { get; set; }
 		public List<AssignmentDto> Assignments { get; set; }
+		public List<DisplayUserDto> Students { get; set; }
 	}
 }

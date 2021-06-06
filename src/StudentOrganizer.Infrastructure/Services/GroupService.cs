@@ -150,6 +150,7 @@ namespace StudentOrganizer.Infrastructure.Services
 						Course = _mapper.Map<CourseDto>(a.Course)
 					}).ToList(),
 					Name = t.Name,
+					Students = _mapper.Map<List<DisplayUserDto>>(t.Students),
 					Schedules = t.Schedules.Select(s =>
 					new ScheduleDto
 					{
