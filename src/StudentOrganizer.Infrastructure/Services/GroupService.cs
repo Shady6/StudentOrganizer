@@ -155,7 +155,7 @@ namespace StudentOrganizer.Infrastructure.Services
 					new ScheduleDto
 					{
 						Semester = s.Semester,
-						ScheduledCourses = _mapper.Map<List<ScheduledCourseDto>>(s.ScheduledCourses)
+						ScheduledCourses = _mapper.Map<List<ScheduledCourseDto>>(s.ScheduledCourses).OrderBy(sc => sc.StartTime).ToList()
 					}).ToList()
 				}).ToList(),
 				Students = g.Students.Select(s => new StudentDto
